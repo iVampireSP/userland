@@ -15,6 +15,7 @@
         <tr>
             <th>名称</th>
             <th>重定向</th>
+            <th>提供方</th>
             <th>个人访问</th>
             <th>密码访问</th>
             <th>操作</th>
@@ -25,6 +26,15 @@
             <tr>
                 <td>{{ $client->name }}</td>
                 <td>{{ $client->redirect }}</td>
+                <td>
+                    @if ($client->trusted)
+                        <span class="badge bg-success">受信任</span>
+                    @endif
+
+                    @if ($client->provider)
+                        <span class="badge bg-primary">{{ $client->provider }}</span>
+                    @endif
+                </td>
                 <td>
                     @if ($client->personal_access_client)
                         <span class="badge bg-primary">个人访问</span>

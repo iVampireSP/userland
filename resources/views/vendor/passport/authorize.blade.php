@@ -37,56 +37,62 @@
     </style>
 </head>
 <body class="passport-authorize">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card card-default">
-                    <div class="card-header">
-                        授权请求
-                    </div>
-                    <div class="card-body">
-                        <!-- Introduction -->
-                        <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card card-default">
+                <div class="card-header">
+                    授权请求
+                </div>
+                <div class="card-body">
+                    <!-- Introduction -->
+                    <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
 
-                        <!-- Scope List -->
-                        @if (count($scopes) > 0)
-                            <div class="scopes">
-                                    <p><strong>此应用程序将被允许: </strong></p>
+                    @if ($client->trusted)
+                        <p class="text-success">受信任的提供方: {{ $client->provider }}</p>
+                    @else
+                        <p class="text-warning">第三方的 <strong>{{ $client->provider }}</strong></p>
+                    @endif
 
-                                    <ul>
-                                        @foreach ($scopes as $scope)
-                                            <li>{{ $scope->description }}</li>
-                                        @endforeach
-                                    </ul>
-                            </div>
-                        @endif
+                    <!-- Scope List -->
+                    @if (count($scopes) > 0)
+                        <div class="scopes">
+                            <p><strong>此应用程序将被允许: </strong></p>
 
-                        <div class="buttons">
-                            <!-- Authorize Button -->
-                            <form method="post" action="{{ route('passport.authorizations.approve') }}">
-                                @csrf
-
-                                <input type="hidden" name="state" value="{{ $request->state }}">
-                                <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
-                                <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                                <button type="submit" class="btn btn-success btn-approve">授权</button>
-                            </form>
-
-                            <!-- Cancel Button -->
-                            <form method="post" action="{{ route('passport.authorizations.deny') }}">
-                                @csrf
-                                @method('DELETE')
-
-                                <input type="hidden" name="state" value="{{ $request->state }}">
-                                <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
-                                <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                                <button class="btn btn-danger">取消</button>
-                            </form>
+                            <ul>
+                                @foreach ($scopes as $scope)
+                                    <li>{{ $scope->description }}</li>
+                                @endforeach
+                            </ul>
                         </div>
+                    @endif
+
+                    <div class="buttons">
+                        <!-- Authorize Button -->
+                        <form method="post" action="{{ route('passport.authorizations.approve') }}">
+                            @csrf
+
+                            <input type="hidden" name="state" value="{{ $request->state }}">
+                            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+                            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+                            <button type="submit" class="btn btn-success btn-approve">授权</button>
+                        </form>
+
+                        <!-- Cancel Button -->
+                        <form method="post" action="{{ route('passport.authorizations.deny') }}">
+                            @csrf
+                            @method('DELETE')
+
+                            <input type="hidden" name="state" value="{{ $request->state }}">
+                            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+                            <input type="hidden" name="auth_token" value="{{ $authToken }}">
+                            <button class="btn btn-danger">取消</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

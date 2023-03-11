@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use function back;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -57,7 +58,7 @@ class AuthController extends Controller
             return redirect()->route('index')->with('error', '登录请求的 Token 不存在或已过期。');
         }
 
-        $user = (new \App\Models\User)->find($user_id);
+        $user = (new User)->find($user_id);
 
         if (empty($user)) {
             return redirect()->route('index')->with('error', '无法验证。');

@@ -15,9 +15,18 @@
                class="list-group-item list-group-item-action">
                 {{ $client->name }}
 
+                @if($client->trusted)
+                    <span class="badge bg-success">受信任</span>
+                @endif
+
+                @if ($client->provider)
+                    <span class="badge bg-primary">{{ $client->provider }}</span>
+                @endif
+
                 <br/>
                 {{ $client->redirect }}
                 <br/>
+
                 @if ($client->personal_access_client)
                     <span class="badge bg-primary">个人访问</span>
                 @endif

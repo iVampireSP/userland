@@ -11,7 +11,7 @@ class UserObserver
 {
     public function creating(User $user): void
     {
-        if (!$user->name) {
+        if (! $user->name) {
             $user->name = Person::firstNameMale();
         }
 
@@ -45,11 +45,11 @@ class UserObserver
             }
         }
 
-        if (!$user->uuid) {
+        if (! $user->uuid) {
             $user->uuid = Str::uuid();
         }
 
-        if (!$user->email_md5) {
+        if (! $user->email_md5) {
             $user->email_md5 = md5($user->email);
         }
     }

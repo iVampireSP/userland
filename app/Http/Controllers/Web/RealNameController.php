@@ -6,6 +6,9 @@ use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
 use App\Support\RealNameSupport;
 use Carbon\Exceptions\InvalidFormatException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -16,11 +19,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class RealNameController extends Controller
 {
-    public function create(): View
-    {
-        return view('real_name.create');
-    }
-
     public function store(Request $request): RedirectResponse
     {
         // 检测此用户是否有实名认证的资格（cache）
@@ -65,7 +63,12 @@ class RealNameController extends Controller
         return redirect($output);
     }
 
-    public function pay(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function create(): View
+    {
+        return view('real_name.create');
+    }
+
+    public function pay(Request $request): \Illuminate\Contracts\View\View|Factory|\Illuminate\Foundation\Application|JsonResponse|RedirectResponse|Application
     {
         if ($request->ajax()) {
             $out_trade_no = Cache::get('real_name:user:'.$request->user()->id.':pay');

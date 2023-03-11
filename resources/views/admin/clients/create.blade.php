@@ -19,6 +19,11 @@
                                placeholder="输入客户端重定向地址">
                         <label for="redirect">重定向</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="provider" name="provider" class="form-control"
+                               placeholder="输入提供方">
+                        <label for="provider">提供方</label>
+                    </div>
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" name="personal_access_client"

@@ -13,7 +13,7 @@
                 <h2>{{ $client->name }}</h2>
                 <div class="input-group mb-3">
                     <span class="input-group-text">客户端 ID</span>
-                    <input type="text" class="form-control" value="{{ $client->id }}" readonly>
+                    <input aria-label="客户端 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>
                 </div>
 
                 <div class="input-group mb-3">
@@ -36,15 +36,24 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">名称</span>
-                        <input type="text" class="form-control" name="name" placeholder="客户端名称"
+                        <input aria-label="名称" type="text" class="form-control" name="name" placeholder="客户端名称"
                                value="{{ $client->name }}">
                     </div>
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">重定向地址</span>
-                        <input type="text" class="form-control" name="redirect" placeholder="重定向地址"
+                        <input aria-label="重定向地址" type="text" class="form-control" name="redirect" placeholder="重定向地址"
                                value="{{ $client->redirect }}">
                     </div>
+
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">提供方</span>
+                        <input aria-label="provider" type="text" name="provider" class="form-control"
+                               value="{{ $client->provider }}">
+                    </div>
+
+
 
                     {{--    密码访问客户端    --}}
                     <div class="input-group mb-3">
@@ -65,6 +74,14 @@
                         <span class="form-control">是否是密码访问客户端</span>
                     </div>
 
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            <input class="form-check-input" type="checkbox" value="1"
+                                   @if($client->trusted) checked @endif name="trusted"
+                                   id="trusted" aria-label="信任">
+                        </div>
+                        <span class="form-control">信任</span>
+                    </div>
 
                     <button type="submit" class="btn btn-primary mt-3">
                         更新
