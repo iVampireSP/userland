@@ -47,11 +47,11 @@
                     </div>
 
 
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">提供方</span>
-                        <input aria-label="provider" type="text" name="provider" class="form-control"
-                               value="{{ $client->provider }}">
-                    </div>
+{{--                    <div class="input-group mb-3">--}}
+{{--                        <span class="input-group-text">提供方</span>--}}
+{{--                        <input aria-label="provider" type="text" name="provider" class="form-control"--}}
+{{--                               value="{{ $client->provider }}">--}}
+{{--                    </div>--}}
 
 
 

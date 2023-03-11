@@ -44,10 +44,6 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'application' => [
-            'driver' => 'token',
-            'provider' => 'applications',
-        ],
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
@@ -80,11 +76,6 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ],
-
-        'applications' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Application::class,
         ],
 
     ],

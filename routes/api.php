@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('user', [UserController::class, 'user']);
+Route::get('user', [UserController::class, 'user'])->middleware('scopes:user');
 
 Route::get('real-name', [UserController::class, 'realName'])
     ->middleware('scopes:realname');
