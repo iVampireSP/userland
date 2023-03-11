@@ -11,7 +11,7 @@
     @else
 
         <x-alert-warning>
-            由于实人认证接口费用高昂，我们需要收取 1 元的费用来实名认证。
+            由于实人认证接口费用高昂，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实名认证。
             <br/>
             人脸识别需要使用手机摄像头，请使用手机浏览器进行实人认证。
         </x-alert-warning>
