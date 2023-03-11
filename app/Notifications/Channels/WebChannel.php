@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Channels;
 
-use App\Events\Users;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -26,8 +25,8 @@ class WebChannel extends Notification
 
         $user = (new User)->find($user_id);
 
-        if ($user) {
-            // broadcast(new Users($user, $data['event'] ?? 'notification', $data));
-        }
+        // if ($user) {
+        //     // broadcast(new Users($user, $data['event'] ?? 'notification', $data));
+        // }
     }
 }

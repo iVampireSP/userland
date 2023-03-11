@@ -52,6 +52,5 @@ class UserObserver
     {
         $user->tokens()->delete();
         $user->clients()->delete();
-        $user->balances()->delete();
     }
 }

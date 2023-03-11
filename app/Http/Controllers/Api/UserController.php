@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
 
-    public function fastLogin()
+    public function fastLogin(): \Illuminate\Http\JsonResponse
     {
         $random = Str::random(64);
 
@@ -19,7 +19,7 @@ class UserController extends Controller
         return $this->success(['url' => route('auth.fast-login', ['token' => $random])]);
     }
 
-    public function realName()
+    public function realName(): \Illuminate\Http\JsonResponse
     {
         $user = auth('api')->user();
 

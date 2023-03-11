@@ -13,7 +13,10 @@ class ValidateReferer
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request): (Response|RedirectResponse) $next
+     * @param Request $request
+     * @param Closure $next
+     *
+     * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
     {

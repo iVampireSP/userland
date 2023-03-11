@@ -59,7 +59,7 @@ class AuthController extends Controller
             return redirect()->route('index')->with('error', '登录请求的 Token 不存在或已过期。');
         }
 
-        $user = User::find($user_id);
+        $user = (new \App\Models\User)->find($user_id);
 
         if (empty($user)) {
             return redirect()->route('index')->with('error', '无法验证。');

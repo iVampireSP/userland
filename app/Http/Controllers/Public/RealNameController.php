@@ -63,7 +63,8 @@ class RealNameController extends Controller
             : view('real_name.failed');
     }
 
-    public function payNotify(Request $request) {
+    public function payNotify(Request $request): bool
+    {
         if (empty($request->all())) {
             return false;
         }
@@ -87,7 +88,8 @@ class RealNameController extends Controller
         return $signResult;
     }
 
-    public function getSign($param){
+    public function getSign($param): string
+    {
         ksort($param);
         $signStr = '';
 

@@ -65,7 +65,7 @@ class RealNameController extends Controller
         return redirect($output);
     }
 
-    public function pay(Request $request)
+    public function pay(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         if ($request->ajax()) {
             $out_trade_no = Cache::get('real_name:user:' . $request->user()->id . ':pay');

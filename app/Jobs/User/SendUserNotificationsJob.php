@@ -5,7 +5,6 @@ namespace App\Jobs\User;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Models\User;
 use App\Notifications\User\UserNotification;
-use GeneaLabs\LaravelModelCaching\CachedBuilder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,7 +17,7 @@ class SendUserNotificationsJob implements ShouldQueue
 
     protected array $requests;
 
-    protected User|CachedBuilder $users;
+    protected User $users;
 
     protected string $title;
 

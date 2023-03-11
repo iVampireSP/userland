@@ -9,21 +9,21 @@ use RuntimeException;
 
 class TokenController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $tokens = auth('web')->user()->tokens()->paginate(10);
 
         return view('token.index', compact('tokens'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $scopes = Passport::scopes();
 
         return view('token.create', compact('scopes'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -39,7 +39,7 @@ class TokenController extends Controller
         return redirect()->route('tokens.index')->with('token', $token);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $request->user('web')->tokens()->where('id', $id)->delete();
 

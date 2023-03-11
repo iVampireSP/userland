@@ -30,7 +30,7 @@ trait AuthenticatesUsers
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = (new \App\Models\User)->where('email', $request->input('email'))->first();
 
         if ($user) {
             return $this->success([

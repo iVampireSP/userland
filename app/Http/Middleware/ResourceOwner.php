@@ -15,7 +15,7 @@ class ResourceOwner
         $model = $request->route($model);
 
         if ($model && isset($model->user_id) && $request->user()) {
-            // if module has user_id and user is logined
+            // if model has user_id and user is login
             if ($model->user_id != $request->user()->id) {
                 abort(403);
             }

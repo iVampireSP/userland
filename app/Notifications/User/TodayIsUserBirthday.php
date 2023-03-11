@@ -95,7 +95,7 @@ class TodayIsUserBirthday extends Notification implements ShouldQueue
 在这特别的日子里，我们将 《ハピハピ♪バースデイソング ～チノ》 中的歌词献给特别的你。
 
 
-{$today}, 生日快乐！
+$today, 生日快乐！
 EOF;
     }
 

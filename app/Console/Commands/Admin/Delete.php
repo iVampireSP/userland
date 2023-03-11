@@ -31,7 +31,7 @@ class Delete extends Command
         $id = $this->ask('请输入管理员 ID');
 
         // 搜索
-        $admin = Admin::find($id);
+        $admin = (new \App\Models\Admin)->find($id);
         if (is_null($admin)) {
             $this->error('管理员不存在。');
 
