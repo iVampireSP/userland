@@ -35,13 +35,15 @@ class UserNotification extends Notification implements ShouldQueue
      */
     public function via(): array
     {
-        $channels = [WebChannel::class];
+        // $channels = [WebChannel::class];
+        //
+        // if ($this->send_mail) {
+        //     $channels[] = 'mail';
+        // }
+        //
+        // return $channels;
 
-        if ($this->send_mail) {
-            $channels[] = 'mail';
-        }
-
-        return $channels;
+        return ['mail'];
     }
 
     /**
@@ -67,11 +69,11 @@ class UserNotification extends Notification implements ShouldQueue
         ];
     }
 
-    public function viaQueues(): array
-    {
-        return [
-            WebChannel::class => 'notifications',
-            'mail' => 'notifications',
-        ];
-    }
+    // public function viaQueues(): array
+    // {
+    //     return [
+    //         WebChannel::class => 'notifications',
+    //         'mail' => 'notifications',
+    //     ];
+    // }
 }
