@@ -28,27 +28,27 @@ class NotificationController extends Controller
             $request = $request->all();
         }
 
-        if (!empty($request['user_id'])) {
+        if (! empty($request['user_id'])) {
             $users = (new User)->where('id', $request['user_id']);
         } else {
             $users = User::query();
 
-            if (!empty($request['user'])) {
+            if (! empty($request['user'])) {
                 $user = $request['user'];
 
                 if ($user == 'active') {
                     // 寻找有 host 的用户
                     $users = $users->whereHas('hosts');
-                } else if ($user == 'normal') {
+                } elseif ($user == 'normal') {
                     $users = $users->whereNull('banned_at');
-                } else if ($user == 'banned') {
+                } elseif ($user == 'banned') {
                     $users = $users->whereNotNull('banned_at');
                 }
             }
         }
 
         // 是否是营销邮件
-        if (!empty($request['receive_marketing_email'])) {
+        if (! empty($request['receive_marketing_email'])) {
             $users = $users->where('receive_marketing_email', true);
         }
 

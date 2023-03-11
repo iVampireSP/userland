@@ -53,7 +53,7 @@ class Create extends Command
         ]);
 
         // 输出信息
-        $this->info('管理员创建成功，ID 为: ' . $admin->id . '。');
+        $this->info('管理员创建成功，ID 为: '.$admin->id.'。');
 
         return CommandAlias::SUCCESS;
     }

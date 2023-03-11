@@ -9,11 +9,9 @@ use Illuminate\Support\Str;
 
 class UserObserver
 {
-    /**
-     */
     public function creating(User $user): void
     {
-        if (!$user->name) {
+        if (! $user->name) {
             $user->name = Person::firstNameMale();
         }
 

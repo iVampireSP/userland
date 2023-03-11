@@ -24,15 +24,15 @@ class UserController extends Controller
         }
 
         if ($request->filled('name')) {
-            $users = $users->where('name', 'like', '%' . $request->input('name') . '%');
+            $users = $users->where('name', 'like', '%'.$request->input('name').'%');
         }
 
         if ($request->filled('email')) {
-            $users = $users->where('email', 'like', '%' . $request->input('email') . '%');
+            $users = $users->where('email', 'like', '%'.$request->input('email').'%');
         }
 
         if ($request->filled('real_name')) {
-            $users = $users->where('real_name', 'like', '%' . $request->input('real_name') . '%');
+            $users = $users->where('real_name', 'like', '%'.$request->input('real_name').'%');
         }
 
         if ($request->has('banned_at')) {
@@ -55,7 +55,7 @@ class UserController extends Controller
     {
         Auth::guard('web')->login($user);
 
-        return back()->with('success', '您已切换到用户 ' . $user->name . ' 的身份。');
+        return back()->with('success', '您已切换到用户 '.$user->name.' 的身份。');
     }
 
     /**
@@ -63,7 +63,6 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
-
         return view('admin.users.edit', compact('user'));
     }
 

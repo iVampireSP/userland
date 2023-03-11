@@ -78,7 +78,7 @@ class TodayIsUserBirthday extends Notification implements ShouldQueue
         if ($to_string) {
             $lyric_string = '';
             foreach ($random_lyrics as $lyric) {
-                $lyric_string .= $lyric . PHP_EOL . PHP_EOL;
+                $lyric_string .= $lyric.PHP_EOL.PHP_EOL;
             }
 
             return $lyric_string;
@@ -106,7 +106,7 @@ EOF;
     {
         return [
             'title' => $this->greeting,
-            'message' => $this->lyrics(true) . $this->suffixText(),
+            'message' => $this->lyrics(true).$this->suffixText(),
         ];
     }
 }

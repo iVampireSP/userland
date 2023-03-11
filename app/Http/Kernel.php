@@ -51,7 +51,6 @@ class Kernel extends HttpKernel
         TrimStrings::class,
         ConvertEmptyStringsToNull::class,
 
-
     ];
 
     /**
@@ -71,9 +70,9 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            ThrottleRequests::class . ':api',
+            ThrottleRequests::class.':api',
             SubstituteBindings::class,
-            JsonRequest::class
+            JsonRequest::class,
         ],
     ];
 

@@ -39,7 +39,7 @@ class AdminController extends Controller
             'password' => bcrypt($password),
         ]);
 
-        return redirect()->route('admin.admins.edit', $admin)->with('success', '管理员创建成功，密码为：' . $password . '。');
+        return redirect()->route('admin.admins.edit', $admin)->with('success', '管理员创建成功，密码为：'.$password.'。');
     }
 
     /**
@@ -64,7 +64,7 @@ class AdminController extends Controller
     public function update(Request $request, Admin $admin): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|unique:admins,email,' . $admin->id,
+            'email' => 'required|email|unique:admins,email,'.$admin->id,
             'name' => 'required|string|max:30',
         ]);
 
@@ -74,7 +74,7 @@ class AdminController extends Controller
             // 随机密码
             $password = Str::random();
 
-            $msg .= '，新的密码为：' . $password;
+            $msg .= '，新的密码为：'.$password;
 
             $admin->password = bcrypt($password);
         }

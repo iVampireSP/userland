@@ -11,4 +11,3 @@ Route::match(['post', 'get'], 'real_name/notify', [RealNameController::class, 'v
 Route::match(['post', 'get'], 'real_name/process', [RealNameController::class, 'process'])->name('real-name.process')->withoutMiddleware('csrf');
 
 Route::match(['post', 'get'], 'real_name/pay_process', [RealNameController::class, 'payNotify'])->name('real-name.pay-notify');
-

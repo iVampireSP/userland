@@ -48,7 +48,7 @@ class Delete extends Command
         ]);
 
         // 确认
-        if (!$this->confirm('确认删除管理员吗？')) {
+        if (! $this->confirm('确认删除管理员吗？')) {
             return CommandAlias::FAILURE;
         }
 

@@ -19,6 +19,4 @@ Route::get('user', [UserController::class, 'user']);
 Route::get('real-name', [UserController::class, 'realName'])
     ->middleware('scopes:realname');
 
-
 Route::post('login', [UserController::class, 'fastLogin'])->middleware('scopes:login');
-

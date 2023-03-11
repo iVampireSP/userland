@@ -17,7 +17,7 @@ class WebChannel extends Notification
     {
         $data = $notification->toArray($notifiable);
 
-        if (!$data) {
+        if (! $data) {
             return;
         }
 

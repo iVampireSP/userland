@@ -12,7 +12,6 @@ use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
 
 Route::prefix('auth')->group(function () {
@@ -39,7 +38,6 @@ Route::prefix('auth')->group(function () {
     Route::get('token/{token}', [AuthController::class, 'fastLogin'])->name('auth.fast-login');
 });
 
-
 Route::middleware(['auth:web', 'banned', 'verified'])->group(
     function () {
         /* Start 账户区域 */
@@ -62,6 +60,5 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::resource('clients', ClientController::class);
         Route::resource('tokens', TokenController::class)->except(['update', 'edit']);
         /* End 客户端 */
-
     }
 );

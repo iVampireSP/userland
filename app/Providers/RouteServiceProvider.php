@@ -43,7 +43,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('public')
                 ->as('public.')
                 ->group(base_path('routes/public.php'));
-
         });
     }
 

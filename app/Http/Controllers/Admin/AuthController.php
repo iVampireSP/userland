@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function index(): View|RedirectResponse
     {
-        if (!auth('admin')->check()) {
+        if (! auth('admin')->check()) {
             return view('admin.login');
         } else {
             return view('admin.index');

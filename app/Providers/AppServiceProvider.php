@@ -31,7 +31,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerObservers();
         $this->registerScopes();
-
     }
 
     private function registerObservers(): void

@@ -9,12 +9,11 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-
     public function fastLogin(): \Illuminate\Http\JsonResponse
     {
         $random = Str::random(64);
 
-        Cache::put('session_login:' . $random, auth('api')->id(), 60);
+        Cache::put('session_login:'.$random, auth('api')->id(), 60);
 
         return $this->success(['url' => route('auth.fast-login', ['token' => $random])]);
     }

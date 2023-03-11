@@ -29,7 +29,7 @@ class RealNameController extends Controller
 
         $result = (new RealNameSupport())->verify($request->all());
 
-        if (!$result) {
+        if (! $result) {
             Log::warning('实名认证失败', $request->all());
 
             return false;
@@ -71,18 +71,18 @@ class RealNameController extends Controller
 
         $sign = $this->getSign($request->all());
 
-        if($sign === $request->input('sign')){
+        if ($sign === $request->input('sign')) {
             $signResult = true;
-        }else{
+        } else {
             $signResult = false;
         }
 
         // get user real_name:user:out_trade_no:
-        $user_id = Cache::get('real_name:user:' . $request->input('out_trade_no'));
+        $user_id = Cache::get('real_name:user:'.$request->input('out_trade_no'));
 
         if ($signResult) {
             // 支付成功，添加实名认证资格
-            Cache::put('real_name:user:' . $user_id, true, 60 * 60 * 24 * 30);
+            Cache::put('real_name:user:'.$user_id, true, 60 * 60 * 24 * 30);
         }
 
         return $signResult;
@@ -93,14 +93,15 @@ class RealNameController extends Controller
         ksort($param);
         $signStr = '';
 
-        foreach($param as $k => $v){
-            if($k != "sign" && $k != "sign_type" && $v!=''){
+        foreach ($param as $k => $v) {
+            if ($k != 'sign' && $k != 'sign_type' && $v != '') {
                 $signStr .= $k.'='.$v.'&';
             }
         }
 
-        $signStr = substr($signStr,0,-1);
+        $signStr = substr($signStr, 0, -1);
         $signStr .= config('settings.supports.pay.mch_key');
+
         return md5($signStr);
     }
 }

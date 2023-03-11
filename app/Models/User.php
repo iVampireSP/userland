@@ -49,21 +49,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'birthday_at' => 'date:Y-m-d',
     ];
 
-
-        public function getBirthdayFromIdCard(string|null $id_card = null): Carbon
+    public function getBirthdayFromIdCard(string|null $id_card = null): Carbon
     {
         if (empty($id_card)) {
             $id_card = $this->id_card;
         }
 
         $bir = substr($id_card, 6, 8);
-        $year = (int)substr($bir, 0, 4);
-        $month = (int)substr($bir, 4, 2);
-        $day = (int)substr($bir, 6, 2);
+        $year = (int) substr($bir, 0, 4);
+        $month = (int) substr($bir, 4, 2);
+        $day = (int) substr($bir, 6, 2);
 
-        return Carbon::parse($year . '-' . $month . '-' . $day);
+        return Carbon::parse($year.'-'.$month.'-'.$day);
     }
-
 
     public function isAdult(): bool
     {
@@ -82,6 +80,4 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->select(['id', 'name', 'birthday_at', 'email_md5', 'created_at'])->whereMonth('birthday_at', now()->month)
             ->whereDay('birthday_at', now()->day)->whereNull('banned_at');
     }
-
-
 }

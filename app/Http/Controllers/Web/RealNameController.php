@@ -24,7 +24,7 @@ class RealNameController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // 检测此用户是否有实名认证的资格（cache）
-        if (!Cache::has('real_name:user:' . $request->user()->id)) {
+        if (! Cache::has('real_name:user:'.$request->user()->id)) {
             return back()->with('error', '您需要先购买实名认证的资格。');
         }
 
@@ -43,7 +43,7 @@ class RealNameController extends Controller
 
         // 检查年龄是否在区间内 settings.supports.real_name.min_age ~ settings.supports.real_name.max_age
         if (Carbon::now()->diffInYears($birthday) < config('settings.supports.real_name.min_age') || Carbon::now()->diffInYears($birthday) > config('settings.supports.real_name.max_age')) {
-            $message = '至少需要 ' . config('settings.supports.real_name.min_age') . ' 岁，最大 ' . config('settings.supports.real_name.max_age') . ' 岁。';
+            $message = '至少需要 '.config('settings.supports.real_name.min_age').' 岁，最大 '.config('settings.supports.real_name.max_age').' 岁。';
 
             return back()->with('error', $message);
         }
@@ -60,7 +60,7 @@ class RealNameController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
-        Cache::set('real_name:user:' . $user->id, $output, 600);
+        Cache::set('real_name:user:'.$user->id, $output, 600);
 
         return redirect($output);
     }
@@ -68,9 +68,9 @@ class RealNameController extends Controller
     public function pay(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         if ($request->ajax()) {
-            $out_trade_no = Cache::get('real_name:user:' . $request->user()->id . ':pay');
+            $out_trade_no = Cache::get('real_name:user:'.$request->user()->id.':pay');
 
-            if (!$out_trade_no) {
+            if (! $out_trade_no) {
                 return response()->json([
                     'code' => 0,
                     'message' => '订单号不存在。',
@@ -86,15 +86,14 @@ class RealNameController extends Controller
 
             $resp = Http::baseUrl(config('settings.supports.pay.url'))->asForm()->get('api.php', $params);
 
-
             if ($resp->successful()) {
                 $data = $resp->json();
 
                 if ($data['code'] === 1) {
                     // 是否已经支付
-                    if ($data['status'] === "1") {
+                    if ($data['status'] === '1') {
                         // 标记用户已经购买实名认证的资格，缓存 1 天
-                        Cache::set('real_name:user:' . $request->user()->id, true, 86400);
+                        Cache::set('real_name:user:'.$request->user()->id, true, 86400);
 
                         return response()->json([
                             'code' => 1,
@@ -118,19 +117,18 @@ class RealNameController extends Controller
                     'message' => '请求支付接口失败。',
                 ]);
             }
-
         }
 
         $request->validate([
-            'type' => 'required|in:alipay,wxpay'
+            'type' => 'required|in:alipay,wxpay',
         ]);
         //
         // 检测此用户是否有实名认证的资格（cache）
-        if (Cache::has('real_name:user:' . $request->user()->id)) {
+        if (Cache::has('real_name:user:'.$request->user()->id)) {
             return back()->with('error', '您已经购买过实名认证的资格了。');
         }
 
-        $out_trade_no = 'real-name-' . $request->user('web')->id . '-' . Carbon::now()->timestamp;
+        $out_trade_no = 'real-name-'.$request->user('web')->id.'-'.Carbon::now()->timestamp;
 
         $params = [
             'pid' => config('settings.supports.pay.mch_id'),
@@ -150,7 +148,6 @@ class RealNameController extends Controller
         $params['sign'] = $sign;
         $params['sign_type'] = 'MD5';
 
-
         $resp = Http::baseUrl(config('settings.supports.pay.url'))
             ->asForm()
             ->post('/mapi.php', $params);
@@ -166,8 +163,8 @@ class RealNameController extends Controller
         }
 
         // 缓存 600s
-        Cache::set('real_name:user:' . $request->user()->id . ':pay', $out_trade_no, 600);
-        Cache::set('real_name:user:out_trade_no:' . $out_trade_no, $request->user()->id, 600);
+        Cache::set('real_name:user:'.$request->user()->id.':pay', $out_trade_no, 600);
+        Cache::set('real_name:user:out_trade_no:'.$out_trade_no, $request->user()->id, 600);
 
         $qrcode = $resp['qrcode'];
         $type = $request->input('type');
