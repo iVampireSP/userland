@@ -11,7 +11,7 @@ class UserObserver
 {
     public function creating(User $user): void
     {
-        if (! $user->name) {
+        if (!$user->name) {
             $user->name = Person::firstNameMale();
         }
 
@@ -43,6 +43,10 @@ class UserObserver
                 $user->real_name_verified_at = now();
                 $user->birthday_at = $user->getBirthdayFromIdCard();
             }
+        }
+
+        if ($user->uuid) {
+            $user->uuid = Str::uuid();
         }
     }
 
