@@ -112,4 +112,24 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', '已删除此用户。');
     }
+
+    public function status(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'emoji' => 'nullable|string',
+            'status' => 'nullable|string',
+            'text' => 'nullable|string',
+        ]);
+
+        // 如果用户有了状态，就更新，否则就创建
+        $user->status()->updateOrCreate([
+            'user_id' => $user->id,
+        ], [
+            'emoji' => $request->input('emoji'),
+            'status' => $request->input('status'),
+            'text' => $request->input('text'),
+        ]);
+
+        return back()->with('success', '已更新用户状态。');
+    }
 }

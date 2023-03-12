@@ -45,8 +45,6 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'emoji' => 'nullable|string',
-            'status' => 'nullable|string',
             'text' => 'nullable|string',
         ]);
 
@@ -56,8 +54,6 @@ class UserController extends Controller
         $status = $user->status()->updateOrCreate([
             'user_id' => $user->id,
         ], [
-            'emoji' => $request->input('emoji'),
-            'status' => $request->input('status'),
             'text' => $request->input('text'),
         ]);
 

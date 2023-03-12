@@ -27,6 +27,26 @@
         </button>
     </form>
 
+    <h3 class="mt-3">状态</h3>
+    <div>
+        可以使用此 API 来获取您的状态：GET <a href="{{ route('public.status.show', $user->id) }}"
+                                         class="text-decoration-underline">{{ route('public.status.show', $user->id) }}</a>
+    </div>
+    <form method="POST" action="{{ route('status.update') }}">
+        @csrf
+        <div class="form-floating mb-2">
+            <input type="text" class="form-control" placeholder="状态文本"
+                   aria-label="状态" name="text" maxlength="25"
+                   value="{{ $user->status->text }}">
+            <label>状态</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            更新
+        </button>
+    </form>
+
+
     <div class="modal fade" id="userInfo" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

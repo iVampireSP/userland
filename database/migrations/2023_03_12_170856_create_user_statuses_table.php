@@ -14,12 +14,6 @@ return new class extends Migration
         Schema::create('user_statuses', function (Blueprint $table) {
             $table->id();
 
-            // emoji
-            $table->string('emoji')->nullable();
-
-            // 用户的当前做的事情（doing）以及状态文本
-            $table->string('status')->nullable();
-
             // 用户的状态文本
             $table->string('text')->nullable();
 

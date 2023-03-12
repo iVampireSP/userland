@@ -84,10 +84,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function status(): HasOne
     {
-        return $this->hasOne(UserStatus::class)->withDefault([
-            'emoji' => '',
-            'status' => '',
-            'text' => '',
-        ]);
+        return $this->hasOne(UserStatus::class);
     }
 }

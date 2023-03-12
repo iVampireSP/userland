@@ -19,7 +19,13 @@ class AuthController extends Controller
 {
     public function index(Request $request): View|RedirectResponse
     {
-        return $request->user('web') ? view('index') : view('auth.login');
+        return
+            $request->user('web')->with('status')
+
+                ?
+                view('index')
+                :
+                view('auth.login');
     }
 
     public function update(Request $request): RedirectResponse|JsonResponse
@@ -69,5 +75,23 @@ class AuthController extends Controller
         Cache::forget($cache_key);
 
         return redirect()->route('index');
+    }
+
+    public function status(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'emoji' => 'nullable|string',
+            'status' => 'nullable|string',
+            'text' => 'nullable|string',
+        ]);
+
+        // 如果用户有了状态，就更新，否则就创建
+        $request->user('web')->status()->updateOrCreate([
+            'user_id' => $request->user()->id,
+        ], [
+            'text' => $request->input('text'),
+        ]);
+
+        return back()->with('success', '已更新用户状态。');
     }
 }

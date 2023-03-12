@@ -60,5 +60,8 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::resource('clients', ClientController::class);
         Route::resource('tokens', TokenController::class)->except(['update', 'edit']);
         /* End 客户端 */
+
+        /* Start 状态 */
+        Route::post('status', [AuthController::class, 'status'])->name('status.update');
     }
 );

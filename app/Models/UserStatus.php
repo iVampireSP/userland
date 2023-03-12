@@ -8,15 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserStatus extends Model
 {
     protected $fillable = [
-        'emoji',
-        'status',
         'text',
         'user_id',
     ];
 
     protected $casts = [
-        'emoji' => 'string',
-        'status' => 'string',
         'text' => 'string',
         'user_id' => 'integer',
     ];
@@ -29,8 +25,6 @@ class UserStatus extends Model
 
     // 默认 const
     public const DEFAULT = [
-        'emoji' => null,
-        'status' => null,
         'text' => null,
     ];
 
