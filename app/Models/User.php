@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -79,5 +80,14 @@ class User extends Authenticatable implements MustVerifyEmail
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->select(['id', 'name', 'birthday_at', 'email_md5', 'created_at'])->whereMonth('birthday_at', now()->month)
             ->whereDay('birthday_at', now()->day)->whereNull('banned_at');
+    }
+
+    public function status(): HasOne
+    {
+        return $this->hasOne(UserStatus::class)->withDefault([
+            'emoji' => '',
+            'status' => '',
+            'text' => '',
+        ]);
     }
 }

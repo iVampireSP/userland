@@ -19,4 +19,11 @@ Route::get('user', [UserController::class, 'user'])->middleware('scopes:user');
 Route::get('real-name', [UserController::class, 'realName'])
     ->middleware('scopes:realname');
 
+// 状态
+Route::get('status', [UserController::class, 'status'])
+    ->middleware('scopes:user');
+// 创建或更新状态
+Route::post('status', [UserController::class, 'status'])
+    ->middleware('scopes:user');
+
 Route::post('login', [UserController::class, 'fastLogin'])->middleware('scopes:login');
