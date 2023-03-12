@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function index(Request $request): View|RedirectResponse
     {
         return
-            $request->user('web')->with('status')
+            $request->user('web')?->with('status')
 
                 ?
                 view('index')
