@@ -16,10 +16,9 @@ class StatusController extends Controller
         }
 
         // 其余可以用 email 或者  email_md5
-        if (! $user) {
+        if (! ($user instanceof User)) {
             $user = User::where('email', $user)->orWhere('email_md5', $user)->first();
         }
-
         // 访问 public const
         return $this->success($user?->status()->first() ?? UserStatus::DEFAULT);
     }
