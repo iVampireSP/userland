@@ -35,10 +35,14 @@ trait AuthenticatesUsers
         if ($user) {
             return $this->success([
                 'name' => $user->name,
+                'email_md5' => $user->email_md5,
             ]);
         }
 
-        return $this->notFound();
+        return $this->notFound([
+            'name' => '',
+            'email_md5' => md5($request->input('email')),
+        ]);
     }
 
     /**

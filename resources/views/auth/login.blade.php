@@ -4,8 +4,8 @@
     <div class="d-flex justify-content-center align-items-center h-screen" style="height: 60vh">
         <div class="text-center">
             <span style="font-size: 10rem">
-                <i class="bi bi-person-circle" id="main-icon"></i>
-
+                <i class="bi bi-person-circle" id="main-icon" style="width: 120px"></i>
+                <div id="img-container" class="d-none"></div>
             </span>
 
             <h2 id="form-title">注册 或 登录</h2>
@@ -74,6 +74,8 @@
 
 
     <script>
+        const gravatar_url = "https://cravatar.cn/avatar/"
+
         const login = "{{ route('login') }}"
         const register = "{{ route('register') }}"
 
@@ -89,14 +91,12 @@
         const mainForm = document.getElementById('main-form')
         const tos = document.getElementById('tos')
         const tip = document.getElementById('tip')
+        const imgContainer = document.getElementById('img-container')
 
         @error('password')
             title.innerText = "注册 {{ config('app.display_name') }}"
         formSuffix.appendChild(rememberForm)
-
-
         @enderror
-
             @error('email')
             title.innerText = "密码错误"
         email.value = "{{ old('email') }}"
@@ -119,10 +119,11 @@
             const target = ele.target
 
             if (email.value === '') {
-                title.innerText = "输入邮箱"
+                title.innerText = "输入邮箱以继续"
 
                 formSuffix.innerHTML = ''
 
+                display_icon()
                 mainIcon.classList.remove(...mainIcon.classList)
                 mainIcon.classList.add('bi', 'bi-person-circle')
 
@@ -138,8 +139,7 @@
                 .then(function (res) {
                     mainForm.action = login
 
-                    mainIcon.classList.remove(...mainIcon.classList)
-                    mainIcon.classList.add('bi', 'bi-person-check')
+                    display_img(res.data['email_md5'])
 
                     title.innerText = "欢迎, " + res.data.name
 
@@ -151,13 +151,12 @@
 
 
                 })
-                .catch(function () {
+                .catch(function (err) {
                     mainForm.action = register
 
                     title.innerText = "注册 {{ config('app.display_name') }}"
 
-                    mainIcon.classList.remove(...mainIcon.classList)
-                    mainIcon.classList.add('bi', 'bi-person-plus')
+                    display_img(err.response.data['email_md5'])
 
                     formSuffix.appendChild(passwordInput)
                     formSuffix.appendChild(tos)
@@ -171,6 +170,18 @@
                 });
         }
 
+
+
+        function display_img(email_md5) {
+            imgContainer.innerHTML = '<img alt="您的头像" src="' + gravatar_url  + '/' + email_md5 + '?size=256" width="120" class="rounded-circle" style="width: 10rem; height: 10rem">'
+            imgContainer.classList.remove('d-none')
+            mainIcon.classList.add('d-none')
+        }
+
+        function display_icon() {
+            imgContainer.classList.add('d-none')
+            mainIcon.classList.remove('d-none')
+        }
 
     </script>
 
