@@ -64,7 +64,7 @@
             <div class="input-group mb-3">
                 <button class="btn btn-outline-secondary" type="button" id="new_password_btn">随机密码</button>
                 <input id="new_password" type="password" name="password" class="form-control" placeholder="新的密码（留空不会设置）"
-                       aria-label="新的密码（留空不会设置" aria-describedby="new_password_btn">
+                       aria-label="新的密码（留空不会设置" aria-describedby="new_password_btn" autocomplete="false">
             </div>
 
         </div>
