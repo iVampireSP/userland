@@ -49,9 +49,9 @@
                     <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
 
                     @if ($client->trusted)
-                        <p class="text-success">受信任的提供方: {{ $client->provider }}</p>
+                        <p class="text-success">受信任的应用程序</p>
                     @else
-                        <p class="text-warning">第三方的 <strong>{{ $client->provider }}</strong></p>
+                        <p class="text-warning">第三方的应用程序</p>
                     @endif
 
                     <!-- Scope List -->
