@@ -72,8 +72,8 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $request->validate([
-            'balance' => 'nullable|numeric|min:0.01|max:10000000',
             'id_card' => 'nullable|string|size:18',
+            'password' => 'nullable|string|min:6',
         ]);
 
         if ($request->input('is_banned')) {
