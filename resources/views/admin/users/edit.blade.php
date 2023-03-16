@@ -47,7 +47,7 @@
             <label for="is_banned">封禁</label>
             <select class="form-control" id="is_banned" name="is_banned">
                 <option value="0">否</option>
-                <option value="1" @if ($user->banned_at) selected @endif>是(将会暂停所有主机，清除所有密钥。)</option>
+                <option value="1" @if ($user->banned_at) selected @endif>是</option>
             </select>
         </div>
 
@@ -59,7 +59,18 @@
         </div>
 
 
-        <button type="submit" class="btn btn-primary mt-3">提交</button>
+        <div class="form-group">
+            <label for="new_password">新的密码</label>
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary" type="button" id="new_password_btn">随机密码</button>
+                <input id="new_password" type="password" class="form-control" placeholder="新的密码（留空不会设置）"
+                       aria-label="新的密码（留空不会设置" aria-describedby="new_password_btn">
+            </div>
+
+        </div>
+
+
+        <button type="submit" class="btn btn-primary mt-1">提交</button>
     </form>
 
 
@@ -111,5 +122,52 @@
             filter: blur(0);
         }
     </style>
+
+    <script>
+        document.getElementById('new_password_btn').addEventListener('click', function () {
+            const new_password = document.getElementById('new_password');
+            new_password.value = randomPassword(16);
+            new_password.type = 'text';
+        })
+
+
+        // Random user password
+        function randomPassword(length) {
+            length = Number(length)
+            // Limit length
+            if (length < 6) {
+                length = 6
+            } else if (length > 16) {
+                length = 16
+            }
+            let passwordArray = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz', '1234567890', '!@#$%&*()'];
+            let password = [];
+            let n = 0;
+            for (let i = 0; i < length; i++) {
+                // If password length less than 9, all value random
+                if (password.length < (length - 4)) {
+                    // Get random passwordArray index
+                    let arrayRandom = Math.floor(Math.random() * 4);
+                    // Get password array value
+                    let passwordItem = passwordArray[arrayRandom];
+                    // Get password array value random index
+                    // Get random real value
+                    let item = passwordItem[Math.floor(Math.random() * passwordItem.length)];
+                    password.push(item);
+                } else {
+                    // If password large then 9, lastest 4 password will push in according to the random password index
+                    // Get the array values sequentially
+                    let newItem = passwordArray[n];
+                    let lastItem = newItem[Math.floor(Math.random() * newItem.length)];
+                    // Get array splice index
+                    let spliceIndex = Math.floor(Math.random() * password.length);
+                    password.splice(spliceIndex, 0, lastItem);
+                    n++
+                }
+            }
+            return password.join("");
+        }
+
+    </script>
 
 @endsection
