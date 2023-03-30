@@ -59,6 +59,7 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* Start 客户端 */
         Route::resource('clients', ClientController::class);
         Route::resource('tokens', TokenController::class)->except(['update', 'edit']);
+        Route::delete('tokens', [TokenController::class, 'destroy_all'])->name('tokens.destroy_all');
         /* End 客户端 */
 
         /* Start 状态 */

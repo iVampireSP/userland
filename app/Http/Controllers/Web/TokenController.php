@@ -17,14 +17,14 @@ class TokenController extends Controller
     {
         $tokens = auth('web')->user()->tokens()->paginate(10);
 
-        return view('token.index', compact('tokens'));
+        return view('tokens.index', compact('tokens'));
     }
 
     public function create(): Factory|\Illuminate\Foundation\Application|View|Application
     {
         $scopes = Passport::scopes();
 
-        return view('token.create', compact('scopes'));
+        return view('tokens.create', compact('scopes'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -48,5 +48,12 @@ class TokenController extends Controller
         $request->user('web')->tokens()->where('id', $id)->delete();
 
         return redirect()->route('tokens.index')->with('success', '令牌已删除。');
+    }
+
+    public function destroy_all(Request $request): RedirectResponse
+    {
+        $request->user('web')->tokens()->delete();
+
+        return redirect()->route('tokens.index')->with('success', '所有令牌已删除。');
     }
 }
