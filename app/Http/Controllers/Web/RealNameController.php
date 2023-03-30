@@ -139,7 +139,7 @@ class RealNameController extends Controller
             'notify_url' => route('public.real-name.pay-notify'),
             'return_url' => route('public.real-name.pay-notify'),
             'out_trade_no' => $out_trade_no,
-            'name' => '实名认证',
+            'name' => '扫码支付',
             'money' => config('settings.supports.real_name.price'),
             'clientip' => $request->ip(),
         ];
