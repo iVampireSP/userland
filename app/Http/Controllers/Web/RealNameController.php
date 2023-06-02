@@ -94,7 +94,8 @@ class RealNameController extends Controller
 
                 if ($data['code'] === 1) {
                     // 是否已经支付
-                    if ($data['status'] === '1') {
+                    $data['status'] = intval($data['status']);
+                    if ($data['status'] === 1) {
                         // 标记用户已经购买实名认证的资格，缓存 1 天
                         Cache::set('real_name:user:'.$request->user()->id, true, 86400);
 
