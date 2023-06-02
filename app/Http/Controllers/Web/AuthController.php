@@ -94,4 +94,22 @@ class AuthController extends Controller
 
         return back()->with('success', '已更新用户状态。');
     }
+
+    public function destroy(Request $request) {
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        // 验证密码
+        if (! Auth::guard('web')->attempt([
+            'email' => $request->user()->email,
+            'password' => $request->input('password'),
+        ])) {
+            return back()->with('error', '密码错误。');
+        }
+
+        $request->user()->delete();
+
+        return redirect()->route('index')->with('success', '已删除用户。');
+    }
 }

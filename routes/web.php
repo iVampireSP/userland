@@ -48,6 +48,8 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         );
 
         Route::withoutMiddleware('verified')->patch('user', [AuthController::class, 'update'])->name('users.update');
+        Route::withoutMiddleware('verified')->delete('user', [AuthController::class, 'destroy'])->name('users.destroy');
+        Route::view('user/delete', 'delete')->withoutMiddleware('verified')->name('users.delete');
         /* End 账户区域 */
 
         /* Start 实名认证 */
