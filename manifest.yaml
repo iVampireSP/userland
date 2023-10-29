@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: oauth-http
-        image: registry.daisukide.com:2083/ecosystem/oauth:latest
+        image: registry.daisukide.com:2083/ecosystem/oauth:v2
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "512Mi"

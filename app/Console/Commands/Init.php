@@ -25,6 +25,9 @@ class Init extends Command
      */
     public function handle(): void
     {
+        //
+
+
         // 检查是否已经初始化
         $lock = storage_path('init.lock');
         if (file_exists($lock)) {
@@ -44,6 +47,12 @@ class Init extends Command
 
         // 加锁
         file_put_contents($lock, '');
+
+        // 检测有无 .env
+        if (!file_exists(base_path('.env'))) {
+            // 复制 .env.example
+            copy(base_path('.env.example'), base_path('.env'));
+        }
 
         // 检测是否有 APP_KEY
         $APP_KEY = env('APP_KEY');
