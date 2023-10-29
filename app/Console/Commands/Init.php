@@ -65,6 +65,10 @@ class Init extends Command
         // 输出
         $this->info('应用程序初始化完成。');
 
+        if ($this->option('start')) {
+            $this->call('octane:start');
+        }
+
     }
 
     private function initStorageDir(): void
