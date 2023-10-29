@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth
+  namespace: ecosystem
+spec:
+  selector:
+    matchLabels:
+      app: oauth
+      framework: laravel
+  template:
+    metadata:
+      labels:
+        app: oauth
+        framework: laravel
+
+    spec:
+      containers:
+      - name: oauth-http
+        image: registry.daisukide.com:2083/ecosystem/oauth:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: oauth-env
+        volumeMounts:
+          - name: oauth-storage
+            mountPath: /app/storage
+        # 容器启动时，执行多条命令，用于初始化数据库
+        command: ["/bin/sh"]
+        args: ["-c", "art app:init --start"]
+      imagePullSecrets:
+        - name: registry
+      volumes:
+        - name: oauth-storage
+          persistentVolumeClaim:
+            claimName: oauth-storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth
+  namespace: ecosystem
+spec:
+  selector:
+    app: oauth
+    framework: laravel
+  ports:
+  - port: 80
+    targetPort: 8000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth-env
+  namespace: ecosystem
+  labels:
+    env: prod
+    app: oauth
+data:
+    APP_KEY: "base64:zC8wVldUZfZJaGaZ7+CPh+5FzaXYmShm7G/Qh6GdRl8="
+    APP_ENV: "local"
+    DB_USERNAME: "test"
+    DB_CONNECTION: "mysql"
+    DB_HOST: "192.168.0.6"
+    DB_PORT: "3306"
+    DB_DATABASE: "oauth"
+    DB_PASSWORD: ""
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: oauth-storage-pvc
+  namespace: ecosystem
+  labels:
+    app: oauth
+    framework: laravel
+spec:
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
