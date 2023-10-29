@@ -23,3 +23,6 @@ rr
 /config/secrets
 config/secrets/*
 /bin/edge.php
+rr
+rr.exe
+.rr.yaml
