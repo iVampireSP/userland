@@ -1,10 +1,16 @@
 stages:
   - build
   - deploy
-  
+
 docker-build:
   image: docker:latest
   stage: build
+  cache:
+    - key:
+        files:
+          - composer.lock
+      paths:
+        - vendor/
   tags:
     - local
   services:
