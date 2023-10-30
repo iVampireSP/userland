@@ -69,3 +69,4 @@ data:
     DB_HOST: "mariadb-mariadb-galera.svc.databases.cluster.local"
     DB_PORT: "3306"
     DB_DATABASE: "oauth"
+    DB_PASSWORD: ""
