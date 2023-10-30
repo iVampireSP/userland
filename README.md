@@ -48,6 +48,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: oauth-secret
+  namespace: ecosystem
 data:
   application-key: 
   database-password: 

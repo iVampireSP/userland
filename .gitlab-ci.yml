@@ -36,3 +36,4 @@ deploy_to_cluster:
   script:
     - kubectl get pods
     - kubectl apply -f manifest.yaml
+    - kubectl patch deployment -n ecosystem oauth -p  '{"spec":{"template":{"spec":{"terminationGracePeriodSeconds":31}}}}'
