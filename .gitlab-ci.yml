@@ -30,7 +30,8 @@ deploy_to_cluster:
   image:
     name: bitnami/kubectl:latest
     entrypoint: ['']
-  tags: k8s
+  tags:
+    - k8s
   stage: deploy
   script:
     - kubectl get pods
