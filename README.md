@@ -13,19 +13,37 @@ kubectl create --namespace ecosystem secret docker-registry    \
   --docker-password=<密码>
 ```
 
-## 2. 执行部署
+## PVC
+
+```bash
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: oauth-storage-pvc
+  namespace: ecosystem
+  labels:
+    app: oauth
+    framework: laravel
+spec:
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+EOF
+```
+
+## 执行部署
 
 ```bash
 kubectl apply -f manifest.yaml
 ```
 
-## 3. 给 Ecosystem 的 default 绑定 RoleBinding。可以操作 Ecosystem 命名空间中的所有资源
+## 给 Gitlab Runner 赋予命名空间的操作权限
 
 ```bash
-kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=ecosystem:default --namespace=ecosystem
-```
+kubectl create clusterrolebinding gitlab-runner-access --namespace=ecosystem --serviceaccount=ecosystem:gitlab-runner --clusterrole=edit
 
-## 4. 部署 Gitlab Runner
-```bash
-
+kubectl auth can-i create deployments --namespace=ecosystem --as=system:serviceaccount:ecosystem:gitlab-runner
 ```

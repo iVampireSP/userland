@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: oauth-http
-        image: registry.daisukide.com:2083/ecosystem/oauth:latest
+        image: registry.daisukide.com:2083/ecosystem/oauth:v2
         imagePullPolicy: Always
         resources:
           limits:
@@ -63,26 +63,9 @@ metadata:
     env: prod
     app: oauth
 data:
-    APP_KEY: "base64:zC8wVldUZfZJaGaZ7+CPh+5FzaXYmShm7G/Qh6GdRl8="
-    APP_ENV: "local"
-    DB_USERNAME: "test"
+    APP_ENV: "production"
+    DB_USERNAME: "ecosystem-oauth"
     DB_CONNECTION: "mysql"
-    DB_HOST: "192.168.0.6"
+    DB_HOST: "mariadb-mariadb-galera.svc.databases.cluster.local"
     DB_PORT: "3306"
     DB_DATABASE: "oauth"
-    DB_PASSWORD: ""
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: oauth-storage-pvc
-  namespace: ecosystem
-  labels:
-    app: oauth
-    framework: laravel
-spec:
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi

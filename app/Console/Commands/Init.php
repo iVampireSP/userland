@@ -25,15 +25,13 @@ class Init extends Command
      */
     public function handle(): void
     {
-        //
-
-
         // 检查是否已经初始化
         $lock = storage_path('init.lock');
         if (file_exists($lock)) {
+            $this->warn("另一个初始化进程正在运行中。如果确定没有其他进程在运行，请手动删除 {$lock} 文件。");
             // 如果有 --start 参数，则启动 Web 服务
             if ($this->option('start')) {
-
+                $this->warn("正在等待另一个进程初始化完成。");
                 // 一直等待锁文件被删除
                 while (file_exists($lock)) {
                     sleep(1);
@@ -45,12 +43,14 @@ class Init extends Command
             return;
         }
 
+        $this->info("上锁。");
         // 加锁
         file_put_contents($lock, '');
 
         // 检测有无 .env
         if (!file_exists(base_path('.env'))) {
             // 复制 .env.example
+            $this->info("复制 .env.example 为 .env");
             copy(base_path('.env.example'), base_path('.env'));
         }
 
@@ -58,16 +58,22 @@ class Init extends Command
         $APP_KEY = env('APP_KEY');
         if (empty($APP_KEY)) {
             // 初始化
+            $this->info("生成应用程序密钥。");
             $this->call('key:generate');
         }
 
+        $this->info("初始化 storage 目录。");
         // 初始化 storage 目录
         $this->initStorageDir();
 
+        $this->info("初始化数据库。");
         // 初始化
         $this->call('migrate');
+
+        $this->info("生成缓存。");
         $this->call('optimize');
 
+        $this->info("解锁");
         // 解锁
         unlink($lock);
 
@@ -75,9 +81,9 @@ class Init extends Command
         $this->info('应用程序初始化完成。');
 
         if ($this->option('start')) {
+            $this->info('启动 Web 服务。');
             $this->call('octane:start');
         }
-
     }
 
     private function initStorageDir(): void
