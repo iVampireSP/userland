@@ -67,8 +67,11 @@ class Init extends Command
         $this->initStorageDir();
 
         $this->info("初始化数据库。");
-        // 初始化
-        $this->call('migrate');
+
+        // force migrate
+        $this->call('migrate:fresh', [
+            '--force' => true,
+        ]);
 
         $this->info("生成缓存。");
         $this->call('optimize');
