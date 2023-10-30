@@ -40,8 +40,7 @@ deploy_to_cluster:
         echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
       else
         tag=":$CI_COMMIT_REF_SLUG"
-        # replace registry.daisukide.com:2083/ecosystem/oauth:latest to registry.daisukide.com:2083/ecosystem/oauth:$tag
-        sed -i "s/registry.daisukide.com:2083\/ecosystem\/oauth:latest/registry.daisukide.com:2083\/ecosystem\/oauth:$tag/g" manifest.yaml
+        sed -i "s/registry.daisukide.com:2083\/ecosystem\/oauth:latest/registry.daisukide.com:2083\/ecosystem\/oauth$tag/g" manifest.yaml
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - kubectl get pods
