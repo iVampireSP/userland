@@ -27,7 +27,9 @@ stages:
 #         - Dockerfile
 
 deploy_to_cluster:
-  image: bitnami/kubectl
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
   stage: deploy
   script:
     - kubectl get pods
