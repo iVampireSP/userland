@@ -1,5 +1,6 @@
 stages:
-  - build
+  # - build
+  - deploy
   
 docker-build:
   image: docker:latest
@@ -24,3 +25,9 @@ docker-build:
     - if: $CI_COMMIT_BRANCH
       exists:
         - Dockerfile
+
+deploy_to_cluster:
+  image: bitnami/kubectl
+  stage: deploy
+  script:
+    - kubectl get pods
