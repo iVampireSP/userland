@@ -16,24 +16,35 @@ spec:
 
     spec:
       containers:
-      - name: oauth-http
-        image: registry.daisukide.com:2083/ecosystem/oauth:v2
-        imagePullPolicy: Always
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - configMapRef:
-            name: oauth-env
-        volumeMounts:
-          - name: oauth-storage
-            mountPath: /app/storage
-        # 容器启动时，执行多条命令，用于初始化数据库
-        command: ["/bin/sh"]
-        args: ["-c", "art app:init --start"]
+        - name: oauth-http
+          image: registry.daisukide.com:2083/ecosystem/oauth:v2
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: oauth-env
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: application-key
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: database-password
+          volumeMounts:
+            - name: oauth-storage
+              mountPath: /app/storage
+          # 容器启动时，执行多条命令，用于初始化数据库
+          command: ["/bin/sh"]
+          args: ["-c", "art app:init --start"]
       imagePullSecrets:
         - name: registry
       volumes:
@@ -51,8 +62,8 @@ spec:
     app: oauth
     framework: laravel
   ports:
-  - port: 80
-    targetPort: 8000
+    - port: 80
+      targetPort: 8000
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -63,10 +74,10 @@ metadata:
     env: prod
     app: oauth
 data:
-    APP_ENV: "production"
-    DB_USERNAME: "ecosystem-oauth"
-    DB_CONNECTION: "mysql"
-    DB_HOST: "mariadb-mariadb-galera.svc.databases.cluster.local"
-    DB_PORT: "3306"
-    DB_DATABASE: "oauth"
-    DB_PASSWORD: ""
+  APP_ENV: "production"
+  DB_USERNAME: "ecosystem-oauth"
+  DB_CONNECTION: "mysql"
+  DB_HOST: "mariadb-mariadb-galera.svc.databases.cluster.local"
+  DB_PORT: "3306"
+  DB_DATABASE: "oauth"
+  DB_PASSWORD: ""

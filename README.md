@@ -34,6 +34,27 @@ spec:
 EOF
 ```
 
+## 建立 Secret，保存 MySQL 密码
+
+转换为 base64 的形式
+
+```bash
+echo -n '$DB_PASSWORD' | base64
+```
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth-secret
+data:
+  application-key: 
+  database-password: 
+EOF
+
+```
+
 ## 执行部署
 
 ```bash
