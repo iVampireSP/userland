@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,91 +9,95 @@
     <title>{{ config('app.display_name') }} - 授权</title>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-    <style>
-        .passport-authorize .container {
-            margin-top: 30px;
-        }
-
-        .passport-authorize .scopes {
-            margin-top: 20px;
-        }
-
-        .passport-authorize .buttons {
-            margin-top: 25px;
-            text-align: center;
-        }
-
-        .passport-authorize .btn {
-            width: 125px;
-        }
-
-        .passport-authorize .btn-approve {
-            margin-right: 15px;
-        }
-
-        .passport-authorize form {
-            display: inline;
-        }
-    </style>
 </head>
-<body class="passport-authorize">
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card card-default">
-                <div class="card-header">
-                    授权请求
-                </div>
-                <div class="card-body">
-                    <!-- Introduction -->
-                    <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
 
-                    @if ($client->trusted)
-                        <p class="text-success">受信任的应用程序</p>
-                    @else
-                        <p class="text-warning">第三方的应用程序</p>
-                    @endif
+<body style="height: 100vh">
+    <div class="d-flex justify-content-center align-items-center" style="height:100%">
+        <div>
+            @if (!$client->trusted)
+            <div class="container">
+                <div class="row">
+                    <div>
 
-                    <!-- Scope List -->
-                    @if (count($scopes) > 0)
+                        <h1>授权请求</h1>
+                        <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
+
+                        <!-- Scope List -->
+                        @if (count($scopes) > 0)
                         <div class="scopes">
                             <p><strong>此应用程序将被允许: </strong></p>
 
                             <ul>
                                 @foreach ($scopes as $scope)
-                                    <li>{{ $scope->description }}</li>
+                                <li>{{ $scope->description }}</li>
                                 @endforeach
                             </ul>
                         </div>
-                    @endif
+                        @endif
 
-                    <div class="buttons">
-                        <!-- Authorize Button -->
-                        <form method="post" action="{{ route('passport.authorizations.approve') }}">
-                            @csrf
+                        <div class="buttons">
+                            <button class="btn btn-success btn-approve" onclick="accept()">授权</button>
 
-                            <input type="hidden" name="state" value="{{ $request->state }}">
-                            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
-                            <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button type="submit" class="btn btn-success btn-approve">授权</button>
-                        </form>
+                            <button class="btn btn-danger" onclick="deny()">取消</button>
 
-                        <!-- Cancel Button -->
-                        <form method="post" action="{{ route('passport.authorizations.deny') }}">
-                            @csrf
-                            @method('DELETE')
-
-                            <input type="hidden" name="state" value="{{ $request->state }}">
-                            <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
-                            <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button class="btn btn-danger">取消</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        @else
+
+        <h1>正在继续...</h1>
+
+        <div style="width: 100%;" class="text-center mt-5">
+            <!-- spin -->
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">正在继续</span>
+            </div>
+        </div>
+
+        <script>
+            setTimeout(() => {
+                accept()
+            }, 100)
+        </script>
+
+        @endif
+
     </div>
-</div>
+
+
+    <!-- Authorize Button -->
+    <form class="d-none" method="post" action="{{ route('passport.authorizations.approve') }}" id="authorize-form">
+        @csrf
+
+        <input type="hidden" name="state" value="{{ $request->state }}">
+        <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+        <input type="hidden" name="auth_token" value="{{ $authToken }}">
+
+
+    </form>
+
+    <!-- Cancel Button -->
+    <form class="d-none" method="post" action="{{ route('passport.authorizations.deny') }}" id="cancel-form">
+        @csrf
+        @method('DELETE')
+
+        <input type="hidden" name="state" value="{{ $request->state }}">
+        <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
+        <input type="hidden" name="auth_token" value="{{ $authToken }}">
+    </form>
+
+    <script>
+        function accept() {
+            document.getElementById('authorize-form').submit();
+        }
+
+        function deny() {
+            document.getElementById('cancel-form').submit();
+        }
+    </script>
+
 </body>
+
 </html>

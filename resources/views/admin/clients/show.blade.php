@@ -78,9 +78,9 @@
                         <div class="input-group-text">
                             <input class="form-check-input" type="checkbox" value="1"
                                    @if($client->trusted) checked @endif name="trusted"
-                                   id="trusted" aria-label="信任">
+                                   id="trusted" aria-label="信任（将会自动授权）">
                         </div>
-                        <span class="form-control">信任</span>
+                        <span class="form-control">信任（将会自动授权）</span>
                     </div>
 
                     <button type="submit" class="btn btn-primary mt-3">
