@@ -69,7 +69,7 @@ class Init extends Command
         $this->info("初始化数据库。");
 
         // force migrate
-        $this->call('migrate:fresh', [
+        $this->call('migrate', [
             '--force' => true,
         ]);
 
