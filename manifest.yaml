@@ -77,7 +77,7 @@ data:
   APP_ENV: "production"
   DB_USERNAME: "ecosystem_oauth"
   DB_CONNECTION: "mysql"
-  DB_HOST: "mariadb-mariadb-galera.svc.databases.cluster.local"
+  DB_HOST: "mariadb-mariadb-galera.databases.svc.cluster.local"
   DB_PORT: "3306"
   DB_DATABASE: "ecosystem_oauth"
   DB_PASSWORD: ""
