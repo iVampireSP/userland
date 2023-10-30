@@ -85,7 +85,9 @@ class Init extends Command
 
         if ($this->option('start')) {
             $this->info('启动 Web 服务。');
-            $this->call('octane:start');
+            $this->call('octane:start', [
+                '--host' => '0.0.0.0'
+            ]);
         }
     }
 
