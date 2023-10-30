@@ -30,9 +30,6 @@ deploy_to_cluster:
   image:
     name: bitnami/kubectl:latest
     entrypoint: ['']
-  envVars:
-    - name: KUBERNETES_SERVICE_ACCOUNT
-      value: gitlab-runner
   tags:
     - k8s
   stage: deploy
