@@ -81,6 +81,7 @@ metadata:
     app: oauth
     framework: laravel
 spec:
+    storageClassName: nfs-csi
     accessModes:
       - ReadWriteMany
     resources:
