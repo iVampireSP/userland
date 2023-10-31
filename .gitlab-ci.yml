@@ -51,3 +51,7 @@ deploy_to_cluster:
       fi
     - kubectl get pods
     - kubectl apply -f deploy/manifest.yaml
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        kubectl -n ecosystem rollout restart deployment oauth
+      fi
