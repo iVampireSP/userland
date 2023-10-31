@@ -6,8 +6,8 @@ fi
 
 chmod -R ugo+rw /.composer
 
-chown -R www:www /app/storage
-
 php /app/artisan app:init
+
+chown -R www:www /app/storage
 
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
