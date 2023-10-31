@@ -129,6 +129,11 @@ return [
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
 
+        'cluster' => true,
+
+        'options' => [
+            'cluster' => 'redis',
+        ],
     ],
 
 ];
