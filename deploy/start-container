@@ -6,6 +6,9 @@ fi
 
 chmod -R ugo+rw /.composer
 
+# 给 /app/storage 权限
+chmod -R 777 /app/storage
+
 php /app/artisan app:init
 
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
