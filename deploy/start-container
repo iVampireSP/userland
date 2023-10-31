@@ -6,8 +6,7 @@ fi
 
 chmod -R ugo+rw /.composer
 
-# 给 /app/storage 权限
-chmod -R 777 /app/storage
+chown -R www:www /app/storage
 
 php /app/artisan app:init
 
