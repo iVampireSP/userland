@@ -11,8 +11,6 @@ docker-build:
           - composer.lock
       paths:
         - vendor/
-  tags:
-    - local
   services:
     - docker:dind
   before_script:
