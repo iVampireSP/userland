@@ -7,6 +7,8 @@ COPY ../ /app
 RUN useradd -ms /bin/bash -u 1337 www
 
 RUN apt update && apt install supervisor -y
+# unset composer repo
+RUN composer config -g repo.packagist composer https://packagist.org
 RUN rm -rf vendor/ && composer install --no-dev
 RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
 RUN ./vendor/bin/rr get-binary
