@@ -39,12 +39,14 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: database-password
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: redis-password
           volumeMounts:
             - name: oauth-storage
               mountPath: /app/storage
-          # 容器启动时，执行多条命令，用于初始化数据库
-          command: ["/bin/sh"]
-          args: ["-c", "art app:init --start"]
       imagePullSecrets:
         - name: registry
       volumes:

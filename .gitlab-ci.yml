@@ -24,13 +24,14 @@ docker-build:
         tag=":$CI_COMMIT_REF_SLUG"
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
+    - cd deploy
     - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
     - docker push "$CI_REGISTRY_IMAGE${tag}"
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
       exists:
-        - Dockerfile
+        - deploy/Dockerfile
 
 deploy_to_cluster:
   image:
@@ -46,8 +47,8 @@ deploy_to_cluster:
         echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
       else
         tag=":$CI_COMMIT_REF_SLUG"
-        sed -i "s/registry.daisukide.com:2083\/ecosystem\/oauth:latest/registry.daisukide.com:2083\/ecosystem\/oauth$tag/g" manifest.yaml
+        sed -i "s/registry.daisukide.com:2083\/ecosystem\/oauth:latest/registry.daisukide.com:2083\/ecosystem\/oauth$tag/g" deploy/manifest.yaml
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - kubectl get pods
-    - kubectl apply -f manifest.yaml
+    - kubectl apply -f deploy/manifest.yaml
