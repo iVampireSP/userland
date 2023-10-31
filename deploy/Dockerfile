@@ -2,7 +2,7 @@ FROM registry.daisukide.com:2083/leaf/docker-php-image:latest
 
 WORKDIR /app
 
-COPY .. /app
+COPY ../ /app
 
 RUN useradd -ms /bin/bash -u 1337 www
 
