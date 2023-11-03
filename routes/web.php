@@ -10,10 +10,13 @@ use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
-use App\Http\Controllers\Public\JWTController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
+/* Healthz */
+Route::get('healthz', function () {
+    return response()->json(['status' => 'ok']);
+})->name('healthz');
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
