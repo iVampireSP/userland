@@ -6,7 +6,6 @@ COPY . /app
 
 RUN useradd -ms /bin/bash -u 1337 www && rm -rf vendor/
 
-RUN apt update && apt install supervisor -y
 # unset composer repo
 RUN composer config -g repo.packagist composer https://packagist.org
 RUN composer install --no-dev
