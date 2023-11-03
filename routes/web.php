@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
+use App\Http\Controllers\Public\JWTController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
@@ -66,5 +67,9 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
 
         /* Start 状态 */
         Route::post('status', [AuthController::class, 'status'])->name('status.update');
+        /* End 状态 */
+
+        Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
+        Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
     }
 );

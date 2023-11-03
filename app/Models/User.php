@@ -2,19 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
+    public array $publics = [
+        'id',
+        'uuid',
+        'name',
+        'email',
+        'real_name',
+    ];
+
 
     /**
      * The attributes that are mass assignable.
@@ -45,10 +56,32 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'real_name_verified_at' => 'datetime',
-        'balance' => 'decimal:4',
         'banned_at' => 'datetime',
         'birthday_at' => 'date:Y-m-d',
     ];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'team_id' => null,
+            'iss' => 'oauth'
+        ];
+    }
 
     public function getBirthdayFromIdCard(string|null $id_card = null): Carbon
     {
@@ -61,7 +94,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $month = (int) substr($bir, 4, 2);
         $day = (int) substr($bir, 6, 2);
 
-        return Carbon::parse($year.'-'.$month.'-'.$day);
+        return Carbon::parse($year . '-' . $month . '-' . $day);
     }
 
     public function isAdult(): bool
@@ -85,5 +118,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function status(): HasOne
     {
         return $this->hasOne(UserStatus::class);
+    }
+
+    public function getOnlyPublic($appened_excepts = [], $display = []): array
+    {
+        if ($display) {
+            $this->publics = array_merge($this->publics, $display);
+        }
+        if ($appened_excepts) {
+            $this->publics = array_diff($this->publics, $appened_excepts);
+        }
+
+        return Arr::only($this->toArray(), $this->publics);
     }
 }
