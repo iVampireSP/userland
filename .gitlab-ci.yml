@@ -5,6 +5,8 @@ stages:
 docker-build:
   image: docker:latest
   stage: build
+  tags:
+    - local
   services:
     - docker:dind
   before_script:
