@@ -5,12 +5,6 @@ stages:
 docker-build:
   image: docker:latest
   stage: build
-  cache:
-    - key:
-        files:
-          - composer.lock
-      paths:
-        - vendor/
   services:
     - docker:dind
   before_script:
@@ -51,3 +45,7 @@ deploy_to_cluster:
       fi
     - kubectl get pods
     - kubectl apply -f deploy/manifest.yaml
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        kubectl -n ecosystem rollout restart deployment oauth
+      fi
