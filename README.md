@@ -52,6 +52,8 @@ metadata:
 data:
   application-key: 
   database-password: 
+  redis-password:
+  jwt-secret:
 EOF
 
 ```
