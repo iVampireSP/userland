@@ -163,7 +163,7 @@ class AuthController extends Controller
             return redirect()->to($data['meta']['callback_uri'] . '?auth_request=' . $request->input('token'));
         }
 
-        return redirect()->route('index')->with('success', '登录请求已确认。');
+        return view('close');
     }
 
 
