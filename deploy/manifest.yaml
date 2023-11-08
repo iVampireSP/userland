@@ -29,7 +29,7 @@ spec:
             failureThreshold: 3
           resources:
             limits:
-              memory: "512Mi"
+              memory: "1Gi"
               cpu: "500m"
           ports:
             - containerPort: 8000
