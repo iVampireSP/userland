@@ -3,17 +3,12 @@
 namespace App\Http\Controllers\Public;
 
 use App\Models\User;
-use DateTimeImmutable;
-use Lcobucci\JWT\Builder;
 use Illuminate\Support\Str;
-use Lcobucci\JWT\JwtFacade;
 use Illuminate\Http\Request;
 use App\Models\JWTRefreshToken;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Illuminate\Support\Facades\Cache;
-use Lcobucci\JWT\Signer\Key\InMemory;
 
 class JWTController extends Controller
 {
@@ -109,6 +104,26 @@ class JWTController extends Controller
 
             Cache::put('auth_request:' . $token . '_data', $data, 120);
         }
+
+        return $this->success($data);
+    }
+
+    public function refresh(Request $request)
+    {
+        $request->validate([
+            'refresh_token' => 'string|max:128|required'
+        ]);
+
+        $refresh_token = JWTRefreshToken::where('refresh_token', $request->input('refresh_token'))->first();
+
+        if (!$refresh_token) {
+            return $this->notFound();
+        }
+
+        $token = auth('jwt')->setTTL($this->ttl)->claims($refresh_token['claims'])->login($refresh_token->user);
+
+        $data['expires_in'] = $this->ttl;
+        $data['token'] = $token;
 
         return $this->success($data);
     }
