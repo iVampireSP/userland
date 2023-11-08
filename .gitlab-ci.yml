@@ -33,7 +33,7 @@ deploy_to_cluster:
     name: bitnami/kubectl:latest
     entrypoint: ['']
   tags:
-    - k8s
+    - ecosystem
   stage: deploy
   script:
     - |
