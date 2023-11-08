@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'secret' => base64_encode(env('JWT_SECRET')),
+    'secret' => base64_decode(env('JWT_SECRET', base64_encode('secret'))),
 
     /*
     |--------------------------------------------------------------------------
