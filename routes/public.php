@@ -22,3 +22,5 @@ Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request
 Route::get('auth_request/{token}', [JWTController::class, 'show'])->name('auth_request.show');
 Route::post('auth_request/refresh', [JWTController::class, 'refresh'])->name('auth_request.refresh');
 /* End Auth Request */
+
+Route::get("jwks.json", [JWTController::class, 'jwks'])->name("jwks.json");

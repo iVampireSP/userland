@@ -127,4 +127,34 @@ class JWTController extends Controller
 
         return $this->success($data);
     }
+
+    public function jwks()
+    {
+        $publicKeyResource = openssl_pkey_get_public(config('jwt.keys.public'));
+        $publicKeyDetails = openssl_pkey_get_details($publicKeyResource);
+
+        // 提取模数(n)和指数(e)，并进行 Base64 编码
+        $n = base64_encode($publicKeyDetails['rsa']['n']);
+        $e = base64_encode($publicKeyDetails['rsa']['e']);
+
+        // 对于URL安全的 Base64 编码，我们需要进行一些替代和修剪
+        $n = str_replace(['+', '/', '='], ['-', '_', ''], $n);
+        $e = str_replace(['+', '/', '='], ['-', '_', ''], $e);
+
+        // 创建 JWKS 结构
+        $jwks = [
+            "keys" => [
+                [
+                    "kty" => "RSA",
+                    "use" => "sig",
+                    "alg" => "RS256",
+                    "kid" => "account-server",
+                    "n" => $n,
+                    "e" => $e
+                ]
+            ]
+        ];
+
+        return response()->json($jwks);
+    }
 }
