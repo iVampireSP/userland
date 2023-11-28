@@ -52,11 +52,16 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: redis-password
-            - name: JWT_SECRET
+            - name: JWT_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
                   name: oauth-secret
-                  key: jwt-secret
+                  key: jwt-private-key
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: jwt-public-key
           volumeMounts:
             - name: oauth-storage
               mountPath: /app/storage

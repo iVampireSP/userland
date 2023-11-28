@@ -53,7 +53,8 @@ data:
   application-key: 
   database-password: 
   redis-password:
-  jwt-secret:
+  jwt-public-key:
+  jwt-private-key:
 EOF
 
 ```
