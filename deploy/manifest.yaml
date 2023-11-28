@@ -95,6 +95,8 @@ metadata:
     app: oauth
 data:
   APP_ENV: "production"
+  APP_NAME: "Account"
+  APP_DEBUG: "false"
   DB_USERNAME: "ecosystem_oauth"
   DB_CONNECTION: "mysql"
   DB_HOST: "mariadb-mariadb-galera.databases.svc.cluster.local"
