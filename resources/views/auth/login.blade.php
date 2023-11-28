@@ -62,7 +62,7 @@
         <small id="tip" class="d-block"></small>
 
         <div class="mt-1" id="tos">如果您继续，则代表您已经阅读并同意 <a
-                href="https://www.laecloud.com/tos/"
+                href="#" onclick="alert('测试阶段，还没写呢')"
                 target="_blank"
                 class="text-decoration-underline">服务条款</a>
         </div>
