@@ -55,6 +55,7 @@ data:
   redis-password:
   jwt-public-key:
   jwt-private-key:
+  mail-password:
 EOF
 
 ```

@@ -62,6 +62,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: jwt-public-key
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: mail-password
           volumeMounts:
             - name: oauth-storage
               mountPath: /app/storage
@@ -96,10 +101,17 @@ metadata:
 data:
   APP_ENV: "production"
   APP_NAME: "Account"
+  DISPLAY_NAME: "Leaflow Account"
   APP_DEBUG: "false"
   DB_USERNAME: "ecosystem_oauth"
   DB_CONNECTION: "mysql"
   DB_HOST: "mariadb-mariadb-galera.databases.svc.cluster.local"
   DB_PORT: "3306"
   DB_DATABASE: "ecosystem_oauth"
-  DB_PASSWORD: ""
+  MAIL_HOST: "gz-smtp.qcloudmail.com"
+  MAIL_PORT: "465"
+  MAIL_USERNAME: "account@ses.leaflow.cn"
+  MAIL_ENCRYPTION: "ssl"
+  MAIL_FROM_ADDRESS: "account@ses.leaflow.cn"
+
+
