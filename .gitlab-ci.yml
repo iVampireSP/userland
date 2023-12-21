@@ -42,8 +42,9 @@ update_chart:
       else
         tag="$CI_COMMIT_REF_SLUG"
         channel="stable"
+        newVersion = ".appVersion = \"$tag\""
 
-        yq -i ".appVersion = '$tag'" .chart/Chart.yaml  -y
+        yq -i "$newVersion" .chart/Chart.yaml  -y
 
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
