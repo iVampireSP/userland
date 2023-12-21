@@ -35,8 +35,7 @@ update_chart:
     - version=$(cat .chart/Chart.yaml | yq -r ".version")
     - echo "Current version $version"
     - helm package .chart
-    - ls -la
-    - chartFileName=$(ls | grep .tgz)
+    - chartFileName=$(ls -a  | grep .tgz)
     - echo "Chart file name $chartFileName"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
