@@ -34,9 +34,6 @@ update_chart:
   script:
     - version=$(cat .chart/Chart.yaml | yq -r ".version")
     - echo "Current version $version"
-    - helm package .chart
-    - chartFileName=$(ls -a  | grep .tgz)
-    - echo "Chart file name $chartFileName"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
@@ -45,9 +42,15 @@ update_chart:
       else
         tag=":$CI_COMMIT_REF_SLUG"
         channel="stable"
+
+        yq -i '.appVersion = "$tag"' .chart/Chart.yaml  -y
+
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
-    - yq -i '.appVersion = "$tag"' .chart/Chart.yaml  -y
+    - helm package .chart
+
+    - chartFileName=$(ls -a  | grep .tgz)
+    - echo "Chart file name $chartFileName"
     - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$chartFileName" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$channel/charts"'
 
 #deploy_to_cluster:
