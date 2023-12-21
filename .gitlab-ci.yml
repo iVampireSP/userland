@@ -40,7 +40,7 @@ update_chart:
         channel="develop"
         echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
       else
-        tag=":$CI_COMMIT_REF_SLUG"
+        tag="$CI_COMMIT_REF_SLUG"
         channel="stable"
 
         yq -i '.appVersion = "$tag"' .chart/Chart.yaml  -y
