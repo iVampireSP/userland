@@ -13,6 +13,8 @@ stages:
 - package
 
 get_vars:
+  image: registry.daisukide.com:2083/ivampiresp/debian-with-tools:latest
+
   stage: prepare
 
   script:

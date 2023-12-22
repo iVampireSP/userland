@@ -19,5 +19,8 @@ data:
   MAIL_USERNAME: {{ .Values.app.MAIL_USERNAME | quote }}
   MAIL_ENCRYPTION: {{ .Values.app.MAIL_ENCRYPTION | quote }}
   MAIL_FROM_ADDRESS: {{ .Values.app.MAIL_FROM_ADDRESS | quote }}
+  MAIL_MAILER: {{ .Values.app.MAIL_MAILER | quote }}
+  REDIS_HOST: {{ .Values.app.REDIS_HOST | quote }}
+  OCTANE_HTTPS: {{ .Values.app.OCTANE_HTTPS | quote }}
 
 
