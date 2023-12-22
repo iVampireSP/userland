@@ -6,9 +6,18 @@ stages:
 install_deps:
   image: registry.daisukide.com:2083/leaf/docker-php-image:latest
   stage: prepare
+  before_script:
+  - composer config -g cache-dir "$(pwd)/.composer-cache"
   script:
     - composer install --no-dev
     - composer dump-autoload --optimize --no-dev --classmap-authoritative
+  cache:
+    paths:
+    - .composer-cache/
+  artifacts:
+    expire_in: 30 min
+    paths:
+    - vendor/
 
 
 docker-build:
@@ -65,6 +74,3 @@ update_chart:
     - echo "chart=@$chartFileName"
     - cat .chart/Chart.yaml
     - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$chartFileName" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$channel/charts"'
-    - rm -f $chartFileName
-    - rm -f .chart
-
