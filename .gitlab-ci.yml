@@ -1,3 +1,10 @@
+cache:
+  untracked: true
+  paths:
+    - vendor/
+    - public/img/
+
+
 stages:
   - prepare
   - build
