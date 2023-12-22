@@ -19,6 +19,7 @@ install_deps:
   script:
     - composer install --no-dev
     - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    # 以下省略，因为我们已经在 Dockerfile 中安装了 RoadRunner
     # - ./vendor/bin/rr get-binary
     # - art octane:install --server=roadrunner
 
