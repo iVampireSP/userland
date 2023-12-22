@@ -3,6 +3,7 @@ cache:
     - .composer-cache/
     - bootstrap/cache/
     - vendor/
+    - rr
 
 variables:
   GIT_CHECKOUT: "false"
@@ -19,6 +20,8 @@ install_deps:
   script:
     - composer install --no-dev
     - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    - ./vendor/bin/rr get-binary
+    - art octane:install --server=roadrunner
 
 
 
