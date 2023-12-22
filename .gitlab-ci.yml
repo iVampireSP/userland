@@ -4,10 +4,6 @@ cache:
     - bootstrap/cache/
     - vendor/
 
-variables:
-  GIT_STRATEGY: "none"
-  GIT_CHECKOUT: "false"
-
 stages:
   - prepare
   - build
