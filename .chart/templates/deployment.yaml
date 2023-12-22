@@ -148,8 +148,8 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          command: ["art queue:work"]
-          args: ["--tries=3", "--timeout=60"]
+          command: ["art"]
+          args: ["queue:work", "--tries=3", "--timeout=60"]
           envFrom:
             - configMapRef:
                 name: {{ include ".chart.fullname" . }}
