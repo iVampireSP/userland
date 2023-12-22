@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN useradd -ms /bin/bash -u 1337 www && rm -rf vendor/
+RUN useradd -ms /bin/bash -u 1337 www
 
 # unset composer repo
 # RUN composer config -g repo.packagist composer https://packagist.org
@@ -16,7 +16,7 @@ RUN art octane:install --server=roadrunner
 
 COPY deploy/start-container /usr/local/bin/start-container
 COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY vendor /app/vendor
+# COPY vendor /app/vendor
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 8000
