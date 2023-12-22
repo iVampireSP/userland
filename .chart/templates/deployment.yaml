@@ -51,7 +51,42 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- include "_container_env" . | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include ".chart.fullname" . }}
+          env:
+              - name: APP_KEY
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: APP_KEY
+              - name: DB_PASSWORD
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: DB_PASSWORD
+              - name: REDIS_PASSWORD
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: REDIS_PASSWORD
+              - name: JWT_PRIVATE_KEY
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: JWT_PRIVATE_KEY
+              - name: JWT_PUBLIC_KEY
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: JWT_PUBLIC_KEY
+              - name: MAIL_PASSWORD
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: MAIL_PASSWORD
+
+
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
@@ -113,9 +148,42 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- include "_container_env" . | nindent 12 }}
           command: ["art queue:work"]
           args: ["--tries=3", "--timeout=60"]
+          envFrom:
+            - configMapRef:
+                name: {{ include ".chart.fullname" . }}
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: DB_PASSWORD
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: REDIS_PASSWORD
+            - name: JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: JWT_PRIVATE_KEY
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: JWT_PUBLIC_KEY
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include ".chart.fullname" . }}
+                  key: MAIL_PASSWORD
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
