@@ -22,4 +22,4 @@ RUN chmod +x /usr/local/bin/start-container
 EXPOSE 8000
 
 # ENTRYPOINT ["start-container"]
-CMD [ "/usr/bin/php", "/app/artisan", "octane:start --host=0.0.0.0" ]
+CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--host=0.0.0.0" ]
