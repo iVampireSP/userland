@@ -11,7 +11,7 @@ RUN useradd -ms /bin/bash -u 1337 www
 # RUN composer install --no-dev
 # RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
 RUN art view:cache
-RUN ./vendor/bin/rr get-binary
+# RUN ./vendor/bin/rr get-binary
 RUN art octane:install --server=roadrunner
 
 COPY deploy/start-container /usr/local/bin/start-container
