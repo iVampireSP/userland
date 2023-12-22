@@ -13,6 +13,8 @@ stages:
 - package
 
 get_vars:
+  stage: prepare
+
   script:
   - echo "CI_COMMIT_REF_SLUG=$CI_COMMIT_REF_SLUG"
   - echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
