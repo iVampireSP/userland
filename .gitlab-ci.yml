@@ -2,7 +2,6 @@ cache:
   untracked: true
   paths:
     - vendor/
-    - public/img/
 
 
 stages:
@@ -13,18 +12,11 @@ stages:
 install_deps:
   image: registry.daisukide.com:2083/leaf/docker-php-image:latest
   stage: prepare
-  before_script:
-  - composer config -g cache-dir "$(pwd)/.composer-cache"
+
   script:
     - composer install --no-dev
     - composer dump-autoload --optimize --no-dev --classmap-authoritative
-  cache:
-    paths:
-    - .composer-cache/
-  artifacts:
-    expire_in: 30 min
-    paths:
-    - vendor/
+
 
 
 docker-build:
