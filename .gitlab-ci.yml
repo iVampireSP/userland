@@ -12,18 +12,6 @@ stages:
 - build
 - package
 
-get_vars:
-  image: registry.daisukide.com:2083/ivampiresp/debian-with-tools:latest
-
-  stage: prepare
-
-  script:
-  - echo "CI_COMMIT_REF_SLUG=$CI_COMMIT_REF_SLUG"
-  - echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
-  - echo "CI_DEFAULT_BRANCH=$CI_DEFAULT_BRANCH"
-  - echo "CI_REGISTRY_IMAGE=$CI_REGISTRY_IMAGE"
-  - echo "CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME"
-
 install_deps:
   image: registry.daisukide.com:2083/leaf/docker-php-image:latest
   stage: prepare
@@ -49,15 +37,14 @@ docker-build:
   before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-  # - |
-  #   if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-  #     tag=""
-  #     echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-  #   else
-  #     tag=":$CI_COMMIT_REF_SLUG"
-  #     echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-  #   fi
-  - tag=":$CI_COMMIT_REF_SLUG”
+  - |
+    if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+      tag=""
+      echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+    else
+      tag=":$CI_COMMIT_REF_SLUG"
+      echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+    fi
   - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
   - docker push "$CI_REGISTRY_IMAGE${tag}"
   # Run this job in a branch where a Dockerfile exists
@@ -73,19 +60,19 @@ update_chart:
   - version=$(cat .chart/Chart.yaml | yq -r ".version")
   - echo "Current version $version"
   - |
-    tag=":$CI_COMMIT_REF_SLUG”
     if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-      # tag="latest"
+      tag="latest"
       channel="develop"
       echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
     else
-      # tag="$CI_COMMIT_REF_SLUG"
+      tag="$CI_COMMIT_REF_SLUG"
       channel="stable"
+      newVersion=".appVersion = \"$tag\""
+
+      yq -i "$newVersion" .chart/Chart.yaml  -y
 
       echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
     fi
-    newVersion=".appVersion = \"$tag\""
-    yq -i "$newVersion" .chart/Chart.yaml  -y
   - helm package .chart
 
   - chartFileName=$(ls -a  | grep .tgz)
