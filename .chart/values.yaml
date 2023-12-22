@@ -5,13 +5,15 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: registry.daisukide.com:2083/ecosystem/oauth
+  # pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
+storageClass: ""
 fullnameOverride: ""
 
 serviceAccount:
@@ -59,7 +61,15 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+web_resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+queue_resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -70,6 +80,13 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+# web_storage:
+#   storageClass: ""
+#   accessMode: ReadWriteOnce
+#   size: 8Gi
+
+
 
 autoscaling:
   enabled: false
@@ -96,3 +113,28 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+app:
+  APP_NAME: oauth
+  DISPLAY_NAME: "OAuth Server"
+  APP_ENV: "production"
+  APP_KEY: ""
+  APP_DEBUG: false
+  APP_URL: ""
+  DB_CONNECTION: "mysql"
+  DB_HOST: ""
+  DB_PORT: "3306"
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  DB_DATABASE: ""
+  MAIL_HOST: ""
+  MAIL_PORT: ""
+  MAIL_USERNAME: ""
+  MAIL_PASSWORD: ""
+  MAIL_ENCRYPTION: ""
+  MAIL_FROM_ADDRESS: ""
+  REDIS_PASSWORD: ""
+  JWT_PRIVATE_KEY: ""
+  JWT_PUBLIC_KEY: ""
+
+
