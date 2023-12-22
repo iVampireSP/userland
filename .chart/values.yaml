@@ -129,7 +129,7 @@ app:
   DB_PASSWORD: ""
   MAIL_MAILER: "smtp"
   MAIL_HOST: ""
-  MAIL_PORT: ""
+  MAIL_PORT: "465"
   MAIL_USERNAME: ""
   MAIL_PASSWORD: ""
   MAIL_ENCRYPTION: "ssl"
