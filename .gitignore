@@ -27,3 +27,5 @@ rr
 rr.exe
 .rr.yaml
 /storage/init.lock
+rr
+.rr.yaml
