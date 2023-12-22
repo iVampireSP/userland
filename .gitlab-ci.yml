@@ -5,8 +5,8 @@ cache:
     - vendor/
     - rr
 
-variables:
-  GIT_CHECKOUT: "false"
+# variables:
+#   GIT_CHECKOUT: "false"
 
 stages:
   - prepare
@@ -20,8 +20,8 @@ install_deps:
   script:
     - composer install --no-dev
     - composer dump-autoload --optimize --no-dev --classmap-authoritative
-    - ./vendor/bin/rr get-binary
-    - art octane:install --server=roadrunner
+    # - ./vendor/bin/rr get-binary
+    # - art octane:install --server=roadrunner
 
 
 
