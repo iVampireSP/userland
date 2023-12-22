@@ -15,6 +15,7 @@ RUN useradd -ms /bin/bash -u 1337 www && rm -rf vendor/
 
 COPY deploy/start-container /usr/local/bin/start-container
 COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY vendor /app/vendor
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 8000
