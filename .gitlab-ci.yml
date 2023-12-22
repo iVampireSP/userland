@@ -1,6 +1,17 @@
 stages:
+  - prepare
   - build
   - package
+
+install_deps:
+  image: registry.daisukide.com:2083/leaf/docker-php-image:latest
+  stage: prepare
+  script:
+    - composer install --no-dev
+    - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    - ./vendor/bin/rr get-binary
+    - art octane:install --server=roadrunner
+
 
 docker-build:
   image: docker:latest
@@ -56,27 +67,6 @@ update_chart:
     - echo "chart=@$chartFileName"
     - cat .chart/Chart.yaml
     - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$chartFileName" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$channel/charts"'
+    - rm -f $chartFileName
+    - rm -f .chart
 
-#deploy_to_cluster:
-#  image:
-#    name: bitnami/kubectl:latest
-#    entrypoint: ['']
-#  tags:
-#    - ecosystem
-#  stage: deploy
-#  script:
-#    - |
-#      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-#        tag=""
-#        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-#      else
-#        tag=":$CI_COMMIT_REF_SLUG"
-#        sed -i "s/registry.daisukide.com:2083\/ecosystem\/oauth:latest/registry.daisukide.com:2083\/ecosystem\/oauth$tag/g" deploy/manifest.yaml
-#        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-#      fi
-#    - kubectl get pods
-#    - kubectl apply -f deploy/manifest.yaml
-#    - |
-#      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-#        kubectl -n ecosystem rollout restart deployment oauth
-#      fi
