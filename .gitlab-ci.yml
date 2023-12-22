@@ -1,7 +1,10 @@
 cache:
-  untracked: true
   paths:
+    - .composer-cache/
+    - bootstrap/cache/
     - vendor/
+
+variables:
 
 
 stages:
