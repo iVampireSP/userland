@@ -5,8 +5,7 @@ cache:
     - vendor/
     - rr
 
-# variables:
-#   GIT_CHECKOUT: "false"
+
 
 stages:
   - prepare
@@ -28,6 +27,8 @@ install_deps:
 docker-build:
   image: docker:latest
   stage: build
+  variables:
+    GIT_CHECKOUT: "false"
   tags:
     - local
   services:
