@@ -14,12 +14,16 @@ RUN art view:cache
 # RUN ./vendor/bin/rr get-binary
 RUN art octane:install --server=roadrunner
 
-COPY deploy/start-container /usr/local/bin/start-container
-COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# COPY deploy/start-container /usr/local/bin/start-container
+# COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # COPY vendor /app/vendor
-RUN chmod +x /usr/local/bin/start-container
+# RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 8000
 
 # ENTRYPOINT ["start-container"]
+# Start Web
 CMD [ "/usr/bin/php", "/app/artisan", "app:init", "--start" ]
+
+# Start queue
+# CMD [ "/usr/bin/php", "/app/artisan", "queue:work", "--tries=3", "--timeout=60" ]
