@@ -1,29 +1,26 @@
 cache:
   paths:
-  - .composer-cache/
-  - bootstrap/cache/
-  - vendor/
-  - rr
-
-
+    - .composer-cache/
+    - bootstrap/cache/
+    - vendor/
+    - rr
 
 stages:
-- prepare
-- build
-- package
+  - prepare
+  - build
+  - package
 
 install_deps:
   image: registry.daisukide.com:2083/leaf/docker-php-image:latest
   stage: prepare
 
   script:
-  - composer install --no-dev
-  - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    - composer install --no-dev
+    - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    - chown -R 1337:1337 storage
   # 以下省略，因为我们已经在 Dockerfile 中安装了 RoadRunner
 # - ./vendor/bin/rr get-binary
 # - art octane:install --server=roadrunner
-
-
 
 docker-build:
   image: docker:latest
@@ -31,53 +28,52 @@ docker-build:
   variables:
     GIT_CHECKOUT: "false"
   tags:
-  - local
+    - local
   services:
-  - docker:dind
+    - docker:dind
   before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-  - |
-    if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-      tag=""
-      echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-    else
-      tag=":$CI_COMMIT_REF_SLUG"
-      echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-    fi
-  - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
-  - docker push "$CI_REGISTRY_IMAGE${tag}"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
+    - docker push "$CI_REGISTRY_IMAGE${tag}"
   # Run this job in a branch where a Dockerfile exists
   rules:
-  - if: $CI_COMMIT_BRANCH
-    exists:
-    - Dockerfile
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
 
 update_chart:
   image: registry.daisukide.com:2083/ivampiresp/debian-with-tools:latest
   stage: package
   script:
-  - version=$(cat .chart/Chart.yaml | yq -r ".version")
-  - echo "Current version $version"
-  - |
-    if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-      tag="latest"
-      channel="develop"
-      echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-    else
-      tag="$CI_COMMIT_REF_SLUG"
-      channel="stable"
-      newVersion=".appVersion = \"$tag\""
+    - version=$(cat .chart/Chart.yaml | yq -r ".version")
+    - echo "Current version $version"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag="latest"
+        channel="develop"
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag="$CI_COMMIT_REF_SLUG"
+        channel="stable"
+        newVersion=".appVersion = \"$tag\""
 
-      yq -i "$newVersion" .chart/Chart.yaml  -y
+        yq -i "$newVersion" .chart/Chart.yaml  -y
 
-      echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-    fi
-  - helm package .chart
-
-  - chartFileName=$(ls -a  | grep .tgz)
-  - echo "Chart file name $chartFileName"
-  - echo "Channel $channel"
-  - echo "chart=@$chartFileName"
-  - cat .chart/Chart.yaml
-  - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$chartFileName" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$channel/charts"'
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+    - helm package .chart
+    - chartFileName=$(ls -a  | grep .tgz)
+    - echo "Chart file name $chartFileName"
+    - echo "Channel $channel"
+    - echo "chart=@$chartFileName"
+    - cat .chart/Chart.yaml
+    - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$chartFileName" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$channel/charts"'
