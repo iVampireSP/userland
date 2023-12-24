@@ -12,6 +12,7 @@
         "ext-bcmath": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
+        "elasticsearch/elasticsearch": "*",
         "fakerphp/faker": "^1.21",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",

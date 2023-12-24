@@ -1,11 +1,24 @@
 <?php
 
+use Elastic\Elasticsearch\ClientBuilder;
+use Monolog\Formatter\ElasticsearchFormatter;
+use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
-return [
+function setup_es() {
+    $hosts = [
+        [
+            'host' => '127.0.0.1',
+            'port' => '9200',
+            'user' => 'elastic',
+            'pass' => 'MY_PASS'
+        ]
+    ];
+}
 
+$config = [
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
@@ -114,9 +127,24 @@ return [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
-
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+        'elastic' => [
+            'driver' => 'monolog',
+            'level' => 'debug',
+            'name' => 'Develop',
+            'tap' => [],
+            'handler' => ElasticsearchHandler::class,
+            'formatter' => ElasticsearchFormatter::class,
+            'formatter_with' => [
+                'index' => 'monolog',
+                'type' => '_doc'
+            ],
+
+            'handler_with' => [
+                'client' => ClientBuilder::create()->setHosts(['http://' . env('ELASTIC_URL', 'localhost:9200')])->build(),
+            ],
         ],
     ],
 
