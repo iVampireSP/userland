@@ -31,7 +31,7 @@ class Init extends Command
             $this->warn("另一个初始化进程正在运行中。如果确定没有其他进程在运行，请手动删除 {$lock} 文件。");
             // 如果有 --start 参数，则启动 Web 服务
             if ($this->option('start')) {
-                $this->warn("正在等待另一个进程初始化完成。");
+                $this->warn('正在等待另一个进程初始化完成。');
                 // 一直等待锁文件被删除
                 while (file_exists($lock)) {
                     sleep(1);
@@ -43,14 +43,14 @@ class Init extends Command
             return;
         }
 
-        $this->info("上锁。");
+        $this->info('上锁。');
         // 加锁
         file_put_contents($lock, '');
 
         // 检测有无 .env
-        if (!file_exists(base_path('.env'))) {
+        if (! file_exists(base_path('.env'))) {
             // 复制 .env.example
-            $this->info("复制 .env.example 为 .env");
+            $this->info('复制 .env.example 为 .env');
             copy(base_path('.env.example'), base_path('.env'));
         }
 
@@ -58,25 +58,25 @@ class Init extends Command
         $APP_KEY = env('APP_KEY');
         if (empty($APP_KEY)) {
             // 初始化
-            $this->info("生成应用程序密钥。");
+            $this->info('生成应用程序密钥。');
             $this->call('key:generate');
         }
 
-        $this->info("初始化 storage 目录。");
+        $this->info('初始化 storage 目录。');
         // 初始化 storage 目录
         $this->initStorageDir();
 
-        $this->info("初始化数据库。");
+        $this->info('初始化数据库。');
 
         // force migrate
         $this->call('migrate', [
             '--force' => true,
         ]);
 
-        $this->info("生成缓存。");
+        $this->info('生成缓存。');
         $this->call('optimize');
 
-        $this->info("解锁");
+        $this->info('解锁');
         // 解锁
         unlink($lock);
 
@@ -86,7 +86,7 @@ class Init extends Command
         if ($this->option('start')) {
             $this->info('启动 Web 服务。');
             $this->call('octane:start', [
-                '--host' => '0.0.0.0'
+                '--host' => '0.0.0.0',
             ]);
         }
     }
@@ -97,43 +97,43 @@ class Init extends Command
         $storage = storage_path();
 
         // 有无 app 目录
-        if (!is_dir($storage . '/app')) {
-            mkdir($storage . '/app');
+        if (! is_dir($storage.'/app')) {
+            mkdir($storage.'/app');
 
             // 有无 public 目录
-            if (!is_dir($storage . '/app/public')) {
-                mkdir($storage . '/app/public');
+            if (! is_dir($storage.'/app/public')) {
+                mkdir($storage.'/app/public');
             }
         }
 
         // 有无 framework 目录
-        if (!is_dir($storage . '/framework')) {
-            mkdir($storage . '/framework');
+        if (! is_dir($storage.'/framework')) {
+            mkdir($storage.'/framework');
 
             // 有无 cache 目录
-            if (!is_dir($storage . '/framework/cache')) {
-                mkdir($storage . '/framework/cache');
+            if (! is_dir($storage.'/framework/cache')) {
+                mkdir($storage.'/framework/cache');
             }
 
             // 有无 sessions 目录
-            if (!is_dir($storage . '/framework/sessions')) {
-                mkdir($storage . '/framework/sessions');
+            if (! is_dir($storage.'/framework/sessions')) {
+                mkdir($storage.'/framework/sessions');
             }
 
             // 有无 testing 目录
-            if (!is_dir($storage . '/framework/testing')) {
-                mkdir($storage . '/framework/testing');
+            if (! is_dir($storage.'/framework/testing')) {
+                mkdir($storage.'/framework/testing');
             }
 
             // 有无 views 目录
-            if (!is_dir($storage . '/framework/views')) {
-                mkdir($storage . '/framework/views');
+            if (! is_dir($storage.'/framework/views')) {
+                mkdir($storage.'/framework/views');
             }
         }
 
         // 有无 logs 目录
-        if (!is_dir($storage . '/logs')) {
-            mkdir($storage . '/logs');
+        if (! is_dir($storage.'/logs')) {
+            mkdir($storage.'/logs');
         }
     }
 }

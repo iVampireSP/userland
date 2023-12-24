@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Public;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\JWTRefreshToken;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\JWTRefreshToken;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class JWTController extends Controller
 {
@@ -46,8 +46,7 @@ class JWTController extends Controller
             ],
         ];
 
-
-        Cache::put('auth_request:' . $token, $data, 120);
+        Cache::put('auth_request:'.$token, $data, 120);
 
         $data['url'] = route('auth_request.show', $token);
         $data['validate'] = route('public.auth_request.show', $token);
@@ -57,18 +56,18 @@ class JWTController extends Controller
 
     public function show($token): JsonResponse
     {
-        $data = Cache::get('auth_request:' . $token);
+        $data = Cache::get('auth_request:'.$token);
 
         if (empty($data)) {
             return $this->error('Token 不存在或已过期。');
         }
 
-        $generated_data = Cache::get('auth_request:' . $token . '_data');
-        if (!empty($generated_data)) {
+        $generated_data = Cache::get('auth_request:'.$token.'_data');
+        if (! empty($generated_data)) {
             return $this->success($generated_data);
         }
 
-        if (!isset($data['user'])) {
+        if (! isset($data['user'])) {
             $data['user'] = null;
             $data['jwt'] = null;
         } else {
@@ -77,7 +76,7 @@ class JWTController extends Controller
             $jwt_info = [
                 'claims' => [
                     'user' => $data['user'],
-                ]
+                ],
             ];
 
             $user = User::find($data['user']['id']);
@@ -102,7 +101,7 @@ class JWTController extends Controller
             $data['token'] = $jwt_info['token'];
             $data['refresh_token'] = $jwt_info['refresh_token'];
 
-            Cache::put('auth_request:' . $token . '_data', $data, 120);
+            Cache::put('auth_request:'.$token.'_data', $data, 120);
         }
 
         return $this->success($data);
@@ -111,12 +110,12 @@ class JWTController extends Controller
     public function refresh(Request $request)
     {
         $request->validate([
-            'refresh_token' => 'string|max:128|required'
+            'refresh_token' => 'string|max:128|required',
         ]);
 
         $refresh_token = JWTRefreshToken::where('refresh_token', $request->input('refresh_token'))->first();
 
-        if (!$refresh_token) {
+        if (! $refresh_token) {
             return $this->notFound();
         }
 
@@ -143,16 +142,16 @@ class JWTController extends Controller
 
         // 创建 JWKS 结构
         $jwks = [
-            "keys" => [
+            'keys' => [
                 [
-                    "kty" => "RSA",
-                    "use" => "sig",
-                    "alg" => "RS256",
-                    "kid" => "account-server",
-                    "n" => $n,
-                    "e" => $e
-                ]
-            ]
+                    'kty' => 'RSA',
+                    'use' => 'sig',
+                    'alg' => 'RS256',
+                    'kid' => 'account-server',
+                    'n' => $n,
+                    'e' => $e,
+                ],
+            ],
         ];
 
         return response()->json($jwks);

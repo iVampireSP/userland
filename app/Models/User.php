@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail, JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -25,7 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'email',
         'real_name',
     ];
-
 
     /**
      * The attributes that are mass assignable.
@@ -79,11 +78,11 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     {
         return [
             'team_id' => null,
-            'iss' => 'oauth'
+            'iss' => 'oauth',
         ];
     }
 
-    public function getBirthdayFromIdCard(string|null $id_card = null): Carbon
+    public function getBirthdayFromIdCard(string $id_card = null): Carbon
     {
         if (empty($id_card)) {
             $id_card = $this->id_card;
@@ -94,7 +93,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         $month = (int) substr($bir, 4, 2);
         $day = (int) substr($bir, 6, 2);
 
-        return Carbon::parse($year . '-' . $month . '-' . $day);
+        return Carbon::parse($year.'-'.$month.'-'.$day);
     }
 
     public function isAdult(): bool

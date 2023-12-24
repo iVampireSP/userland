@@ -4,11 +4,10 @@
  * 公共路由，不需要登录。这里存放 异步回调 请求路由。
  */
 
+use App\Http\Controllers\Public\JWTController;
 use App\Http\Controllers\Public\RealNameController;
 use App\Http\Controllers\Public\StatusController;
-use App\Http\Controllers\Public\JWTController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::match(['post', 'get'], 'real_name/notify', [RealNameController::class, 'verify'])->name('real-name.notify');
 Route::match(['post', 'get'], 'real_name/process', [RealNameController::class, 'process'])->name('real-name.process')->withoutMiddleware('csrf');
@@ -23,4 +22,4 @@ Route::get('auth_request/{token}', [JWTController::class, 'show'])->name('auth_r
 Route::post('auth_request/refresh', [JWTController::class, 'refresh'])->name('auth_request.refresh');
 /* End Auth Request */
 
-Route::get("jwks.json", [JWTController::class, 'jwks'])->name("jwks.json");
+Route::get('jwks.json', [JWTController::class, 'jwks'])->name('jwks.json');

@@ -1,24 +1,12 @@
 <?php
 
 use Elastic\Elasticsearch\ClientBuilder;
-use Monolog\Formatter\ElasticsearchFormatter;
-use Monolog\Handler\ElasticsearchHandler;
+use Illuminate\Support\Str;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
-function setup_es() {
-    $hosts = [
-        [
-            'host' => '127.0.0.1',
-            'port' => '9200',
-            'user' => 'elastic',
-            'pass' => 'MY_PASS'
-        ]
-    ];
-}
-
-$config = [
+return [
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
@@ -30,7 +18,7 @@ $config = [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'elastic'),
 
     /*
     |--------------------------------------------------------------------------
@@ -133,17 +121,15 @@ $config = [
         'elastic' => [
             'driver' => 'monolog',
             'level' => 'debug',
-            'name' => 'Develop',
-            'tap' => [],
-            'handler' => ElasticsearchHandler::class,
-            'formatter' => ElasticsearchFormatter::class,
+            'handler' => \Monolog\Handler\ElasticsearchHandler::class,
+            'formatter' => \Monolog\Formatter\ElasticsearchFormatter::class,
             'formatter_with' => [
-                'index' => 'monolog',
-                'type' => '_doc'
+                'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs',
+                'type' => '_doc',
             ],
 
             'handler_with' => [
-                'client' => ClientBuilder::create()->setHosts(['http://' . env('ELASTIC_URL', 'localhost:9200')])->build(),
+                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST', 'https://localhost:9200')])->setSSLVerification(false)->setBasicAuthentication(env('ELASTIC_USER', 'elastic'), env('ELASTIC_PASS', ''))->build(),
             ],
         ],
     ],

@@ -19,6 +19,7 @@ class StatusController extends Controller
         if (! ($user instanceof User)) {
             $user = User::where('email', $user)->orWhere('email_md5', $user)->first();
         }
+
         // 访问 public const
         return $this->success($user?->status()->first() ?? UserStatus::DEFAULT);
     }

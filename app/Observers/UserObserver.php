@@ -11,7 +11,7 @@ class UserObserver
 {
     public function creating(User $user): void
     {
-        if (!$user->name) {
+        if (! $user->name) {
             $user->name = Person::firstNameMale();
         }
 
@@ -37,7 +37,7 @@ class UserObserver
         }
 
         // 如果密码没有被 bcrypt 加密过，就加密
-        if ($user->isDirty('password') && !Str::startsWith($user->password, '$2y$')) {
+        if ($user->isDirty('password') && ! Str::startsWith($user->password, '$2y$')) {
             $user->password = bcrypt($user->password);
         }
 
@@ -50,11 +50,11 @@ class UserObserver
             }
         }
 
-        if (!$user->uuid) {
+        if (! $user->uuid) {
             $user->uuid = Str::uuid();
         }
 
-        if (!$user->email_md5) {
+        if (! $user->email_md5) {
             $user->email_md5 = md5($user->email);
         }
     }

@@ -8,7 +8,7 @@ class Payment extends Component
 {
     public ?string $payment = null;
 
-    public function __construct(string|null $payment)
+    public function __construct(?string $payment)
     {
         $this->payment = $payment;
     }

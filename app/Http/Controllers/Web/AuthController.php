@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use function back;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+
+use function back;
 use function redirect;
 use function session;
 use function view;
@@ -95,7 +96,8 @@ class AuthController extends Controller
         return back()->with('success', '已更新用户状态。');
     }
 
-    public function destroy(Request $request) {
+    public function destroy(Request $request)
+    {
         $request->validate([
             'password' => 'required|string',
         ]);
@@ -115,7 +117,7 @@ class AuthController extends Controller
 
     public function show_authrequest($token)
     {
-        $data = Cache::get('auth_request:' . $token);
+        $data = Cache::get('auth_request:'.$token);
 
         if (empty($data)) {
             return redirect()->route('index')->with('error', '登录请求的 Token 不存在或已过期。');
@@ -139,7 +141,7 @@ class AuthController extends Controller
             'token' => 'required|string|max:128',
         ]);
 
-        $data = Cache::get('auth_request:' . $request->input('token'));
+        $data = Cache::get('auth_request:'.$request->input('token'));
 
         if (empty($data)) {
             return back()->with('error', '登录请求的 Token 不存在或已过期。');
@@ -157,14 +159,12 @@ class AuthController extends Controller
             'real_name_verified_at',
         ]);
 
-        Cache::put('auth_request:' . $request->input('token'), $data, 60);
+        Cache::put('auth_request:'.$request->input('token'), $data, 60);
 
         if (isset($data['meta']['callback_uri']) && $data['meta']['callback_uri']) {
-            return redirect()->to($data['meta']['callback_uri'] . '?auth_request=' . $request->input('token'));
+            return redirect()->to($data['meta']['callback_uri'].'?auth_request='.$request->input('token'));
         }
 
         return view('close');
     }
-
-
 }

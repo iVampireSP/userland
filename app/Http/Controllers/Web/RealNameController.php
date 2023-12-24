@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Web;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use App\Support\RealNameSupport;
-use Illuminate\Http\JsonResponse;
 use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Contracts\View\Factory;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Support\RealNameSupport;
 use Carbon\Exceptions\InvalidFormatException;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class RealNameController extends Controller
 {
@@ -155,8 +155,8 @@ class RealNameController extends Controller
 
         try {
             $resp = Http::baseUrl(config('settings.supports.pay.url'))
-            ->asForm()
-            ->post('/mapi.php', $params);
+                ->asForm()
+                ->post('/mapi.php', $params);
         } catch (ConnectionException $e) {
             return back()->with('error', '无法解析计算机名称。');
         }

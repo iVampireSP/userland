@@ -15,7 +15,7 @@ class JWTRefreshToken extends Model
     protected $fillable = [
         'claims',
         'refresh_token',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
@@ -23,7 +23,7 @@ class JWTRefreshToken extends Model
     ];
 
     protected $withs = [
-        'user'
+        'user',
     ];
 
     public function user(): BelongsTo

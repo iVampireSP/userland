@@ -38,6 +38,7 @@ trait SendsPasswordResetEmails
             );
         } catch (Exception $e) {
             Log::error($e);
+
             return back()->with('error', trans('Service Unavailable'));
         }
 
