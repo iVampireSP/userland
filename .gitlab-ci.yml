@@ -15,12 +15,15 @@ install_deps:
   stage: prepare
 
   script:
-    - composer install --no-dev
-    - composer dump-autoload --optimize --no-dev --classmap-authoritative
+    - composer install --optimize-autoloader --no-dev
+    - composer dump-autoload --apcu --optimize --no-dev --classmap-authoritative
     - chown -R 1337:1337 storage
+    - php artisan route:cache
+    # 每次容器启动的时候缓存配置
+    # - php artisan config:cache
   # 以下省略，因为我们已经在 Dockerfile 中安装了 RoadRunner
-# - ./vendor/bin/rr get-binary
-# - art octane:install --server=roadrunner
+  # - ./vendor/bin/rr get-binary
+  # - art octane:install --server=roadrunner
 
 docker-build:
   image: docker:latest
