@@ -16,6 +16,7 @@
         "fakerphp/faker": "^1.21",
         "guzzlehttp/guzzle": "^7.2",
         "ivampiresp/laravel-elasticsearch-logger": "^0.0.1",
+        "ivampiresp/laravel-init-command": "v0.0.3",
         "laravel/framework": "^10.0",
         "laravel/octane": "^1.5",
         "laravel/passport": "^11.8",

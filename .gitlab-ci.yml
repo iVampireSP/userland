@@ -18,6 +18,8 @@ install_deps:
     - composer install --optimize-autoloader --no-dev
     - composer dump-autoload --apcu --optimize --no-dev --classmap-authoritative
     - php artisan route:cache
+    - php artisan view:cache
+    - php artisan event:cache
     # 每次容器启动的时候缓存配置
     # - php artisan config:cache
   # 以下省略，因为我们已经在 Dockerfile 中安装了 RoadRunner

@@ -151,7 +151,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           command: ["/usr/bin/php"]
-          args: ["artisan", "queue:work", "--tries=3", "--timeout=60"]
+          args: ["artisan", "init", "queue", "--queue=default,high"]
           envFrom:
             - configMapRef:
                 name: {{ include ".chart.fullname" . }}
