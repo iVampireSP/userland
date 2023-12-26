@@ -22,6 +22,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        app.oauth.type: web
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -128,6 +129,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        app.oauth.type: queue
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
