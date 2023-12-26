@@ -3,4 +3,4 @@ name: account-server
 description: Leaflow OAuth
 type: application
 version: 0.1.4
-appVersion: 0.0.3
+appVersion: 0.0.4

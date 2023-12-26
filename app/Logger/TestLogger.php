@@ -2,31 +2,35 @@
 
 namespace App\Logger;
 
-use JetBrains\PhpStorm\NoReturn;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Elastic\Elasticsearch\ClientBuilder;
-use Monolog\Formatter\LogstashFormatter;
+use Monolog\Formatter\ElasticsearchFormatter;
+use Monolog\Handler\ElasticsearchHandler;
 
 class TestLogger extends AbstractProcessingHandler
 {
     public function __invoke(array $config)
     {
-//        dd($config);
-//        return new Logger(
-//            $config['name'] ?? 'defaultChannelName',
-//            [
-//                new \Monolog\Handler\ElasticsearchHandler(
-//                // ...
-//                // see phpdoc of the ElasticsearchHandler::class
-//                )
-//            ]
-//        );
+        $type = "_doc";
+
+        $es = app("elasticsearch-log-handler", $config);
+        $handler = new ElasticsearchHandler($es, [
+            'index'        => $config["index"],
+            'type'         => $type,
+            'ignore_error' => false,
+        ]);
+        $handler->setFormatter(new ElasticsearchFormatter($config["index"], $type));
+
+
+        return new Logger(
+            $config["index"],
+            [
+                $handler
+            ]
+        );
     }
 
-    #[NoReturn] protected function write(mixed $record): void
+    protected function write(mixed $record): void
     {
-        // log to elasticsearch
     }
-
 }
