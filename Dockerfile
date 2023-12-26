@@ -16,6 +16,9 @@ RUN art view:cache
 # RUN ./vendor/bin/rr get-binary
 RUN art octane:install --server=roadrunner
 
+# 设置权限
+RUN chown -R 1337:1337 /app
+
 # COPY deploy/start-container /usr/local/bin/start-container
 # COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # COPY vendor /app/vendor
