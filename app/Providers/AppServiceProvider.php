@@ -5,9 +5,12 @@ namespace App\Providers;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
+use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Illuminate\Contracts\Foundation\Application;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +19,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton("elasticsearch-log-handler", function () {
+            $builder = ClientBuilder::create()->setHosts(config("logging.channels.elastic.hosts"))
+                ->setSSLVerification(config('logging.channels.elastic.verify_ssl'));
+
+            if (config("logging.channels.elastic.pass")) {
+                $builder->setBasicAuthentication(config("logging.channels.elastic.user"), config("logging.channels.elastic.pass"));
+            }
+
+            return $builder->build();
+        });
+
+
     }
 
     /**

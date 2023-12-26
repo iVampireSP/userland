@@ -2,6 +2,8 @@
 
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\Str;
+use Monolog\Formatter\ElasticsearchFormatter;
+use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -118,20 +120,31 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
-        'elastic' => [
-            'driver' => 'monolog',
-            'level' => 'debug',
-            'handler' => \Monolog\Handler\ElasticsearchHandler::class,
-            'formatter' => \Monolog\Formatter\ElasticsearchFormatter::class,
-            'formatter_with' => [
-                'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs',
-                'type' => '_doc',
-            ],
 
-            'handler_with' => [
-                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST', 'https://localhost:9200')])->setSSLVerification(false)->setBasicAuthentication(env('ELASTIC_USER', 'elastic'), env('ELASTIC_PASS', ''))->build(),
-            ],
-        ],
+        'elastic' => [
+            'driver' => 'custom',
+            'via' => App\Logger\TestLogger::class,
+            'verify_ssl' => false,
+            'hosts' => [env('ELASTIC_HOST', 'https://localhost:9200')],
+            'user' => env('ELASTIC_USER', 'elastic'),
+            'pass' => env('ELASTIC_PASS', ''),
+            'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs'
+        ]
+
+//        'elastic' => [
+//            'driver' => 'monolog',
+//            'level' => 'debug',
+//            'handler' => ElasticsearchHandler::class,
+//            'formatter' => ElasticsearchFormatter::class,
+//            'formatter_with' => [
+//                'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs',
+//                'type' => '_doc',
+//            ],
+//
+//            'handler_with' => [
+//                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST', 'https://localhost:9200')])->setSSLVerification(false)->setBasicAuthentication(env('ELASTIC_USER', 'elastic'), env('ELASTIC_PASS', ''))->build(),
+//            ],
+//        ],
     ],
 
 ];
