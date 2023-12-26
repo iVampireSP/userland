@@ -1,9 +1,6 @@
 <?php
 
-use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\Str;
-use Monolog\Formatter\ElasticsearchFormatter;
-use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -123,7 +120,7 @@ return [
 
         'elastic' => [
             'driver' => 'custom',
-            'via' => App\Logger\TestLogger::class,
+            'via' => \ivampiresp\LaravelElasticsearchLogger\ESLogger::class,
             'verify_ssl' => false,
             'hosts' => [env('ELASTIC_HOST', 'https://localhost:9200')],
             'user' => env('ELASTIC_USER', 'elastic'),

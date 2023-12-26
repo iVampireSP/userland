@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "130e6e814c82992b4b0a92e9f91c95b0",
+    "content-hash": "bc7da01296113f50b39f6b18977503bb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1709,6 +1709,56 @@
                 }
             ],
             "time": "2023-08-27T10:19:19+00:00"
+        },
+        {
+            "name": "ivampiresp/laravel-elasticsearch-logger",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iVampireSP/laravel-elasticsearch-logger.git",
+                "reference": "bb08dce4e50cc0bbd288829863c77a8526977ae2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iVampireSP/laravel-elasticsearch-logger/zipball/bb08dce4e50cc0bbd288829863c77a8526977ae2",
+                "reference": "bb08dce4e50cc0bbd288829863c77a8526977ae2",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ivampiresp\\LaravelElasticsearchLogger\\LaravelElasticsearchLoggerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ivampiresp\\LaravelElasticsearchLogger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ivamp",
+                    "email": "im@ivampiresp.com"
+                }
+            ],
+            "description": "Laravel log to elasticsearch",
+            "support": {
+                "issues": "https://github.com/iVampireSP/laravel-elasticsearch-logger/issues",
+                "source": "https://github.com/iVampireSP/laravel-elasticsearch-logger/tree/v0.0.1"
+            },
+            "time": "2023-12-26T13:50:00+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

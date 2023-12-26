@@ -15,6 +15,7 @@
         "elasticsearch/elasticsearch": "*",
         "fakerphp/faker": "^1.21",
         "guzzlehttp/guzzle": "^7.2",
+        "ivampiresp/laravel-elasticsearch-logger": "^0.0.1",
         "laravel/framework": "^10.0",
         "laravel/octane": "^1.5",
         "laravel/passport": "^11.8",
@@ -42,8 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "ivampiresp\\LaravelElasticsearchLogger\\": "laravel-elasticsearch-logger/src"
+            "Tests\\": "tests/"
         }
     },
     "scripts": {
