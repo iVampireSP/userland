@@ -26,7 +26,7 @@ EXPOSE 8000
 # ENTRYPOINT ["start-container"]
 # Start Web
 # CMD [ "/usr/bin/php", "/app/artisan", "app:init", "--start" ]
-CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--workers=4" ]
+CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--workers=1" ]
 
 # Start queue
 # CMD [ "/usr/bin/php", "/app/artisan", "queue:work", "--tries=3", "--timeout=60" ]

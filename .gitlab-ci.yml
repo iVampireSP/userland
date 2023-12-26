@@ -17,7 +17,7 @@ install_deps:
   script:
     - composer install --optimize-autoloader --no-dev
     - composer dump-autoload --apcu --optimize --no-dev --classmap-authoritative
-    - chown -R 1337:1337 storage
+    - chown -R 1337:1337 *
     - php artisan route:cache
     # 每次容器启动的时候缓存配置
     # - php artisan config:cache
