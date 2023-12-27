@@ -86,6 +86,11 @@ spec:
                       secretKeyRef:
                           name: {{ include ".chart.fullname" . }}
                           key: MAIL_PASSWORD
+              - name: ELASTIC_PASS
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: ELASTIC_PASS
 
 
       {{- with .Values.volumes }}
@@ -186,6 +191,11 @@ spec:
                 secretKeyRef:
                   name: {{ include ".chart.fullname" . }}
                   key: MAIL_PASSWORD
+            - name: ELASTIC_PASS
+                valueFrom:
+                      secretKeyRef:
+                          name: {{ include ".chart.fullname" . }}
+                          key: ELASTIC_PASS
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
