@@ -193,7 +193,7 @@ spec:
                   key: MAIL_PASSWORD
             - name: ELASTIC_PASS
               valueFrom:
-                  secretKeyRef:
+                secretKeyRef:
                   name: {{ include ".chart.fullname" . }}
                   key: ELASTIC_PASS
       {{- with .Values.volumes }}
