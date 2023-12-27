@@ -137,6 +137,7 @@ app:
   JWT_PRIVATE_KEY: ""
   JWT_PUBLIC_KEY: ""
   OCTANE_HTTPS: "false"
+  LOG_CHANNEL: "daily"
   ELASTIC_HOST: "https://localhost:9200"
   ELASTIC_USER: "elastic"
   ELASTIC_PASS: ""
