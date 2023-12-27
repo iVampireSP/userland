@@ -22,6 +22,7 @@ data:
   MAIL_MAILER: {{ .Values.app.MAIL_MAILER | quote }}
   REDIS_HOST: {{ .Values.app.REDIS_HOST | quote }}
   OCTANE_HTTPS: {{ .Values.app.OCTANE_HTTPS | quote }}
+  LOG_CHANNEL: {{ .Values.app.LOG_CHANNEL | quote }}
   ELASTIC_HOST: {{ .Values.app.ELASTIC_HOST | quote }}
   ELASTIC_USER: {{ .Values.app.ELASTIC_USER | quote }}
 
