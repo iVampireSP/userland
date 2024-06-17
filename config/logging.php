@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'daily'),
+    'default' => env('LOG_CHANNEL', 'stderr'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,44 +51,6 @@ return [
     */
 
     'channels' => [
-        'stack' => [
-            'driver' => 'stack',
-            'channels' => ['single'],
-            'ignore_exceptions' => false,
-        ],
-
-        'single' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-        ],
-
-        'daily' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
-        ],
-
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
-            'emoji' => ':boom:',
-            'level' => env('LOG_LEVEL', 'critical'),
-        ],
-
-        'papertrail' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
-            ],
-        ],
-
         'stderr' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
@@ -110,38 +72,6 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
-        'null' => [
-            'driver' => 'monolog',
-            'handler' => NullHandler::class,
-        ],
-        'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
-        ],
-
-        'elastic' => [
-            'driver' => 'custom',
-            'via' => \ivampiresp\LaravelElasticsearchLogger\ESLogger::class,
-            'verify_ssl' => false,
-            'hosts' => [env('ELASTIC_HOST', 'https://localhost:9200')],
-            'user' => env('ELASTIC_USER', 'elastic'),
-            'pass' => env('ELASTIC_PASS', ''),
-            'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs'
-        ]
-
-//        'elastic' => [
-//            'driver' => 'monolog',
-//            'level' => 'debug',
-//            'handler' => ElasticsearchHandler::class,
-//            'formatter' => ElasticsearchFormatter::class,
-//            'formatter_with' => [
-//                'index' => Str::slug(env('APP_NAME', 'laravel'), '_').'-logs',
-//                'type' => '_doc',
-//            ],
-//
-//            'handler_with' => [
-//                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST', 'https://localhost:9200')])->setSSLVerification(false)->setBasicAuthentication(env('ELASTIC_USER', 'elastic'), env('ELASTIC_PASS', ''))->build(),
-//            ],
-//        ],
     ],
 
 ];
