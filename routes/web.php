@@ -13,6 +13,20 @@ use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
+
+// $router->get('/.well-known/openid-configuration', [
+//     'uses' => '\Idaas\Passport\ProviderController@wellknown',
+// ])->name('oidc.configuration');
+
+// $router->get('/.well-known/jwks.json', [
+//     'uses' => '\Idaas\Passport\ProviderController@jwks',
+// ])->name('oidc.jwks');
+
+// $router->get('/.well-known/webfinger', [
+//     'uses' => '\Idaas\Passport\ProviderController@webfinger',
+// ])->name('oidc.webfinger');
+
+
 /* Healthz */
 Route::get('healthz', function () {
     return response()->json(['status' => 'ok']);

@@ -42,14 +42,10 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerScopes(): void
     {
-        Passport::tokensCan([
-            'realname' => '获取用户的实名信息（包括姓名、身份证号）',
-            'user' => '获取用户的基本信息',
-            'login' => '允许生成快速登录链接',
-        ]);
+        Passport::tokensExpireIn(now()->addMinutes(30));
+        Passport::refreshTokensExpireIn(now()->addDays(5));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+        Passport::setDefaultScope("openid");
 
-        Passport::setDefaultScope([
-            'user',
-        ]);
     }
 }

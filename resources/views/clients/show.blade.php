@@ -89,13 +89,28 @@
     </form>
 
     <div class="mt-3">
-        <h3>授权路由</h3>
+        <h3>OpenID Connect 发现</h3>
+        {{ route('openid.discovery') }}
+    </div>
+
+    <div class="mt-3">
+        <h3>授权端点</h3>
         {{ route('passport.authorizations.authorize') }}
     </div>
 
     <div class="mt-3">
-        <h3>请求令牌</h3>
+        <h3>令牌端点</h3>
         {{ route('passport.token') }}
+    </div>
+
+    <div class="mt-3">
+        <h3>用户端点</h3>
+        {{ route('openid.userinfo') }}
+    </div>
+
+    <div class="mt-3">
+        <h3>Jwks 端点</h3>
+        {{ route('openid.jwks') }}
     </div>
 
 

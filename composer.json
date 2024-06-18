@@ -19,11 +19,10 @@
         "laravel/octane": "^2.4",
         "laravel/passport": "^12.0",
         "laravel/pulse": "^1.0@beta",
-        "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.8",
         "predis/predis": "^2.2",
-        "simplesoftwareio/simple-qrcode": "^4.2",
-        "tymon/jwt-auth": "^2.0"
+        "ronvanderheijden/openid-connect": "^1.2",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
