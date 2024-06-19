@@ -1,5 +1,6 @@
 <?php
-namespace App\Model;
+
+namespace App\Models;
 
 use App\Models\User;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;

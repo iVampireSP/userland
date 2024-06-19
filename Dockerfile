@@ -12,11 +12,13 @@ RUN chown -R 1337:1337 /app
 USER www
 
 # unset composer repo
-# RUN composer config -g repo.packagist composer https://packagist.org
-# RUN composer install --no-dev
-# RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
-# RUN art view:cache
-# RUN ./vendor/bin/rr get-binary
+RUN composer config -g repo.packagist composer https://packagist.org && rm -rf ~/.composer/cache && rm -rf .env
+RUN composer install --no-dev
+RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
+# remove composer cache
+RUN composer clear-cache
+RUN art view:cache
+RUN ./vendor/bin/rr get-binary
 RUN art octane:install --server=roadrunner
 
 
@@ -30,7 +32,7 @@ EXPOSE 8000
 # ENTRYPOINT ["start-container"]
 # Start Web
 # CMD [ "/usr/bin/php", "/app/artisan", "app:init", "--start" ]
-CMD [ "/usr/bin/php", "/app/artisan", "init", "web", "--host=0.0.0.0", "--workers=1" ]
+CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--host=0.0.0.0", "--workers=1" ]
 
 # Start queue
 # CMD [ "/usr/bin/php", "/app/artisan", "init", "queue", "--tries=3", "--timeout=60" ]

@@ -16,30 +16,24 @@
                    placeholder="输入客户端重定向地址">
             <label for="redirect">重定向</label>
         </div>
-{{--        <div class="form-floating mb-3">--}}
-{{--            <input type="text" id="provider" name="provider" class="form-control"--}}
-{{--                   placeholder="输入提供方">--}}
-{{--            <label for="provider">提供方</label>--}}
-{{--        </div>--}}
 
+
+        <p>如果您不了解，请勿勾选。</p>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="1" name="personal_access_client"
                    id="personal_access_client">
             <label class="form-check-label" for="personal_access_client">
-                个人访问客户端
+                仅允许个人令牌访问
             </label>
         </div>
 
-        {{--    checkbox  password_client  --}}
-        {{--    checkbox  personal_access_client  --}}
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="1" name="password_client"
                    id="password_client">
             <label class="form-check-label" for="password_client">
-                密码访问客户端
+                启用密码登录支持
             </label>
         </div>
-
 
         <button type="submit" class="btn btn-primary mt-3">新建</button>
     </form>
