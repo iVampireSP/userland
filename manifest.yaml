@@ -185,22 +185,10 @@ data:
   APP_DEBUG: "true"
   APP_URL: "http://localhost"
 
-  LOG_LEVEL: "debug"
-
-  DB_CONNECTION: "mysql"
   DB_HOST: "127.0.0.1"
   DB_PORT: "3306"
   DB_DATABASE: "oauth"
   DB_USERNAME: "root"
-
-  BROADCAST_DRIVER: "redis"
-  CACHE_DRIVER: "redis"
-  FILESYSTEM_DISK: "local"
-  QUEUE_CONNECTION: "redis"
-  SESSION_DRIVER: "redis"
-  SESSION_LIFETIME: "120"
-
-  MEMCACHED_HOST: "127.0.0.1"
 
   REDIS_HOST: "127.0.0.1"
   REDIS_PORT: "6379"
