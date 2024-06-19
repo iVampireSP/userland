@@ -10,8 +10,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     private static $scopes = [
         'realname' => '获取用户的实名信息（包括姓名、身份证号）',
-        'user' => '获取用户的基本信息',
-        'login' => '允许生成快速登录链接',
+
     ];
 
     /**

@@ -23,14 +23,12 @@ class ScopeRepository implements ScopeRepositoryInterface
     public function getScopeEntityByIdentifier($identifier)
     {
         $scopes = [
-            'openid' => ['description' => 'Enable OpenID Connect'],
-            'profile' => ['description' => 'Information about your profile'],
-            'email' => ['description' => 'Information about your email address'],
-            'phone' => ['description' => 'Information about your phone numbers'],
-            'address' => ['description' => 'Information about your address'],
-            'realname' => '获取用户的实名信息（包括姓名、身份证号）',
-            'user' => '获取用户的基本信息',
-            'login' => '允许生成快速登录链接',
+            'openid' => ['description' => '启用 OpenID 支持（将会获取 id_token）'],
+            'profile' => ['description' => '获取你的基本信息（包括昵称、头像）'],
+            'email' => ['description' => '获取你的邮件地址'],
+            'phone' => ['description' => '获取你的手机号'],
+            'address' => ['description' => '获取你的通讯地址'],
+            'realname' => '获取你的实名信息（包括姓名、身份证号）',
         ];
 
         if (array_key_exists($identifier, $scopes) === false) {
