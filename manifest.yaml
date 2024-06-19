@@ -1,0 +1,251 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth
+  namespace: ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth-web
+  template:
+    metadata:
+      labels:
+        app: oauth-web
+    spec:
+      imagePullSecrets:
+        - name: leafdev-registry
+      containers:
+        - name: web
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          imagePullPolicy: IfNotPresent
+
+          envFrom:
+            - configMapRef:
+                name: oauth-env
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: DB_PASSWORD
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: REDIS_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MAIL_PASSWORD
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1024Mi
+          ports:
+            - containerPort: 8000
+              name: http-8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth-schedule
+  namespace: ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth-schedule
+  template:
+    metadata:
+      labels:
+        app: oauth-schedule
+    spec:
+      imagePullSecrets:
+        - name: leafdev-registry
+      containers:
+        - name: schedule
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          imagePullPolicy: IfNotPresent
+          command:
+            - php
+            - artisan
+            - schedule:work
+          envFrom:
+            - configMapRef:
+                name: oauth-env
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: DB_PASSWORD
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: REDIS_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MAIL_PASSWORD
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth-worker
+  namespace: ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth-worker
+  template:
+    metadata:
+      labels:
+        app: oauth-worker
+    spec:
+      imagePullSecrets:
+        - name: leafdev-registry
+      containers:
+        - name: schedule
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          imagePullPolicy: IfNotPresent
+          command:
+            - php
+            - artisan
+            - queue:work
+          envFrom:
+            - configMapRef:
+                name: oauth-env
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: APP_KEY
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: DB_PASSWORD
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: REDIS_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MAIL_PASSWORD
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth-web-svc
+  namespace: ecosystem
+spec:
+  selector:
+    app: oauth-web
+  ports:
+    - port: 8000
+      name: http-8000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth-env
+  namespace: ecosystem
+data:
+  APP_NAME: "Laravel"
+  DISPLAY_NAME: "Laravel"
+  APP_ENV: "local"
+  APP_DEBUG: "true"
+  APP_URL: "http://localhost"
+
+  LOG_LEVEL: "debug"
+
+  DB_CONNECTION: "mysql"
+  DB_HOST: "127.0.0.1"
+  DB_PORT: "3306"
+  DB_DATABASE: "oauth"
+  DB_USERNAME: "root"
+
+  BROADCAST_DRIVER: "redis"
+  CACHE_DRIVER: "redis"
+  FILESYSTEM_DISK: "local"
+  QUEUE_CONNECTION: "redis"
+  SESSION_DRIVER: "redis"
+  SESSION_LIFETIME: "120"
+
+  MEMCACHED_HOST: "127.0.0.1"
+
+  REDIS_HOST: "127.0.0.1"
+  REDIS_PORT: "6379"
+
+  MAIL_MAILER: "smtp"
+  MAIL_HOST: "mailpit"
+  MAIL_PORT: "1025"
+  MAIL_USERNAME: "null"
+  MAIL_ENCRYPTION: "null"
+  MAIL_FROM_ADDRESS: "hello@example.com"
+  MAIL_FROM_NAME: '"${APP_NAME}"'
+
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  AWS_DEFAULT_REGION: "us-east-1"
+  AWS_BUCKET: ""
+  AWS_USE_PATH_STYLE_ENDPOINT: "false"
+
+  PUSHER_APP_ID: ""
+  PUSHER_APP_KEY: ""
+  PUSHER_APP_SECRET: ""
+  PUSHER_HOST: ""
+  PUSHER_PORT: "443"
+  PUSHER_SCHEME: "https"
+  PUSHER_APP_CLUSTER: "mt1"
+
+  VITE_PUSHER_APP_KEY: '"${PUSHER_APP_KEY}"'
+  VITE_PUSHER_HOST: '"${PUSHER_HOST}"'
+  VITE_PUSHER_PORT: '"${PUSHER_PORT}"'
+  VITE_PUSHER_SCHEME: '"${PUSHER_SCHEME}"'
+  VITE_PUSHER_APP_CLUSTER: '"${PUSHER_APP_CLUSTER}"'
+
+  SUPPORT_PAY_URL: ""
+  SUPPORT_PAY_MCH_ID: ""
+  SUPPORT_PAY_MCH_KEY: ""
+
+  SUPPORT_REAL_NAME_APP_CODE: ""
+#---
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: oauth-secret
+#  namespace: ecosystem
+#data:
+#  APP_KEY: ""
+#  DB_PASSWORD: ""
+#  REDIS_PASSWORD: ""
+#  MAIL_PASSWORD: ""
