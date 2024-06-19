@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
 
         // 删除 24 小时不更新的用户状态
         $schedule->job(new DeleteStatus)->daily()->onOneServer()->name('删除 24 小时不更新的用户状态');
+
+        // 清理 Token
+        $schedule->command('passport:purge')->hourly();
     }
 
     /**
