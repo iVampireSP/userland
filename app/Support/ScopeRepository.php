@@ -28,7 +28,7 @@ class ScopeRepository implements ScopeRepositoryInterface
             'email' => ['description' => '获取你的邮件地址'],
             'phone' => ['description' => '获取你的手机号'],
             'address' => ['description' => '获取你的通讯地址'],
-            'realname' => '获取你的实名信息（包括姓名、身份证号）',
+            'realname' => ['description' => '获取你的实名信息（包括姓名、身份证号）'],
         ];
 
         if (array_key_exists($identifier, $scopes) === false) {
