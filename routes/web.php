@@ -86,7 +86,7 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::post('status', [AuthController::class, 'status'])->name('status.update');
         /* End 状态 */
 
-        Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
-        Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
+        // Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
+        // Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
     }
 );

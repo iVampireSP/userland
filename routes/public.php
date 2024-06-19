@@ -16,10 +16,10 @@ Route::match(['post', 'get'], 'real_name/pay_process', [RealNameController::clas
 
 Route::get('status/{user}', StatusController::class)->name('status.show');
 
-/* Start Auth Request */
-Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request.store');
-Route::get('auth_request/{token}', [JWTController::class, 'show'])->name('auth_request.show');
-Route::post('auth_request/refresh', [JWTController::class, 'refresh'])->name('auth_request.refresh');
-/* End Auth Request */
+// /* Start Auth Request */
+// Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request.store');
+// Route::get('auth_request/{token}', [JWTController::class, 'show'])->name('auth_request.show');
+// Route::post('auth_request/refresh', [JWTController::class, 'refresh'])->name('auth_request.refresh');
+// /* End Auth Request */
 
 Route::get('jwks.json', [JWTController::class, 'jwks'])->name('jwks.json');

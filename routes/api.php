@@ -26,4 +26,4 @@ Route::get('status', [UserController::class, 'status'])
 Route::post('status', [UserController::class, 'status'])
     ->middleware('scopes:user');
 
-Route::post('login', [UserController::class, 'fastLogin'])->middleware('scopes:login');
+// Route::post('login', [UserController::class, 'fastLogin'])->middleware('scopes:login');
