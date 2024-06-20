@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a58cf744d0eab0af318265a4051c9156",
+    "content-hash": "5888bbbf4b614427b427d8ddd849f1fc",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1526,46 +1526,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "ivampiresp/laravel-init-command",
-            "version": "v0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/iVampireSP/laravel-init-command.git",
-                "reference": "3bb3f0126c2c029d416e5577499d104de863afed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/iVampireSP/laravel-init-command/zipball/3bb3f0126c2c029d416e5577499d104de863afed",
-                "reference": "3bb3f0126c2c029d416e5577499d104de863afed",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "ivampiresp\\LaravelInitCommand\\LaravelInitCommandServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ivampiresp\\LaravelInitCommand\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "ivamp",
-                    "email": "im@ivampiresp.com"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/iVampireSP/laravel-init-command/issues",
-                "source": "https://github.com/iVampireSP/laravel-init-command/tree/v0.0.3"
-            },
-            "time": "2023-12-26T14:36:56+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

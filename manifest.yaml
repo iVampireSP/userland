@@ -17,9 +17,15 @@ spec:
         - name: leafdev-registry
       containers:
         - name: web
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
           imagePullPolicy: IfNotPresent
-
+          command:
+            - php
+            - artisan
+            - init
+            - web
+            - --host=0.0.0.0
+            - --workers=1
           envFrom:
             - configMapRef:
                 name: oauth-env
@@ -71,7 +77,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
           imagePullPolicy: IfNotPresent
           command:
             - php
@@ -125,12 +131,14 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-6
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
           imagePullPolicy: IfNotPresent
           command:
             - php
             - artisan
-            - queue:work
+            - init
+            - queue
+            - --queue=default,high
           envFrom:
             - configMapRef:
                 name: oauth-env

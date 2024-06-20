@@ -14,7 +14,6 @@
         "ext-pdo": "*",
         "fakerphp/faker": "^1.21",
         "guzzlehttp/guzzle": "^7.2",
-        "ivampiresp/laravel-init-command": "v0.0.3",
         "laravel/framework": "^11.0",
         "laravel/octane": "^2.4",
         "laravel/passport": "^12.0",
