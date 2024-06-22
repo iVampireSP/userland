@@ -246,3 +246,22 @@ spec:
 #  DB_PASSWORD: ""
 #  REDIS_PASSWORD: ""
 #  MAIL_PASSWORD: ""
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth
+  namespace: ecosystem
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: auth.leaflow.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth-web-svc
+                port:
+                  name: http-8000
