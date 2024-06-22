@@ -17,7 +17,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: web
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-8
           imagePullPolicy: IfNotPresent
           command:
             - php
@@ -78,7 +78,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-8
           imagePullPolicy: IfNotPresent
           command:
             - php
@@ -132,7 +132,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-7
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-8
           imagePullPolicy: IfNotPresent
           command:
             - php
