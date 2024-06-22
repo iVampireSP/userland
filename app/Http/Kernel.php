@@ -9,6 +9,7 @@ use App\Http\Middleware\JsonRequest;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RealNamed;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\RequestLogging;
 use App\Http\Middleware\ResourceOwner;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -50,7 +51,6 @@ class Kernel extends HttpKernel
         ValidatePostSize::class,
         TrimStrings::class,
         ConvertEmptyStringsToNull::class,
-
     ];
 
     /**
@@ -66,6 +66,8 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
+        RequestLogging::class,
+
         ],
 
         'api' => [
