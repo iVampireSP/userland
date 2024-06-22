@@ -2,70 +2,150 @@
 
 @section('content')
 
-    @php($user = auth('web')->user())
+@php($user = auth('web')->user())
 
-    @if ($user->real_name_verified_at)
-        <x-alert-success>
-            您已经完成实人认证。
-        </x-alert-success>
-    @else
+@if ($user->real_name_verified_at)
+<x-alert-success>
+    您已经完成实人认证。
+</x-alert-success>
+@else
+<x-alert-warning>
+    由于实人认证接口费用高昂，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实名认证。
+    <br />
+    人脸识别需要使用手机摄像头，请使用手机浏览器进行实人认证。
+</x-alert-warning>
 
-        <x-alert-warning>
-            目前还在测试，这里将不会开放。
-        </x-alert-warning>
+@if (!\Illuminate\Support\Facades\Cache::has('real_name:user:' . auth('web')->id()))
 
-        <x-alert-warning>
-            由于实人认证接口费用高昂，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实名认证。
-            <br/>
-            人脸识别需要使用手机摄像头，请使用手机浏览器进行实人认证。
-        </x-alert-warning>
+<h3>支付 1 元来实名认证</h3>
+<p>在购买后，您必须在 24 小时内完成实名认证，否则次数将作废。</p>
 
-        @if (!\Illuminate\Support\Facades\Cache::has('real_name:user:'.auth('web')->id()))
+<form action="{{ route('real_name.pay') }}" method="post">
+    @csrf
 
-            <h3>支付 1 元来实名认证</h3>
-            <p>在购买后，您必须在 24 小时内完成实名认证，否则次数将作废。</p>
+    <input type="radio" name="type" id="wechat" value="wxpay" checked>
+    <label for="wechat"> <i class="bi bi-wechat"></i> 微信支付</label>
 
-            <form action="{{ route('real_name.pay') }}" method="post">
-                @csrf
+    <input type="radio" name="type" id="alipay" value="alipay">
+    <label for="alipay"> <i class="bi bi-alipay"></i> 支付宝</label>
 
-                <input type="radio" name="type" id="wechat" value="wxpay" checked>
-                <label for="wechat"> <i class="bi bi-wechat"></i> 微信支付</label>
+    <br />
+    <button type="submit" class="btn btn-primary mt-3">支付 1 元</button>
+</form>
+@else
 
-                <input type="radio" name="type" id="alipay" value="alipay">
-                <label for="alipay"> <i class="bi bi-alipay"></i> 支付宝</label>
+<h3>实人认证</h3>
 
-                <br />
-                <button type="submit" class="btn btn-primary mt-3">支付 1 元</button>
-            </form>
-        @else
+<x-alert-info>
+    实人认证产品是结合公安一所“互联网+”可信身份认证平台（简称CTID平台），通过用户活体视频进行活体检测得到人脸视频，通过OCR扫描用户身份证获取姓名+身份证号，并将人脸视频检测成功后获取的高质量人像照片直连公安一所“互联网+可信身份认证平台”（简称CTID平台）进行照片及信息比对，返回权威比对结果。H5全流程，接入简单，应用方便快捷。
+</x-alert-info>
+<x-alert-warning>
+    为了防止恶意注册，您的年龄必须大于 {{ config('settings.supports.real_name.min_age') }}
+    岁，小于 {{ config('settings.supports.real_name.max_age') }} 岁，否则无法进行实人认证。
+</x-alert-warning>
 
-            <h3>实人认证</h3>
 
-            {{--  if https --}}
-            @if (request()->isSecure())
-                <p>实名认证数据将全部加密传输，请放心实名。</p>
-            @else
-                <p class="text-danger">您的数据未加密传输，请使用 HTTPS 访问。</p>
-            @endif
+{{-- if https --}}
+@if (request()->isSecure())
+<p>实名认证数据将全部加密传输，请放心实名。</p>
+@else
+<p class="text-danger">您的数据未加密传输，请使用 HTTPS 访问。</p>
+@endif
 
-            <form action="{{ route('real_name.store') }}" method="post">
-                @csrf
-                <div class="mb-3">
-                    <label for="real_name" class="form-label">姓名</label>
-                    <input required type="text" class="form-control" id="real_name" name="real_name"
-                           placeholder="请输入您的姓名"
-                           autocomplete="off" maxlength="6">
-                </div>
-                <div class="mb-3">
-                    <label for="id_card" class="form-label">身份证号</label>
-                    <input required type="text" class="form-control" id="id_card" name="id_card"
-                           placeholder="请输入您的身份证号" autocomplete="off" maxlength="18">
-                </div>
-                <button type="submit" class="btn btn-primary">提交</button>
-            </form>
-        @endif
+<form action="{{ route('real_name.store') }}" method="post">
+    @csrf
+    <div class="mb-3">
+        <label for="real_name" class="form-label">姓名</label>
+        <input required type="text" class="form-control" id="real_name" name="real_name" placeholder="请输入您的姓名" autocomplete="off" maxlength="6">
+    </div>
+    <div class="mb-3 has-validation">
+        <label for="id_card" class="form-label">身份证号</label>
+        <input required type="text" class="form-control" id="id_card" name="id_card" placeholder="请输入您的身份证号" autocomplete="off" maxlength="18">
+    </div>
 
-    @endif
+    <!-- error msg -->
+    <p class="text-danger" id="error"></p>
+    <button type="submit" id="submit" class="btn btn-primary" disabled="disabled">提交</button>
+</form>
+
+
+
+
+<script>
+    function setErrorMsg(msg) {
+        let e = document.getElementById("error")
+        if (!msg) {
+            e.innerText = "";
+            return;
+        }
+
+        e.innerText = msg;
+    }
+
+    function validate(idCard) {
+        if (!idCard) {
+            setErrorMsg("要继续，请输入身份证号。");
+            return false;
+        }
+
+        return isIdCard(idCard);
+    }
+
+
+    function isIdCard(idCard) {
+        var regIdCard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+        if (regIdCard.test(idCard)) {
+            if (idCard.length == 18) {
+                var idCardWi = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+                var idCardY = new Array(1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2);
+                var idCardWiSum = 0;
+                for (var i = 0; i < 17; i++) {
+                    idCardWiSum += idCard.substring(i, i + 1) * idCardWi[i];
+                }
+                var idCardMod = idCardWiSum % 11;
+                var idCardLast = idCard.substring(17);
+                if (idCardMod == 2) {
+                    if (idCardLast == "X" || idCardLast == "x") {
+                        setErrorMsg(null);
+                        return true;
+                    } else {
+                        setErrorMsg("末尾校验码计算错误，请检查身份证号。")
+                        return false;
+                    }
+                } else {
+                    if (idCardLast == idCardY[idCardMod]) {
+                        setErrorMsg(null);
+                        return true;
+                    } else {
+                        setErrorMsg("校验码与身份证不匹配，请检查身份证号。")
+                        return false;
+                    }
+                }
+            }
+        } else {
+            setErrorMsg("身份证格式不正确。")
+
+            return false;
+        }
+    }
+
+    let idInput = document.getElementById('id_card');
+    idInput.addEventListener('input', function(e) {
+        let value = e.target.value;
+
+        let r = validate(value);
+
+        if (r) {
+            document.getElementById("submit").disabled = false;
+        } else {
+            document.getElementById("submit").disabled = true;
+        }
+    });
+</script>
+
+@endif
+
+@endif
+
 
 @endsection
-

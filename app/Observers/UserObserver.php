@@ -3,9 +3,10 @@
 namespace App\Observers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
+use App\Support\IdCardSupport;
 use Faker\Provider\zh_CN\Person;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Str;
 
 class UserObserver
 {
@@ -46,7 +47,9 @@ class UserObserver
                 $user->real_name_verified_at = null;
             } else {
                 $user->real_name_verified_at = now();
-                $user->birthday_at = $user->getBirthdayFromIdCard();
+                
+                $idCardSupport = new IdCardSupport();
+                $user->birthday_at = $idCardSupport->getBirthday($user->id_card);
             }
         }
 

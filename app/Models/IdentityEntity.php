@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use OpenIDConnect\Claims\Traits\WithClaims;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
@@ -19,7 +18,8 @@ class IdentityEntity implements IdentityEntityInterface
 
     /**
      * The identity repository creates this entity and provides the user id
-     * @param mixed $identifier
+     *
+     * @param  mixed  $identifier
      */
     public function setIdentifier($identifier): void
     {

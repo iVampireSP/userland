@@ -37,6 +37,7 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         $scope = new ScopeEntity();
         $scope->setIdentifier($identifier);
+
         return $scope;
     }
 }

@@ -26,7 +26,6 @@ Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('i
 //     'uses' => '\Idaas\Passport\ProviderController@webfinger',
 // ])->name('oidc.webfinger');
 
-
 /* Healthz */
 Route::get('healthz', function () {
     return response()->json(['status' => 'ok']);

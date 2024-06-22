@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
+
 // use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -58,20 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'banned_at' => 'datetime',
         'birthday_at' => 'date:Y-m-d',
     ];
-
-    public function getBirthdayFromIdCard(string $id_card = null): Carbon
-    {
-        if (empty($id_card)) {
-            $id_card = $this->id_card;
-        }
-
-        $bir = substr($id_card, 6, 8);
-        $year = (int) substr($bir, 0, 4);
-        $month = (int) substr($bir, 4, 2);
-        $day = (int) substr($bir, 6, 2);
-
-        return Carbon::parse($year.'-'.$month.'-'.$day);
-    }
 
     public function isAdult(): bool
     {
