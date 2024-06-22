@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
         ValidatePostSize::class,
         TrimStrings::class,
         ConvertEmptyStringsToNull::class,
+        RequestLogging::class,
     ];
 
     /**
@@ -66,8 +67,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-        RequestLogging::class,
-
         ],
 
         'api' => [
