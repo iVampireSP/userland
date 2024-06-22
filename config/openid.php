@@ -10,15 +10,12 @@ return [
          * To receive an `id_token, you should at least provide the openid scope.
          */
         'tokens_can' => [
-            'openid' => 'Enable OpenID Connect',
-            'profile' => 'Information about your profile',
-            'email' => 'Information about your email address',
-            'phone' => 'Information about your phone numbers',
-            'address' => 'Information about your address',
-            // 'login' => 'See your login information',
+            'openid' => '启用 OpenID 支持（将会获取 id_token）',
+            'profile' => '获取基本信息',
+            'email' => '获取电子邮件地址',
+            'phone' => '获取手机号',
+            'address' => '获取通信地址',
             'realname' => '获取用户的实名信息（包括姓名、身份证号）',
-            'user' => '获取用户的基本信息',
-            'login' => '允许生成快速登录链接',
         ],
     ],
 
@@ -29,12 +26,12 @@ return [
         'login' => [
             'last-login',
         ],
-        'company' => [
-            'company_name',
-            'company_address',
-            'company_phone',
-            'company_email',
-        ],
+        // 'company' => [
+        //     'company_name',
+        //     'company_address',
+        //     'company_phone',
+        //     'company_email',
+        // ],
     ],
 
     /**
