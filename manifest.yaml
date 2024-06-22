@@ -58,6 +58,15 @@ spec:
           ports:
             - containerPort: 8000
               name: http-8000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -266,3 +275,17 @@ spec:
                 name: oauth-web-svc
                 port:
                   name: http-8000
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: oauth-hpa
+  namespace: ecosystem
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: oauth
+  targetCPUUtilizationPercentage: 10
