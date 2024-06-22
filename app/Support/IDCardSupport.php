@@ -18,7 +18,7 @@ class IDCardSupport
         $length = strlen($num);
         if ($length == 15) { // 如果是15位身份证
             // 15位身份证没有字母
-            if (!is_numeric($num)) {
+            if (! is_numeric($num)) {
                 return false;
             }
             // 省市县（6位）
@@ -28,7 +28,7 @@ class IDCardSupport
         } elseif ($length == 18) { // 如果是18位身份证
 
             // 基本格式校验
-            if (!preg_match('/^\d{17}[0-9xX]$/', $num)) {
+            if (! preg_match('/^\d{17}[0-9xX]$/', $num)) {
                 return false;
             }
             // 省市县（6位）
@@ -40,17 +40,17 @@ class IDCardSupport
         }
 
         // 验证地区
-        if (!$this->isAreaCodeValid($areaNum)) {
+        if (! $this->isAreaCodeValid($areaNum)) {
             return false;
         }
 
         // 验证日期
-        if (!$this->isDateValid($dateNum)) {
+        if (! $this->isDateValid($dateNum)) {
             return false;
         }
 
         // 验证最后一位
-        if (!$this->isVerifyCodeValid($num)) {
+        if (! $this->isVerifyCodeValid($num)) {
             return false;
         }
 
@@ -85,14 +85,14 @@ class IDCardSupport
     {
         // 15位身份证号没有年份，这里拼上年份
         if (strlen($date) == 6) {
-            $date = '19' . $date;
+            $date = '19'.$date;
         }
         $year = intval(substr($date, 0, 4));
         $month = intval(substr($date, 4, 2));
         $day = intval(substr($date, 6, 2));
 
         // 日期基本格式校验
-        if (!checkdate($month, $day, $year)) {
+        if (! checkdate($month, $day, $year)) {
             return false;
         }
 
@@ -175,7 +175,7 @@ class IDCardSupport
         // 得到两个日期相差的大体年数
         $diff = floor(($today - $date) / 86400 / 365);
         // strtotime 加上这个年数后得到那日的时间戳后与今日的时间戳相比
-        $age = strtotime(substr($idcard, 6, 8) . ' +' . $diff . 'years') > $today ? ($diff + 1) : $diff;
+        $age = strtotime(substr($idcard, 6, 8).' +'.$diff.'years') > $today ? ($diff + 1) : $diff;
 
         return $age;
     }

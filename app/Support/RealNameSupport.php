@@ -3,9 +3,7 @@
 namespace App\Support;
 
 use App\Exceptions\CommonException;
-use App\Models\User;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +25,7 @@ class RealNameSupport
         $this->app_code = config('settings.supports.real_name.code');
 
         $this->http = Http::withHeaders([
-            'Authorization' => 'APPCODE ' . $this->app_code,
+            'Authorization' => 'APPCODE '.$this->app_code,
             'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8',
             'Accept' => 'application/json',
         ])->baseUrl($this->url);
@@ -43,7 +41,7 @@ class RealNameSupport
     {
         $id = Str::random(32);
 
-        Cache::remember('real_name:' . $id, 600, function () use ($user_id, $name, $id_card) {
+        Cache::remember('real_name:'.$id, 600, function () use ($user_id, $name, $id_card) {
             return [
                 'user_id' => $user_id,
                 'name' => $name,
@@ -61,9 +59,9 @@ class RealNameSupport
      */
     private function submit(string $id): string
     {
-        $real_name = Cache::get('real_name:' . $id);
+        $real_name = Cache::get('real_name:'.$id);
 
-        if (!$real_name) {
+        if (! $real_name) {
             abort(404, '找不到实名认证请求');
         }
 
@@ -71,7 +69,7 @@ class RealNameSupport
             'bizNo' => $id,
             'idNumber' => $real_name['id_card'],
             'idName' => $real_name['name'],
-            'pageTitle' => config('app.display_name') . ' 实名认证',
+            'pageTitle' => config('app.display_name').' 实名认证',
             'notifyUrl' => route('public.real-name.notify'),
             'procedureType' => 'video',
             'txtBgColor' => '#cccccc',
@@ -87,7 +85,7 @@ class RealNameSupport
 
         $resp = $this->http->asForm()->post('/edis_ctid_id_name_video_ocr_h5', $data)->json();
 
-        if (!$resp || $resp['code'] !== '0000') {
+        if (! $resp || $resp['code'] !== '0000') {
             throw new CommonException('调用远程服务器时出现了问题，请检查身份证号码是否正确。');
         }
 
@@ -99,7 +97,7 @@ class RealNameSupport
      */
     public function verify(array $request): array|bool
     {
-        if (!isset($request['data'])) {
+        if (! isset($request['data'])) {
             return false;
         }
 
@@ -107,7 +105,7 @@ class RealNameSupport
 
         $verify = $this->verifyIfSuccess($request['data'], $request['sign']);
 
-        if (!$verify) {
+        if (! $verify) {
             Log::debug('实名认证签名验证失败', $request);
 
             return false;
@@ -117,10 +115,10 @@ class RealNameSupport
             return false;
         }
 
-        $return = Cache::get('real_name:' . $data['bizNo'], false);
+        $return = Cache::get('real_name:'.$data['bizNo'], false);
 
         // 将 TTL 设置为 10s
-        Cache::put('real_name:' . $data['bizNo'], $return, 10);
+        Cache::put('real_name:'.$data['bizNo'], $return, 10);
 
         return $return;
     }
@@ -137,7 +135,7 @@ EOF;
 
         $public_key = openssl_pkey_get_public($public_key);
 
-        if (!$public_key) {
+        if (! $public_key) {
             abort(500, '公钥错误');
         }
 
