@@ -235,6 +235,7 @@ spec:
 #  SUPPORT_PAY_MCH_KEY: ""
 #
 #  SUPPORT_REAL_NAME_APP_CODE: ""
+#  OCTANE_HTTPS: "true"
 #---
 #apiVersion: v1
 #kind: Secret
