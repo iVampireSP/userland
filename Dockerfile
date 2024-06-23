@@ -3,11 +3,9 @@ FROM registry.leafdev.top/leaf/docker-php-image:latest
 WORKDIR /app
 
 COPY . /app
+COPY start.sh /usr/bin/start.sh
 
-RUN useradd -ms /bin/bash -u 1337 www
-
-# 设置权限
-RUN chown -R 1337:1337 /app
+RUN useradd -ms /bin/bash -u 1337 www && chown -R 1337:1337 /app && chmod +x /usr/bin/start.sh
 
 USER www
 
@@ -20,8 +18,9 @@ RUN composer config -g repo.packagist composer https://packagist.org &&  \
     composer dump-autoload --optimize --no-dev --classmap-authoritative && \
     composer clear-cache && \
     art view:cache && \
-    ./vendor/bin/rr get-binary && \
-    art octane:install --server=roadrunner
+    # ./vendor/bin/rr get-binary && \
+    art octane:install --server=swoole
+
 
 # COPY deploy/start-container /usr/local/bin/start-container
 # COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

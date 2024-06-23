@@ -25,10 +25,9 @@ spec:
       containers:
         - name: web
           image: registry.leafdev.top/ecosystem/oauth:v0-0-8
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           command:
-            - php
-            - artisan
+            - /usr/bin/start.sh
             - init
             - web
             - --host=0.0.0.0
@@ -58,6 +57,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: MAIL_PASSWORD
+            - name: PASSPORT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: PASSPORT_PRIVATE_KEY
           resources:
             limits:
               cpu: 100m
@@ -111,8 +115,7 @@ spec:
           image: registry.leafdev.top/ecosystem/oauth:v0-0-8
           imagePullPolicy: IfNotPresent
           command:
-            - php
-            - artisan
+            - /usr/bin/start.sh
             - schedule:work
           envFrom:
             - configMapRef:
@@ -138,6 +141,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: MAIL_PASSWORD
+            - name: PASSPORT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: PASSPORT_PRIVATE_KEY
           resources:
             limits:
               cpu: 100m
@@ -167,20 +175,12 @@ spec:
     spec:
       imagePullSecrets:
         - name: leafdev-registry
-      volumes:
-        - name: oauth-env
-          configMap:
-            name: oauth-env
-        - name: oauth-private-key
-          secret:
-            secretName: oauth-secret
       containers:
         - name: schedule
           image: registry.leafdev.top/ecosystem/oauth:v0-0-8
           imagePullPolicy: IfNotPresent
           command:
-            - php
-            - artisan
+            - /usr/bin/start.sh
             - init
             - queue
             - --queue=default,high
@@ -208,17 +208,15 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: MAIL_PASSWORD
+            - name: PASSPORT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: PASSPORT_PRIVATE_KEY
           resources:
             limits:
               cpu: 100m
               memory: 512Mi
-          volumeMounts:
-            - name: oauth-private-key
-              mountPath: /app/storage/oauth-private.key
-              subPath: OAUTH_PRIVATE_KEY
-            - name: oauth-env
-              mountPath: /app/storage/oauth-public.key
-              subPath: OAUTH_PUBLIC_KEY
 ---
 apiVersion: v1
 kind: Service
@@ -287,7 +285,7 @@ spec:
 #
 #  SUPPORT_REAL_NAME_APP_CODE: ""
 #  OCTANE_HTTPS: "true"
-#  OAUTH_PUBLIC_KEY: ""
+#  PASSPORT_PUBLIC_KEY: ""
 #---
 #apiVersion: v1
 #kind: Secret
@@ -299,7 +297,7 @@ spec:
 #  DB_PASSWORD: ""
 #  REDIS_PASSWORD: ""
 #  MAIL_PASSWORD: ""
-#  OAUTH_PRIVATE_KEY: ""
+#  PASSPORT_PRIVATE_KEY: ""
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -332,20 +330,10 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: oauth
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 300
-      policies:
-        - type: Percent
-          value: 100
-          periodSeconds: 15
-    scaleUp:
-      stabilizationWindowSeconds: 0
-      policies:
-        - type: Percent
-          value: 100
-          periodSeconds: 15
-        - type: Pods
-          value: 4
-          periodSeconds: 15
-      selectPolicy: Max
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
