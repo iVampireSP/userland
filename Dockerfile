@@ -23,7 +23,6 @@ RUN composer config -g repo.packagist composer https://packagist.org &&  \
     ./vendor/bin/rr get-binary && \
     art octane:install --server=roadrunner
 
-
 # COPY deploy/start-container /usr/local/bin/start-container
 # COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # COPY vendor /app/vendor

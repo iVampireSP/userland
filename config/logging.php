@@ -1,8 +1,5 @@
 <?php
 
-use Monolog\Formatter\JsonFormatter;
-use Monolog\Handler\StreamHandler;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -15,7 +12,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stderr'),
+    'default' => 'stack',
 
     /*
     |--------------------------------------------------------------------------
@@ -49,27 +46,17 @@ return [
     */
 
     'channels' => [
-        'stderr' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => StreamHandler::class,
-            'formatter' => JsonFormatter::class,
-            'with' => [
-                'stream' => 'php://stderr',
-            ],
+        'stack' => [
+            'driver' => 'stack',
+            'channels' => ['single'],
+            'ignore_exceptions' => false,
         ],
 
-        'syslog' => [
-            'driver' => 'syslog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'facility' => LOG_USER,
-        ],
-
-        'errorlog' => [
-            'driver' => 'errorlog',
+        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
-
     ],
 
 ];
