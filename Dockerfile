@@ -18,8 +18,8 @@ RUN composer config -g repo.packagist composer https://packagist.org &&  \
     composer dump-autoload --optimize --no-dev --classmap-authoritative && \
     composer clear-cache && \
     art view:cache && \
-    # ./vendor/bin/rr get-binary && \
-    art octane:install --server=swoole
+    ./vendor/bin/rr get-binary && \
+    art octane:install --server=roadrunner
 
 
 # COPY deploy/start-container /usr/local/bin/start-container
