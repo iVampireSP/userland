@@ -24,7 +24,7 @@ spec:
             secretName: oauth-secret
       containers:
         - name: web
-          image: registry.leafdev.top/ecosystem/oauth:v0-0-8
+          image: registry.leafdev.top/ecosystem/oauth:v0-0-8-fix
           imagePullPolicy: IfNotPresent
           command:
             - /usr/bin/start.sh
