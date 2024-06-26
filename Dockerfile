@@ -19,7 +19,7 @@ RUN composer config -g repo.packagist composer https://packagist.org &&  \
     composer clear-cache && \
     art view:cache && \
     ./vendor/bin/rr get-binary && \
-    art octane:install --server=roadrunner
+    art octane:install --server=swoole
 
 
 # COPY deploy/start-container /usr/local/bin/start-container
