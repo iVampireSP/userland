@@ -53,7 +53,13 @@
 
 
     <script>
+        let waiting = false
         const inter = setInterval(function () {
+            if (waiting) {
+                return
+            }
+            waiting = true
+
             axios.get(location.href)
                 .then(function (response) {
                     if (response.data.code === 1) {
@@ -61,12 +67,14 @@
                         document.getElementById('pay').classList.add('d-none');
 
                         clearInterval(inter);
+                        waiting=false
 
                         @auth
                         setTimeout(function () {
                             location.href = '/real_name';
                         }, 3000);
                         @endauth
+
                     }
                 })
                 .catch(function () {
@@ -74,6 +82,8 @@
                     document.getElementById('pay').classList.add('d-none');
 
                     clearInterval(inter);
+                    waiting=false
+
                 });
         }, 1500);
     </script>
