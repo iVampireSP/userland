@@ -7,7 +7,6 @@ use App\Models\Ban;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use JetBrains\PhpStorm\NoReturn;
 
 class BanController extends Controller
 {

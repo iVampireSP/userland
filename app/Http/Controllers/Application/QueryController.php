@@ -45,7 +45,7 @@ class QueryController extends Controller
 
         $ban = $user->bans()->whereCode($request->input('code'))->first();
 
-        if ($ban && !$ban->pardoned) {
+        if ($ban && ! $ban->pardoned) {
             // 已经有了，不能再封禁
             return $this->error('The email with code already banned.');
         }
@@ -79,7 +79,7 @@ class QueryController extends Controller
         $expired_at = Carbon::parse($request->input('expired_at'))->toDateTimeString();
 
         $ban = Ban::whereEmail($request->input('email'))->whereCode($request->input('code'))->first();
-        if ($ban && !$ban->pardoned) {
+        if ($ban && ! $ban->pardoned) {
             // 已经有了，不能再封禁
             return $this->error('The email with code already banned.');
         }
@@ -99,7 +99,7 @@ class QueryController extends Controller
     {
         $request->validate([
             'code' => 'nullable|string|max:255',
-            'email' => 'required|email|max:255'
+            'email' => 'required|email|max:255',
         ]);
 
         $bans = Ban::whereClientId($request->client_id)->whereEmail($request->input('email'))->wherePardoned(false);
@@ -112,5 +112,4 @@ class QueryController extends Controller
 
         return $this->success($bans);
     }
-
 }

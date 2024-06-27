@@ -52,5 +52,4 @@ class Ban extends Model
             }
         });
     }
-
 }
