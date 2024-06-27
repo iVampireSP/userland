@@ -62,12 +62,13 @@
 
             axios.get(location.href)
                 .then(function (response) {
+                    waiting=false
+
                     if (response.data.code === 1) {
                         document.getElementById('pay-success').classList.remove('d-none');
                         document.getElementById('pay').classList.add('d-none');
 
                         clearInterval(inter);
-                        waiting=false
 
                         @auth
                         setTimeout(function () {
