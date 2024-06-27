@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Support\IdCardSupport;
-use Faker\Provider\zh_CN\Person;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 
@@ -13,7 +12,8 @@ class UserObserver
     public function creating(User $user): void
     {
         if (! $user->name) {
-            $user->name = Person::firstNameMale();
+            // 取邮箱
+            $user->name = Str::before($user->email, '@');
         }
 
         $user->email_md5 = md5($user->email);
