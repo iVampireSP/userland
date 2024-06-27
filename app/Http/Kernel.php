@@ -13,6 +13,7 @@ use App\Http\Middleware\RequestLogging;
 use App\Http\Middleware\ResourceOwner;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
+use App\Http\Middleware\ValidateApplication;
 use App\Http\Middleware\ValidateSignature;
 use App\Http\Middleware\ValidateUserIfBanned;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -101,5 +102,6 @@ class Kernel extends HttpKernel
         'resource_owner' => ResourceOwner::class,
         'scopes' => CheckScopes::class,
         'scope' => CheckForAnyScope::class,
+        'validate_application' => ValidateApplication::class,
     ];
 }

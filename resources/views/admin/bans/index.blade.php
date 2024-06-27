@@ -54,7 +54,7 @@
                         {{ $ban->created_at }}
                     </td>
                     <td>
-                        {{$ban->expires_at}}
+                        {{$ban->expired_at ?? '永久'}}
                     </td>
                     <td>
                         <a href="{{ route('admin.bans.edit', [$user, $ban]) }}">编辑</a>

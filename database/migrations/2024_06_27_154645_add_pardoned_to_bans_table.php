@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bans', function (Blueprint $table) {
-            $table->boolean('is_expired')->default(false)->index();
+            $table->boolean('pardoned')->default(false)->index();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bans', function (Blueprint $table) {
-            $table->dropColumn('is_expired');
+            $table->dropColumn('pardoned');
         });
     }
 };

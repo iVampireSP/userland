@@ -49,8 +49,8 @@ return [
             'provider' => 'users',
         ],
         'jwt' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
+            'driver' => 'token',
+            'provider' => 'applications',
         ],
     ],
 
@@ -81,7 +81,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-
     ],
 
     /*

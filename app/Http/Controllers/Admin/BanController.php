@@ -14,7 +14,6 @@ class BanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    #[NoReturn]
     public function index(Request $request, User $user)
     {
         $bans = $user->bans()->with('client');
@@ -45,26 +44,26 @@ class BanController extends Controller
             'code' => 'nullable|string',
             'reason' => 'nullable|string',
             'expires_at' => 'nullable|date',
-            'is_expired' => 'nullable|boolean',
+            'pardoned' => 'nullable|boolean',
         ]);
 
-        $expires_at = $request->expires_at;
+        $expired_at = $request->expires_at;
 
         if ($request->filled('expires_at')) {
-            $expires_at = Carbon::parse($request->input('expires_at'))->toDateTimeString();
+            $expired_at = Carbon::parse($request->input('expires_at'))->toDateTimeString();
         }
 
         // 如果 is_expired
         if ($request->filled('is_expired')) {
-            $expires_at = now();
+            $expired_at = now();
         }
 
         // 更新经过验证的
         $ban->update([
             'code' => $request->input('code'),
             'reason' => $request->input('reason'),
-            'expires_at' => $expires_at,
-            'is_expired' => $request->input('is_expired'),
+            'expired_at' => $expired_at,
+            'pardoned' => $request->input('pardoned'),
         ]);
 
         return back()->with('success', '已更新封禁。');

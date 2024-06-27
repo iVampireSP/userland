@@ -21,18 +21,18 @@
                    value="{{ $ban->reason }}" autocomplete="off">
         </div>
 
-        <label for="reason">解封时间（留空将为永久封禁）</label>
+        <label for="expired_at">解封时间（留空将为永久封禁）</label>
         <div class="input-group" >
-            <button class="btn btn-outline-secondary" type="button" onclick="document.querySelector('#expires_at').value = ''">切换为永久封禁</button>
-            <input type="datetime-local" class="form-control" id="expires_at" name="expires_at" placeholder="解封时间（留空将为永久封禁）"
-                   value="{{ $ban->expires_at }}" autocomplete="off">
+            <button class="btn btn-outline-secondary" type="button" onclick="document.querySelector('#expired_at').value = ''">切换为永久封禁</button>
+            <input type="datetime-local" class="form-control" id="expired_at" name="expired_at" placeholder="解封时间（留空将为永久封禁）"
+                   value="{{ $ban->expired_at }}" autocomplete="off">
         </div>
 
         <div class="form-group">
-            <label for="is_expired">立即解除</label>
-            <select class="form-control" id="is_expired" name="is_expired">
+            <label for="pardoned">立即解除</label>
+            <select class="form-control" id="pardoned" name="pardoned">
                 <option value="0">否</option>
-                <option value="1" @if ($ban->is_expired) selected @endif>是</option>
+                <option value="1" @if ($ban->pardoned) selected @endif>是</option>
             </select>
         </div>
 

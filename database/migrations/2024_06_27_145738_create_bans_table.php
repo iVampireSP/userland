@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id')->index()->nullable();
             $table->foreign('client_id')->references('id')->on('oauth_clients')->onDelete('set null');
 
-            $table->string('expires_at')->nullable()->index();
+            $table->string('expired_at')->nullable()->index();
 
             $table->timestamps();
         });

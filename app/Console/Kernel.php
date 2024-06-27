@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\UnbanUserJob;
 use App\Jobs\User\DeleteStatus;
 use App\Jobs\User\DeleteUnverifiedUserJob;
 use Illuminate\Console\Scheduling\Schedule;
@@ -22,6 +23,10 @@ class Kernel extends ConsoleKernel
 
         // 清理 Token
         $schedule->command('passport:purge')->hourly();
+
+        // 解除到时间的应用封禁
+        $schedule->job(new UnbanUserJob())->onOneServer()->hourly()->name('解除到时间的应用封禁');
+
     }
 
     /**
