@@ -17,7 +17,7 @@
 
 @if (!\Illuminate\Support\Facades\Cache::has('real_name:user:' . auth('web')->id()))
 
-<h3>支付 1 元来实名认证</h3>
+<h3>支付 {{config('settings.supports.real_name.price')}} 元来实名认证</h3>
 <p>在购买后，您必须在 24 小时内完成实名认证，否则次数将作废。</p>
 
 <form action="{{ route('real_name.pay') }}" method="post">
