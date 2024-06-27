@@ -9,3 +9,4 @@ Route::post('user/{user}/ban', [QueryController::class, 'ban']);
 Route::delete('user/{user}/ban/{ban}', [QueryController::class, 'unban']);
 Route::post('emailBan', [QueryController::class, 'emailBan']);
 Route::get('emailBans', [QueryController::class, 'emailBans']);
+Route::get('allBans', [QueryController::class, 'allBans']);

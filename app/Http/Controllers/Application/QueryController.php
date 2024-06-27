@@ -16,6 +16,23 @@ class QueryController extends Controller
         return $this->success($user);
     }
 
+    public function allBans(Request $request): JsonResponse
+    {
+        $request->validate([
+            'code' => 'nullable|string|max:255',
+        ]);
+
+        $bans = Ban::whereClientId($request->client_id)->wherePardoned(false);
+
+        if ($request->filled('code')) {
+            $bans = $bans->whereCode($request->input('code'));
+        }
+
+        $bans = $bans->latest()->simplePaginate(20);
+
+        return $this->success($bans);
+    }
+
     public function bans(Request $request, User $user): JsonResponse
     {
         $request->validate([
