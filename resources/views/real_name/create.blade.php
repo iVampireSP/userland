@@ -30,7 +30,7 @@
     <label for="alipay"> <i class="bi bi-alipay"></i> 支付宝</label>
 
     <br />
-    <button type="submit" class="btn btn-primary mt-3">支付 1 元</button>
+    <button type="submit" class="btn btn-primary mt-3">支付 {{config('settings.supports.real_name.price')}} 元</button>
 </form>
 @else
 
@@ -95,17 +95,17 @@
     function isIdCard(idCard) {
         var regIdCard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
         if (regIdCard.test(idCard)) {
-            if (idCard.length == 18) {
-                var idCardWi = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
-                var idCardY = new Array(1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2);
+            if (idCard.length === 18) {
+                var idCardWi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+                var idCardY = [1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2];
                 var idCardWiSum = 0;
                 for (var i = 0; i < 17; i++) {
                     idCardWiSum += idCard.substring(i, i + 1) * idCardWi[i];
                 }
                 var idCardMod = idCardWiSum % 11;
                 var idCardLast = idCard.substring(17);
-                if (idCardMod == 2) {
-                    if (idCardLast == "X" || idCardLast == "x") {
+                if (idCardMod === 2) {
+                    if (idCardLast === "X" || idCardLast === "x") {
                         setErrorMsg(null);
                         return true;
                     } else {
@@ -113,7 +113,7 @@
                         return false;
                     }
                 } else {
-                    if (idCardLast == idCardY[idCardMod]) {
+                    if (idCardLast === idCardY[idCardMod]) {
                         setErrorMsg(null);
                         return true;
                     } else {
@@ -135,11 +135,7 @@
 
         let r = validate(value);
 
-        if (r) {
-            document.getElementById("submit").disabled = false;
-        } else {
-            document.getElementById("submit").disabled = true;
-        }
+        document.getElementById("submit").disabled = !r;
     });
 </script>
 
