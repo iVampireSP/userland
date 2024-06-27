@@ -6,10 +6,7 @@ use App\Exceptions\CommonException;
 use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 /**
  * 实名认证支持
@@ -43,9 +40,10 @@ class RealNameSupport
     {
         $info = $user->getTempIdCard();
 
-        if (empty($info['name'])){
+        if (empty($info['name'])) {
             throw new CommonException('获取用户信息的时候出现了问题。');
         }
+
         return $this->submit($info['name'], $info['id_card'], $image_b64);
     }
 
@@ -63,7 +61,6 @@ class RealNameSupport
             'liveck' => '1',
         ];
 
-
         $resp = $this->http->asForm()->post('/lundear/idface', $data);
 
         // 检测 status code
@@ -73,7 +70,7 @@ class RealNameSupport
 
         $resp = $resp->json();
 
-        if (! $resp ) {
+        if (! $resp) {
             throw new CommonException('调用远程服务器时出现了问题，请检查身份证号码是否正确。');
         }
 
@@ -85,7 +82,6 @@ class RealNameSupport
 
         throw new CommonException($resp['desc']);
     }
-
 
     public function getAge(string $id_card): int
     {

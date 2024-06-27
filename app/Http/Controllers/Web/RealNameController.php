@@ -57,7 +57,6 @@ class RealNameController extends Controller
             return back()->with('error', '您已经实名认证过了。');
         }
 
-
         $user->setTempIdCard($request->input('real_name'), $request->input('id_card'));
 
         // 显示认证页面
@@ -184,7 +183,7 @@ class RealNameController extends Controller
 
     public function capture(Request $request)
     {
-        if (!$request->user()->hasRealName()) {
+        if (! $request->user()->hasRealName()) {
             return back()->with('error', '您需要购买实名认证的资格。');
         }
 
@@ -194,10 +193,9 @@ class RealNameController extends Controller
             ]);
 
             // 如果格式不是 base64
-            if (!preg_match('/^data:image\/(\w+);base64,/', $request->input('image_b64'))) {
+            if (! preg_match('/^data:image\/(\w+);base64,/', $request->input('image_b64'))) {
                 return back()->with('error', '图像格式不正确。');
             }
-
 
             $realNameSupport = new RealNameSupport();
             $user = $request->user();
@@ -217,7 +215,6 @@ class RealNameController extends Controller
                 $user->real_name = $info['name'];
                 $user->id_card = $info['id_card'];
                 $user->save();
-
 
                 return redirect()->route('index')->with('success', '实名认证成功。');
             } else {

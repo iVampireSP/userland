@@ -100,7 +100,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Ban::class, 'email', 'email');
     }
 
-
     // 给予实名认证权利
     public function giveRealName(): void
     {
@@ -110,7 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // 是否可以实名认证
     public function hasRealName(): bool
     {
-        return Cache::get('real_name:user:'.$this->id, fn() => false);
+        return Cache::get('real_name:user:'.$this->id, fn () => false);
     }
 
     public function setTempIdCard(string $name, string $id_card): void
