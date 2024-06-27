@@ -3,6 +3,8 @@
 namespace App\Support;
 
 use App\Exceptions\CommonException;
+use App\Models\User;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +16,7 @@ use Illuminate\Support\Str;
  */
 class RealNameSupport
 {
-    private string $url = 'https://faceidh5.market.alicloudapi.com';
+    private string $url = 'https://ckidface.market.alicloudapi.com';
 
     private string $app_code;
 
@@ -35,114 +37,55 @@ class RealNameSupport
      * 创建实名认证请求
      *
      *
-     * @throws CommonException
+     * @throws CommonException|ConnectionException
      */
-    public function create($user_id, $name, $id_card): string
+    public function create(User $user, $image_b64): string
     {
-        $id = Str::random(32);
+        $info = $user->getTempIdCard();
 
-        Cache::remember('real_name:'.$id, 600, function () use ($user_id, $name, $id_card) {
-            return [
-                'user_id' => $user_id,
-                'name' => $name,
-                'id_card' => $id_card,
-            ];
-        });
-
-        return $this->submit($id);
+        if (empty($info['name'])){
+            throw new CommonException('获取用户信息的时候出现了问题。');
+        }
+        return $this->submit($info['name'], $info['id_card'], $image_b64);
     }
 
     /** 向 实名认证服务 发送请求
      *
      *
-     * @throws CommonException
+     * @throws CommonException|ConnectionException
      */
-    private function submit(string $id): string
+    private function submit(string $name, string $id_card, string $image_b64): bool
     {
-        $real_name = Cache::get('real_name:'.$id);
-
-        if (! $real_name) {
-            abort(404, '找不到实名认证请求');
-        }
-
         $data = [
-            'bizNo' => $id,
-            'idNumber' => $real_name['id_card'],
-            'idName' => $real_name['name'],
-            'pageTitle' => config('app.display_name').' 实名认证',
-            'notifyUrl' => route('public.real-name.notify'),
-            'procedureType' => 'video',
-            'txtBgColor' => '#cccccc',
-
-            'ocrIncIdBack' => 'false',
-            'ocrOnly' => 'false',
-            'pageBgColor' => 'false',
-            'retIdImg' => 'false',
-            'returnImg' => 'false',
-            'returnUrl' => route('public.real-name.process'),
-            // 'returnUrl' => 'https://75vsdxcipw.sharedwithexpose.com/public/real_name/process',
+            'idcard' => $id_card,
+            'name' => $name,
+            'image' => $image_b64,
+            'liveck' => '1',
         ];
 
-        $resp = $this->http->asForm()->post('/edis_ctid_id_name_video_ocr_h5', $data)->json();
 
-        if (! $resp || $resp['code'] !== '0000') {
+        $resp = $this->http->asForm()->post('/lundear/idface', $data);
+
+        // 检测 status code
+        if ($resp->status() !== 200) {
+            throw new ConnectionException('远程服务器没有返回预期的状态码。');
+        }
+
+        $resp = $resp->json();
+
+        if (! $resp ) {
             throw new CommonException('调用远程服务器时出现了问题，请检查身份证号码是否正确。');
         }
 
-        return $resp['verifyUrl'];
+        $code = $resp['code'];
+
+        if ($code == 0) {
+            return true;
+        }
+
+        throw new CommonException($resp['desc']);
     }
 
-    /**
-     * 验证实名认证请求
-     */
-    public function verify(array $request): array|bool
-    {
-        if (! isset($request['data'])) {
-            return false;
-        }
-
-        $data = json_decode($request['data'], true);
-
-        $verify = $this->verifyIfSuccess($request['data'], $request['sign']);
-
-        if (! $verify) {
-            Log::debug('实名认证签名验证失败', $request);
-
-            return false;
-        }
-
-        if ($data['code'] !== 'PASS') {
-            return false;
-        }
-
-        $return = Cache::get('real_name:'.$data['bizNo'], false);
-
-        // 将 TTL 设置为 10s
-        Cache::put('real_name:'.$data['bizNo'], $return, 10);
-
-        return $return;
-    }
-
-    private function verifyIfSuccess(string $request, string $sign): bool
-    {
-        $public_key = <<<'EOF'
------BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWKKJoLwh6XEBkTeCfVbKSB3zkkycbIdd8SBabj2jpWynXx0pBZvdFpbb9AEiyrnM8bImhpz8YOXc2yUuN1ui/w==
------END PUBLIC KEY-----
-EOF;
-
-        $sign = base64_decode($sign);
-
-        $public_key = openssl_pkey_get_public($public_key);
-
-        if (! $public_key) {
-            abort(500, '公钥错误');
-        }
-
-        $flag = openssl_verify($request, $sign, $public_key, OPENSSL_ALGO_SHA256);
-
-        return $flag === 1;
-    }
 
     public function getAge(string $id_card): int
     {

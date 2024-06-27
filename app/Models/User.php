@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Passport\HasApiTokens;
 
 // use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -97,5 +98,34 @@ class User extends Authenticatable implements MustVerifyEmail
     public function bans(): HasMany
     {
         return $this->hasMany(Ban::class, 'email', 'email');
+    }
+
+
+    // 给予实名认证权利
+    public function giveRealName(): void
+    {
+        Cache::set('real_name:user:'.$this->id, true, 86400);
+    }
+
+    // 是否可以实名认证
+    public function hasRealName(): bool
+    {
+        return Cache::get('real_name:user:'.$this->id, fn() => false);
+    }
+
+    public function setTempIdCard(string $name, string $id_card): void
+    {
+        Cache::set('real_name:user:'.$this->id.':temp_id_card', [
+            'name' => $name,
+            'id_card' => $id_card,
+        ], 86400);
+    }
+
+    public function getTempIdCard(): array
+    {
+        return Cache::get('real_name:user:'.$this->id.':temp_id_card', fn () => [
+            'name' => '',
+            'id_card' => '',
+        ]);
     }
 }

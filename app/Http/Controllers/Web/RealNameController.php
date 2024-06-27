@@ -23,7 +23,7 @@ class RealNameController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // 检测此用户是否有实名认证的资格（cache）
-        if (! Cache::has('real_name:user:'.$request->user()->id)) {
+        if (! $request->user()->hasRealName()) {
             return back()->with('error', '您需要先购买实名认证的资格。');
         }
 
@@ -57,15 +57,11 @@ class RealNameController extends Controller
             return back()->with('error', '您已经实名认证过了。');
         }
 
-        try {
-            $output = $realNameSupport->create($user->id, $request->input('real_name'), $request->input('id_card'));
-        } catch (CommonException $e) {
-            return back()->with('error', $e->getMessage());
-        }
 
-        Cache::set('real_name:user:'.$user->id, $output, 600);
+        $user->setTempIdCard($request->input('real_name'), $request->input('id_card'));
 
-        return redirect($output);
+        // 显示认证页面
+        return redirect()->route('real_name.capture');
     }
 
     public function create(): View
@@ -102,7 +98,7 @@ class RealNameController extends Controller
                     $data['status'] = intval($data['status']);
                     if ($data['status'] === 1) {
                         // 标记用户已经购买实名认证的资格，缓存 1 天
-                        Cache::set('real_name:user:'.$request->user()->id, true, 86400);
+                        $request->user()->giveRealName();
 
                         return response()->json([
                             'code' => 1,
@@ -131,9 +127,8 @@ class RealNameController extends Controller
         $request->validate([
             'type' => 'required|in:alipay,wxpay',
         ]);
-        //
         // 检测此用户是否有实名认证的资格（cache）
-        if (Cache::has('real_name:user:'.$request->user()->id)) {
+        if ($request->user()->hasRealName()) {
             return back()->with('error', '您已经购买过实名认证的资格了。');
         }
 
@@ -185,5 +180,52 @@ class RealNameController extends Controller
         $qrcode = QrCode::size(150)->generate($qrcode);
 
         return view('real_name.pay', compact('qrcode', 'type'));
+    }
+
+    public function capture(Request $request)
+    {
+        if (!$request->user()->hasRealName()) {
+            return back()->with('error', '您需要购买实名认证的资格。');
+        }
+
+        if ($request->post()) {
+            $request->validate([
+                'image_b64' => 'required|string',
+            ]);
+
+            // 如果格式不是 base64
+            if (!preg_match('/^data:image\/(\w+);base64,/', $request->input('image_b64'))) {
+                return back()->with('error', '图像格式不正确。');
+            }
+
+
+            $realNameSupport = new RealNameSupport();
+            $user = $request->user();
+            try {
+                $result = $realNameSupport->create($user, $request->input('image_b64'));
+            } catch (CommonException $e) {
+                abort(500, $e->getMessage());
+            } catch (ConnectionException $e) {
+                abort(500, '远程服务器没有返回预期的状态码。');
+            }
+
+            if ($result) {
+                // 保存
+                $info = $user->getTempIdCard();
+
+                // 由于不是 fillable，所以需要手动更新
+                $user->real_name = $info['name'];
+                $user->id_card = $info['id_card'];
+                $user->save();
+
+
+                return redirect()->route('index')->with('success', '实名认证成功。');
+            } else {
+                return back()->with('error', '实名认证失败。');
+            }
+
+        } else {
+            return view('real_name.capture');
+        }
     }
 }

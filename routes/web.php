@@ -74,6 +74,8 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::get('real_name', [RealNameController::class, 'create'])->name('real_name.create');
         Route::post('real_name', [RealNameController::class, 'store'])->name('real_name.store');
         Route::match(['get', 'post'], 'real_name/pay', [RealNameController::class, 'pay'])->name('real_name.pay');
+        Route::get('real_name/capture', [RealNameController::class, 'capture'])->name('real_name.capture');
+        Route::post('real_name/capture', [RealNameController::class, 'capture']);
         /* End 实名证 */
 
         /* Start 客户端 */

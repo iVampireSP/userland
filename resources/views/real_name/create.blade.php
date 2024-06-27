@@ -10,9 +10,9 @@
 </x-alert-success>
 @else
 <x-alert-warning>
-    由于实人认证接口费用高昂，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实名认证。
+    认证提供方会向我方收取一定费用，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实人认证。
     <br />
-    人脸识别需要使用手机摄像头，请使用手机浏览器进行实人认证。
+    人脸识别需要使用摄像头，我们建议您使用手机浏览器进行实人认证。
 </x-alert-warning>
 
 @if (!\Illuminate\Support\Facades\Cache::has('real_name:user:' . auth('web')->id()))
@@ -36,9 +36,6 @@
 
 <h3>实人认证</h3>
 
-<x-alert-info>
-    实人认证产品是结合公安一所“互联网+”可信身份认证平台（简称CTID平台），通过用户活体视频进行活体检测得到人脸视频，通过OCR扫描用户身份证获取姓名+身份证号，并将人脸视频检测成功后获取的高质量人像照片直连公安一所“互联网+可信身份认证平台”（简称CTID平台）进行照片及信息比对，返回权威比对结果。H5全流程，接入简单，应用方便快捷。
-</x-alert-info>
 <x-alert-warning>
     为了防止恶意注册，您的年龄必须大于 {{ config('settings.supports.real_name.min_age') }}
     岁，小于 {{ config('settings.supports.real_name.max_age') }} 岁，否则无法进行实人认证。
@@ -93,19 +90,19 @@
 
 
     function isIdCard(idCard) {
-        const regIdCard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+        let regIdCard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
         if (regIdCard.test(idCard)) {
             if (idCard.length === 18) {
-                const idCardWi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-                const idCardY = [1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+                let idCardWi = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+                let idCardY = [1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2];
                 let idCardWiSum = 0;
                 for (let i = 0; i < 17; i++) {
                     idCardWiSum += idCard.substring(i, i + 1) * idCardWi[i];
                 }
-                const idCardMod = idCardWiSum % 11;
-                const idCardLast = idCard.substring(17);
+                let idCardMod = idCardWiSum % 11;
+                let idCardLast = idCard.substring(17);
                 if (idCardMod === 2) {
-                    if (idCardLast === "X" || idCardLast === "x") {
+                    if (idCardLast == "X" || idCardLast == "x") {
                         setErrorMsg(null);
                         return true;
                     } else {
@@ -113,7 +110,7 @@
                         return false;
                     }
                 } else {
-                    if (idCardLast === idCardY[idCardMod]) {
+                    if (idCardLast == idCardY[idCardMod]) {
                         setErrorMsg(null);
                         return true;
                     } else {
@@ -128,6 +125,7 @@
             return false;
         }
     }
+
 
     let idInput = document.getElementById('id_card');
     idInput.addEventListener('input', function(e) {
