@@ -202,7 +202,7 @@ class RealNameController extends Controller
             try {
                 $result = $realNameSupport->create($user, $request->input('image_b64'));
             } catch (CommonException $e) {
-                abort(500, $e->getMessage());
+                return back()->with('error', $e->getMessage());
             } catch (ConnectionException $e) {
                 abort(500, '远程服务器没有返回预期的状态码。');
             }
