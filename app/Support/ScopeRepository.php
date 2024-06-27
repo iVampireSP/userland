@@ -22,14 +22,12 @@ class ScopeRepository implements ScopeRepositoryInterface
 
     public function getScopeEntityByIdentifier($identifier)
     {
-        $scopes = [
-            'openid' => ['description' => '启用 OpenID 支持（将会获取 id_token）'],
-            'profile' => ['description' => '获取你的基本信息（包括昵称、头像）'],
-            'email' => ['description' => '获取你的邮件地址'],
-            'phone' => ['description' => '获取你的手机号'],
-            'address' => ['description' => '获取你的通讯地址'],
-            'realname' => ['description' => '获取你的实名信息（包括姓名、身份证号）'],
-        ];
+        $config_scopes = config('openid.passport.tokens_can');
+        $scopes = [];
+
+        foreach ($config_scopes as $key => $value) {
+            $scopes[$key] = ['description' => $value];
+        }
 
         if (array_key_exists($identifier, $scopes) === false) {
             return;
