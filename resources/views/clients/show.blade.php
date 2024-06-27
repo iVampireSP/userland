@@ -90,7 +90,7 @@
     @if($client->trusted)
         <div class="mt-3">
             <h3>Application API 认证</h3>
-            在调用 API 时，Header 中使用 <code>Authorization: Bearer {{ $client->id }}:{{ $client->secret }}</code> 来认证。
+            在调用 API 时，Header 中使用 <code>Authorization: Bearer {{ $client->id }}|{{ $client->secret }}</code> 来认证。
         </div>
     @endif
 
