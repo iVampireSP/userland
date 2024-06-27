@@ -19,6 +19,7 @@
         "laravel/passport": "^12.0",
         "laravel/pulse": "^1.0@beta",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.28",
         "predis/predis": "^2.2",
         "ronvanderheijden/openid-connect": "^1.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
@@ -26,6 +27,7 @@
         "spiral/roadrunner-http": "^3.5"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.0",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
@@ -50,7 +52,10 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

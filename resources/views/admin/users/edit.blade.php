@@ -13,11 +13,12 @@
     <a href="{{ route('admin.users.show', $user) }}">作为 {{ $user->name }} 登录</a>
 
     @if ($user->banned_at)
-        <p class="text-danger">已被封禁，原因: {{ $user->banned_reason }}</p>
+        <p class="text-danger">已被全局封禁，原因: {{ $user->banned_reason }}</p>
     @else
         <a href="{{  route('admin.notifications.create') }}?user_id={{  $user->id }}">给此用户发送通知</a>
     @endif
 
+    <a href="{{  route('admin.bans.index', $user) }}">应用程序封禁列表</a>
 
     <br/>
 

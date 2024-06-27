@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\UserController;
@@ -12,6 +13,8 @@ Route::get('/', [AuthController::class, 'index'])->name('index')->middleware('au
 Route::resource('admins', AdminController::class)->except('show');
 
 Route::resource('users', UserController::class);
+
+Route::resource('user/{user}/bans', BanController::class);
 
 Route::resource('clients', ClientController::class);
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -70,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->real_name_verified_at !== null;
     }
 
-    public function scopeBirthday(): Builder
+    public function scopeBirthday(): User
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->select(['id', 'name', 'birthday_at', 'email_md5', 'created_at'])->whereMonth('birthday_at', now()->month)
@@ -92,5 +93,10 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return Arr::only($this->toArray(), $this->publics);
+    }
+
+    public function bans(): HasMany
+    {
+        return $this->hasMany(Ban::class, 'email', 'email');
     }
 }

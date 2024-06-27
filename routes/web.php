@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\Auth\VerificationController;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
@@ -84,6 +85,10 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* Start 状态 */
         Route::post('status', [AuthController::class, 'status'])->name('status.update');
         /* End 状态 */
+
+        /* Start 封禁 */
+        Route::resource('bans', BanController::class)->only(['index']);
+        /* End 封禁 */
 
         // Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
