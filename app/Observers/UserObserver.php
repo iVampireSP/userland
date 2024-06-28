@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\User;
-use App\Support\IdCardSupport;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 
@@ -48,7 +47,7 @@ class UserObserver
             } else {
                 $user->real_name_verified_at = now();
 
-                $idCardSupport = new IdCardSupport();
+                $idCardSupport = new \App\Support\IdCardSupport();
                 $user->birthday_at = $idCardSupport->getBirthday($user->id_card);
             }
         }
