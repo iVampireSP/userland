@@ -6,58 +6,41 @@
     <form action="{{ route('register') }}" method="POST">
         @csrf
 
-        <div class="form-group">
-            <label for="name" class="text-left ml-0">名称</label>
-            <input id="name" type="text"
-                   class="form-control @error('name') is-invalid @enderror" name="name"
-                   value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="账户显示的名称">
 
-            @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
+        <div class="form-floating mb-2">
+            <input type="text" class="form-control" placeholder="用户名"
+                   aria-label="用户名" name="name" id="name" required>
+            <label for="name">用户名</label>
         </div>
 
-        <div class="form-group">
-            <label for="email" class="text-left ml-0">邮箱</label>
-            <input id="email" type="text"
-                   class="form-control @error('email') is-invalid @enderror" name="email"
-                   value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="您的邮箱地址">
-
-            @error('email')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
+        <div class="form-floating mb-2">
+            <input type="email" class="form-control" placeholder="邮箱"
+                   aria-label="邮箱" name="email" id="email" required>
+            <label for="email">邮箱</label>
         </div>
 
-        <div class="form-group mt-2">
+
+        <div class="form-floating mb-2">
+            <input type="password" class="form-control" placeholder="密码"
+                   aria-label="密码" name="password" id="password" required>
             <label for="password">密码</label>
-            <input type="password" id="password" name="password"
-                   class="form-control rounded-right @error('password') is-invalid @enderror" required placeholder="密码">
-            @error('password')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
         </div>
 
-        <div class="form-group mt-2">
-            <label for="password-confirm">确认密码</label>
-            <input type="password" id="password-confirm" name="password_confirmation"
-                   class="form-control rounded-right" required autocomplete="new-password" placeholder="再次输入您的密码">
+        <div class="form-floating mb-2">
+            <input type="password" class="form-control" placeholder="确认密码"
+                   aria-label="确认密码" name="confirm_password" id="confirm_password" required>
+            <label for="confirm_password">确认密码</label>
         </div>
 
 
         <div class="text-start mt-3">如果您继续，则代表您已经阅读并同意
             <a
-                href="https://www.laecloud.com/tos/"
+                href="{{ route('tos') }}"
                 target="_blank"
                 class="text-decoration-underline">服务条款</a>
             和
             <a
-                href="https://www.laecloud.com/tos/"
+                href="{{route('privacy_policy')}}"
                 target="_blank"
                 class="text-decoration-underline">隐私政策</a>。
 

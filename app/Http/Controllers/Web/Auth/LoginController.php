@@ -35,6 +35,11 @@ class LoginController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
     public function logout(Request $request)
     {
         auth('web')->logout();

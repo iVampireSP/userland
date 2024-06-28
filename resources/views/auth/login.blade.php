@@ -25,9 +25,14 @@
     <br/>
 
 
+    <a class="link" href="{{ route('register') }}">
+        {{ __('Register') }}
+    </a>
+    &nbsp;
     <a class="link" href="{{ route('password.request') }}">
         {{ __('Forgot Your Password?') }}
     </a>
+
     <br />
 
 
