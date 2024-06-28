@@ -24,7 +24,7 @@ Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('i
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [LoginController::class, 'login']);
+    Route::post('login', [LoginController::class, 'passwordLogin']);
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('exists', [LoginController::class, 'userIfExists'])->name('login.exists-if-user');
 
