@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Exception;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
@@ -12,16 +11,13 @@ class Face extends Model
 {
     protected $fillable = [
         'type',
-        'user_id'
+        'user_id',
     ];
-
 
     // 用户验证的类型
     public const string TYPE_VALIDATE = 'validate';
 
     public const string EXT = 'jpeg';
-
-
 
     public function user(): BelongsTo
     {
@@ -38,16 +34,15 @@ class Face extends Model
 
     public function getPath(): string
     {
-        return '/' . $this->created_at->format('Y/m/d').'/faces/'.$this->id .'.'.self::EXT;
+        return '/'.$this->created_at->format('Y/m/d').'/faces/'.$this->id.'.'.self::EXT;
     }
 
     public function putFile($file = null): bool
     {
         $success = Storage::disk('s3')->put($this->getPath(), $file);
 
-        return !$success == false;
+        return ! $success == false;
     }
-
 
     public function getTempLink(): string
     {
@@ -70,7 +65,7 @@ class Face extends Model
      */
     public function delete(): bool
     {
-        if (!$this->deleteFile()) {
+        if (! $this->deleteFile()) {
             throw new Exception('删除文件失败');
         }
 
@@ -82,5 +77,4 @@ class Face extends Model
     {
         return $query->where('type', self::TYPE_VALIDATE);
     }
-
 }

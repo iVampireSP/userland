@@ -24,6 +24,7 @@ class MilvusRelease extends Command
 
     /**
      * Execute the console command.
+     *
      * @throws ConnectionException
      */
     public function handle(): int
@@ -32,7 +33,7 @@ class MilvusRelease extends Command
 
         $result = $milvusSupport->releaseCollection(config('milvus.collection'));
 
-        $this->warn("已开始释放。");
+        $this->warn('已开始释放。');
 
         return 0;
     }

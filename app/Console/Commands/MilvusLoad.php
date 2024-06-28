@@ -24,6 +24,7 @@ class MilvusLoad extends Command
 
     /**
      * Execute the console command.
+     *
      * @throws ConnectionException
      */
     public function handle(): int
@@ -32,7 +33,7 @@ class MilvusLoad extends Command
 
         $milvusSupport->loadCollection(config('milvus.collection'));
 
-        $this->info("已开始加载。");
+        $this->info('已开始加载。');
 
         return 0;
     }

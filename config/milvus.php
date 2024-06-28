@@ -22,5 +22,5 @@ return [
     'host' => env('MILVUS_HOST', 'localhost'),
     'port' => env('MILVUS_PORT', '19530'),
     'dbname' => env('MILVUS_DB_NAME', 'default'),
-    'collection' => env('MILVUS_COLLECTION_NAME', 'faces')
+    'collection' => env('MILVUS_COLLECTION_NAME', 'faces'),
 ];

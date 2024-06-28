@@ -200,7 +200,7 @@ class RealNameController extends Controller
             }
 
             // 检测是不是 data:image/jpeg;base64
-            if (!preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
+            if (! preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
                 return back()->with('error', '图片格式错误，请重新尝试。');
             }
 

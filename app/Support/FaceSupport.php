@@ -7,7 +7,6 @@ use App\Models\Face;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class FaceSupport
 {
@@ -57,7 +56,7 @@ class FaceSupport
         }
 
         // 检测是不是 data:image/jpeg;base64
-        if (!preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
+        if (! preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
             throw new CommonException('图片格式错误，需要为 jpeg。');
         }
 
@@ -72,7 +71,7 @@ class FaceSupport
         try {
             $liveness = $this->liveness($image_b64);
 
-            if ($liveness['result']['label'] != "RealFace") {
+            if ($liveness['result']['label'] != 'RealFace') {
                 throw new CommonException('活体检测失败，请重新尝试。');
             }
         } catch (ConnectionException $e) {
@@ -84,7 +83,7 @@ class FaceSupport
 
             if ($embeddings['embeddings']['embedding']) {
                 $embedding = $embeddings['embeddings']['embedding'];
-            }else {
+            } else {
                 throw new CommonException('提取特征时发现了错误，请再次尝试。');
             }
 
@@ -106,7 +105,6 @@ class FaceSupport
         } catch (ConnectionException $e) {
             throw new CommonException('搜索特征时发现了错误，请再次尝试。');
         }
-
 
         $face_ids = [];
 
@@ -130,5 +128,4 @@ class FaceSupport
 
         return $faces;
     }
-
 }

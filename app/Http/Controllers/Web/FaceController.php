@@ -7,15 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Face;
 use App\Support\FaceSupport;
 use App\Support\MilvusSupport;
-use App\Support\RealNameSupport;
 use Exception;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class FaceController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $face = auth()->user()->faces()->validate()->first();
 
         return view('faces.index', compact('face'));
@@ -34,17 +33,17 @@ class FaceController extends Controller
         }
 
         return view('faces.capture', [
-            'type' => 'store'
+            'type' => 'store',
         ]);
     }
 
-    private function doCapture(Request $request){
+    private function doCapture(Request $request)
+    {
         $request->validate([
             'image_b64' => 'required|string',
         ]);
 
         $image_b64 = $request->input('image_b64');
-
 
         $faceSupport = new FaceSupport();
         try {
@@ -81,7 +80,6 @@ class FaceController extends Controller
             return redirect()->route('faces.index')->with('error', '保存特征数据时发生了错误。');
         }
 
-
         // 成功
         return redirect()->route('faces.index')->with('success', '录入成功');
     }
@@ -90,20 +88,20 @@ class FaceController extends Controller
     {
         $face = auth()->user()->faces()->validate()->first();
 
-        if (!$face) {
+        if (! $face) {
             return redirect()->route('faces.index')->with('error', '没有找到人脸信息。');
         }
 
         $milvusSupport = new MilvusSupport();
         try {
-            $milvusSupport->delete("face_id == " . $face->id);
+            $milvusSupport->delete('face_id == '.$face->id);
         } catch (ConnectionException $e) {
             return redirect()->route('faces.index')->with('error', '删除特征数据时发生了错误。');
         }
 
         $result = $face->delete();
 
-        if (!$result) {
+        if (! $result) {
             return redirect()->route('faces.index')->with('error', '删除人脸信息时发生了错误。');
         }
 
@@ -117,7 +115,7 @@ class FaceController extends Controller
         }
 
         return view('faces.capture', [
-            'type' => 'test'
+            'type' => 'test',
         ]);
     }
 
@@ -143,8 +141,8 @@ class FaceController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
-        if (!$faces) {
-            return back()->with('error', "找不到这位。");
+        if (! $faces) {
+            return back()->with('error', '找不到这位。');
         }
 
         if (count($faces) > 1) {

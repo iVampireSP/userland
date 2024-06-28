@@ -2,9 +2,7 @@
 
 namespace App\Support;
 
-use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class MilvusSupport
@@ -13,8 +11,9 @@ class MilvusSupport
 
     public const int CODE_SUCCESS = 200;
 
-    private function http() {
-        return Http::baseUrl('http://' . config('milvus.host') . ':' . config('milvus.port') . '/' . $this->api_version . '/vectordb');
+    private function http()
+    {
+        return Http::baseUrl('http://'.config('milvus.host').':'.config('milvus.port').'/'.$this->api_version.'/vectordb');
     }
 
     private function header(): array
@@ -22,13 +21,13 @@ class MilvusSupport
         $token = config('milvus.token');
 
         if (empty($token)) {
-            $token = config('milvus.username') . ':' . config('milvus.password');
+            $token = config('milvus.username').':'.config('milvus.password');
         }
 
         return [
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
             'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ];
     }
 
@@ -36,7 +35,7 @@ class MilvusSupport
     {
         $db = config('milvus.dbname');
 
-//        return $data;
+        //        return $data;
 
         // 管他什么情况，先合并 dbName
         return array_merge($data, ['dbName' => $db]);
@@ -47,7 +46,7 @@ class MilvusSupport
      */
     public function post(string $endpoint, array $data = []): array
     {
-        $resp =  $this->http()->withHeaders($this->header())->asJson()->post($endpoint, $this->mergeDb($data));
+        $resp = $this->http()->withHeaders($this->header())->asJson()->post($endpoint, $this->mergeDb($data));
 
         $resp = $resp->json();
 
@@ -63,7 +62,7 @@ class MilvusSupport
      */
     public function get(string $endpoint, array $data = []): array
     {
-        $resp =  $this->http()->withHeaders($this->header())->get($endpoint, $this->mergeDb($data));
+        $resp = $this->http()->withHeaders($this->header())->get($endpoint, $this->mergeDb($data));
 
         if ($resp->status() >= 400) {
             throw new ConnectionException($resp->body());
@@ -84,7 +83,7 @@ class MilvusSupport
     public function loadCollection(string $collectionName): array
     {
         return $this->post('collections/load', [
-            'collectionName' => $collectionName
+            'collectionName' => $collectionName,
         ]);
     }
 
@@ -94,7 +93,7 @@ class MilvusSupport
     public function releaseCollection(string $collectionName): array
     {
         return $this->post('collections/release', [
-            'collectionName' => $collectionName
+            'collectionName' => $collectionName,
         ]);
     }
 
@@ -104,8 +103,8 @@ class MilvusSupport
     public function insert(array $data): array
     {
         return $this->post('entities/insert', [
-            "data" => [$data],
-            "collectionName" => config('milvus.collection')
+            'data' => [$data],
+            'collectionName' => config('milvus.collection'),
         ]);
     }
 
@@ -115,8 +114,8 @@ class MilvusSupport
     public function delete(string $filter): array
     {
         return $this->post('entities/delete', [
-            "filter" => $filter,
-            "collectionName" => config('milvus.collection')
+            'filter' => $filter,
+            'collectionName' => config('milvus.collection'),
         ]);
     }
 
@@ -126,12 +125,12 @@ class MilvusSupport
     public function search(array $vector): array
     {
         return $this->post('entities/search', [
-            "data" => [$vector],
-            "annsField" => "embedding",
-            "limit" => 5,
-            "collectionName" => config('milvus.collection'),
-            "outputFields" => [
-                "face_id"
+            'data' => [$vector],
+            'annsField' => 'embedding',
+            'limit' => 5,
+            'collectionName' => config('milvus.collection'),
+            'outputFields' => [
+                'face_id',
             ],
         ]);
     }
