@@ -43,6 +43,9 @@
                                 <a class="nav-link" href="{{ route('index') }}">{{ auth('web')->user()->name }}</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('faces.index') }}">人脸识别</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('tokens.index') }}">访问密钥</a>
                             </li>
                             <li class="nav-item">

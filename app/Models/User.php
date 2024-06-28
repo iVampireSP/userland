@@ -132,4 +132,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return "https://cravatar.cn/avatar/{$this->email_md5}";
     }
+
+    public function faces(): HasMany
+    {
+        return $this->hasMany(Face::class);
+    }
 }

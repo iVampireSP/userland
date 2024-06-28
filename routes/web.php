@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\Auth\VerificationController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
+use App\Http\Controllers\Web\FaceController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
@@ -81,6 +82,10 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* Start 封禁 */
         Route::resource('bans', BanController::class)->only(['index']);
         /* End 封禁 */
+
+        /* Start 人脸 */
+        Route::get('faces', [FaceController::class, 'index'])->name('faces.index');
+        /* End 人脸 */
 
         // Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
