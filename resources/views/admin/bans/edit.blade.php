@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group">
-            <label for="pardoned">立即解除</label>
+            <label for="pardoned">解除</label>
             <select class="form-control" id="pardoned" name="pardoned">
                 <option value="0">否</option>
                 <option value="1" @if ($ban->pardoned) selected @endif>是</option>
