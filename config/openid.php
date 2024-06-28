@@ -52,6 +52,6 @@ return [
 
     'routes' => [
         'discovery' => false,
-        'jwks' => false
-    ]
+        'jwks' => false,
+    ],
 ];
