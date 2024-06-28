@@ -98,6 +98,9 @@
                                         <a class="dropdown-item" href="{{ route('real_name.create') }}">实名认证</a>
                                     @endif
 
+                                    <a class="dropdown-item" href="{{ route('tos') }}">服务条款</a>
+                                    <a class="dropdown-item" href="{{ route('privacy_policy') }}">隐私政策</a>
+
                                     <a class="dropdown-item" href="{{ route('users.delete') }}">删除账号</a>
 
 

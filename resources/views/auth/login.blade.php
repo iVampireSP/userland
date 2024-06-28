@@ -26,6 +26,13 @@
             <a class="link" href="{{ route('password.request') }}">
                 {{ __('Forgot Your Password?') }}
             </a>
+            <br />
+            <a class="link" href="{{ route('tos') }}">
+                服务条款
+            </a> &nbsp;
+            <a class="link" href="{{ route('privacy_policy') }}">
+                隐私政策
+            </a>
 
 
         </div>
