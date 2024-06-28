@@ -73,6 +73,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: AWS_SECRET_ACCESS_KEY
+            - name: MILVUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MILVUS_PASSWORD
           resources:
             limits:
               cpu: 100m
@@ -167,6 +172,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: AWS_SECRET_ACCESS_KEY
+            - name: MILVUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MILVUS_PASSWORD
           resources:
             limits:
               cpu: 100m
@@ -197,7 +207,7 @@ spec:
       imagePullSecrets:
         - name: leafdev-registry
       containers:
-        - name: schedule
+        - name: worker
           image: registry.leafdev.top/ecosystem/oauth:v0-1.1
           imagePullPolicy: Always
           command:
@@ -244,6 +254,11 @@ spec:
                 secretKeyRef:
                   name: oauth-secret
                   key: AWS_SECRET_ACCESS_KEY
+            - name: MILVUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oauth-secret
+                  key: MILVUS_PASSWORD
           resources:
             limits:
               cpu: 100m
@@ -316,6 +331,11 @@ spec:
 #  SUPPORT_REAL_NAME_APP_CODE: ""
 #  OCTANE_HTTPS: "true"
 #  PASSPORT_PUBLIC_KEY: ""
+#  SUPPORT_FACE_API: ""
+#  MILVUS_USERNAME: ""
+#  MILVUS_HOST: ""
+#  MILVUS_PORT: ""
+#  MILVUS_DB_NAME: "oauth"
 #---
 #apiVersion: v1
 #kind: Secret
@@ -330,6 +350,7 @@ spec:
 #  PASSPORT_PRIVATE_KEY: ""
 #  AWS_ACCESS_KEY_ID: ""
 #  AWS_SECRET_ACCESS_KEY: ""
+#  MILVUS_PASSWORD: ""
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
