@@ -56,4 +56,11 @@ class TokenController extends Controller
 
         return redirect()->route('tokens.index')->with('success', '所有令牌已删除。');
     }
+
+    public function display_scopes(): View
+    {
+        $scopes = Passport::scopes();
+
+        return view('tokens.scopes', compact('scopes'));
+    }
 }

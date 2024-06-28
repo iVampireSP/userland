@@ -86,3 +86,5 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         // Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
     }
 );
+
+Route::get('scopes', [TokenController::class, 'display_scopes'])->name('tokens.scopes');
