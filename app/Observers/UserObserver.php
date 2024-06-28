@@ -33,11 +33,11 @@ class UserObserver
             }
         }
 
-        if ($user->isDirty('email') && !empty($user->email)) {
+        if ($user->isDirty('email') && ! empty($user->email)) {
             $user->email_md5 = md5($user->email);
         }
 
-        if (! $user->email_md5 && !empty($user->email)) {
+        if (! $user->email_md5 && ! empty($user->email)) {
             $user->email_md5 = md5($user->email);
         }
 
