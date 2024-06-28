@@ -16,5 +16,9 @@ return [
             'max_age' => env('SUPPORT_REAL_NAME_MAX_AGE', 80),
             'price' => env('SUPPORT_REAL_NAME_PRICE', '0.01'),
         ],
+        'face'=>[
+            'api' => env('SUPPORT_FACE_API', ''),
+            'dimension' => 4096,
+        ]
     ],
 ];
