@@ -49,4 +49,9 @@ return [
      * Can be Ecdsa, Hmac or RSA
      */
     'signer' => \Lcobucci\JWT\Signer\Hmac\Sha256::class,
+
+    'routes' => [
+        'discovery' => false,
+        'jwks' => false
+    ]
 ];
