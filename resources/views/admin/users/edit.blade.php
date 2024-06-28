@@ -55,7 +55,7 @@
         {{-- 原因 --}}
         <div class="form-group">
             <label for="banned_reason">封禁原因</label>
-            <input type="text" class="form-control" id="banned_reason" name="banned_reason" placeholder="封禁原因"
+            <input type="text" class="form-control" id="banned_reason" name="banned_reason" autocomplete="off" placeholder="封禁原因"
                    value="{{ $user->banned_reason }}">
         </div>
 
@@ -65,7 +65,7 @@
             <div class="input-group mb-3">
                 <button class="btn btn-outline-secondary" type="button" id="new_password_btn">随机密码</button>
                 <input id="new_password" type="password" name="password" class="form-control" placeholder="新的密码（留空不会设置）"
-                       aria-label="新的密码（留空不会设置" aria-describedby="new_password_btn" autocomplete="false">
+                       aria-label="新的密码（留空不会设置" aria-describedby="new_password_btn" autocomplete="off">
             </div>
 
         </div>
