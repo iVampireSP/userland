@@ -192,9 +192,9 @@ class RealNameController extends Controller
                 'image_b64' => 'required|string',
             ]);
 
-            // 如果格式不是 base64
-            if (! preg_match('/^data:image\/(\w+);base64,/', $request->input('image_b64'))) {
-                return back()->with('error', '图像格式不正确。');
+            // 检测是不是 data:image/jpeg;base64
+            if (!preg_match('/^data:image\/jpeg;base64,/', $request->input('image_b64'))) {
+                return back()->with('error', '图片格式错误，请重新尝试。');
             }
 
             $realNameSupport = new RealNameSupport();
