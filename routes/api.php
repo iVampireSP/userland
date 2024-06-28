@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('user', [UserController::class, 'user'])->name('openid.userinfo');
 
-Route::get('real-name', [UserController::class, 'realName'])
-    ->middleware('scopes:realname');
-
 // 获取，创建或更新状态
 Route::match(['get', 'post'], 'status', [UserController::class, 'status'])
     ->middleware('scopes:profile');
