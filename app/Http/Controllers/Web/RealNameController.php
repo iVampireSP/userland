@@ -192,15 +192,22 @@ class RealNameController extends Controller
                 'image_b64' => 'required|string',
             ]);
 
+            $image_b64 = $request->input('image_b64');
+
+            // 字符串大小不能超过 1mb
+            if (strlen($image_b64) > 1024 * 1024) {
+                return back()->with('error', '图片大小不能超过 1mb。');
+            }
+
             // 检测是不是 data:image/jpeg;base64
-            if (!preg_match('/^data:image\/jpeg;base64,/', $request->input('image_b64'))) {
+            if (!preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
                 return back()->with('error', '图片格式错误，请重新尝试。');
             }
 
             $realNameSupport = new RealNameSupport();
             $user = $request->user();
             try {
-                $result = $realNameSupport->create($user, $request->input('image_b64'));
+                $result = $realNameSupport->create($user, $image_b64);
             } catch (CommonException $e) {
                 return back()->with('error', $e->getMessage());
             } catch (ConnectionException $e) {
