@@ -122,7 +122,7 @@ class FaceSupport
             return false;
         }
 
-        $faces = Face::whereIn('id', $face_ids)->get();
+        $faces = Face::whereIn('id', $face_ids)->with('user')->get();
 
         if (count($faces) == 0) {
             return false;

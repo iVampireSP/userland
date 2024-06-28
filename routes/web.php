@@ -29,6 +29,8 @@ Route::prefix('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
     Route::post('face-login', [LoginController::class, 'faceLogin']);
+    Route::get('select', [LoginController::class, 'selectAccount'])->name('login.select');
+    Route::post('switch', [LoginController::class, 'switchAccount'])->name('login.switch');
 
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register']);
