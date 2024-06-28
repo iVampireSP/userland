@@ -123,10 +123,10 @@ class FaceSupport
         $face_ids = [];
 
         foreach ($results['data'] as $result) {
-
-            if ($result['distance'] < 0.85) {
+            if ($result['distance'] < 0.80) {
                 continue;
             }
+
             $face_ids[] = $result['face_id'];
         }
 
