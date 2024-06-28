@@ -49,6 +49,9 @@
                                 <a class="nav-link" href="{{ route('clients.index') }}">OAuth2 客户端</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tokens.scopes') }}">令牌范围</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('bans.index') }}">封禁列表</a>
                             </li>
                         @endauth
