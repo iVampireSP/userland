@@ -177,7 +177,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-4
+          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-5
           imagePullPolicy: IfNotPresent
           command:
             - /usr/bin/start.sh
