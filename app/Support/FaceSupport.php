@@ -13,12 +13,10 @@ class FaceSupport
     /**
      * @throws ConnectionException
      */
-    private function post(string $endpoint, string $image_b64): array
+    private function post(string $endpoint, array $data): array
     {
         $url = config('settings.supports.face.api');
-        $http = Http::baseUrl($url)->post($endpoint, [
-            'image_b64' => $image_b64,
-        ]);
+        $http = Http::baseUrl($url)->post($endpoint, $data);
 
         if ($http->failed()) {
             throw new ConnectionException($http->body());
@@ -34,7 +32,9 @@ class FaceSupport
      */
     public function liveness(string $image_b64): array
     {
-        return $this->post('liveness', $image_b64);
+        return $this->post('liveness', [
+            'image_b64' => $image_b64,
+        ]);
     }
 
     /**
@@ -42,7 +42,21 @@ class FaceSupport
      */
     public function embedding(string $image_b64): array
     {
-        return $this->post('embedding', $image_b64);
+        return $this->post('embedding', [
+            'image_b64' => $image_b64,
+        ]);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function verify(string $image_b64, string $image_b64_2): array
+    {
+        return $this->post('verify', [
+            'image_b64' => $image_b64,
+            'image_b64_2' => $image_b64_2,
+        ]);
+
     }
 
     /**
