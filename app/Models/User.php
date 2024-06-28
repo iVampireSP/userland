@@ -127,4 +127,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'id_card' => '',
         ]);
     }
+
+    public function avatar(): string
+    {
+        return "https://cravatar.cn/avatar/{$this->email_md5}";
+    }
 }
