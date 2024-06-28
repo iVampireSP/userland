@@ -22,11 +22,6 @@ Route::get('/.well-known/openid-configuration', DiscoveryController::class)
 
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
 
-/* Healthz */
-Route::get('healthz', function () {
-    return response()->json(['status' => 'ok']);
-})->name('healthz');
-
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [LoginController::class, 'login']);
