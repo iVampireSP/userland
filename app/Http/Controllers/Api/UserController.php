@@ -22,7 +22,31 @@ class UserController extends Controller
 
     public function user(Request $request)
     {
-        return $request->user('api');
+        $user = $request->user('api');
+        $data = [
+            'id' => $user->id,
+            'avatar' => $user->avatar(),
+        ];
+
+        if ($user->tokenCan('profile')) {
+            $data['name'] = $user->name;
+            $data['email_verified_at'] = $user->email_verified_at;
+            $data['real_name_verified_at'] = $user->real_name_verified_at;
+        }
+
+        if ($user->tokenCan('email')) {
+            $data['email'] = $user->email;
+        }
+
+        if ($user->tokenCan('realname')) {
+            $data['real_name'] = $user->real_name;
+            $data['id_card'] = $user->id_card;
+        }
+
+        // append created_at
+        $data['created_at'] = $user->created_at;
+
+        return $this->success($data);
     }
 
     public function status(Request $request)
