@@ -9,7 +9,9 @@ class MilvusSupport
 {
     private string $api_version = 'v2';
 
-    public const int CODE_SUCCESS = 200;
+    public const int CODE_SUCCESS = 0;
+
+    public const int CODE_SUCCESS2 = 200;
 
     private function http()
     {
@@ -52,8 +54,11 @@ class MilvusSupport
 
         $resp = $resp->json();
 
-        if (isset($resp['code']) && $resp['code'] != self::CODE_SUCCESS) {
-            throw new ConnectionException($resp['message']);
+        if (isset($resp['code'])) {
+            // 检测是不是 CODE_SUCCESS 或 CODE_SUCCESS2
+            if ($resp['code'] != self::CODE_SUCCESS && $resp['code'] != self::CODE_SUCCESS2) {
+                throw new ConnectionException($resp['message']);
+            }
         }
 
         return $resp;

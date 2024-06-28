@@ -39,24 +39,51 @@ return new class extends Migration
                     ],
                 ],
             ],
+            //            'indexParams' => [
+            //                [
+            //                    'fieldName' => 'embedding',
+            //                    'metricType' => 'COSINE',
+            //                    'indexName' => 'embedding_idx',
+            //                    'params' => ['index_type' => 'HNSW', 'nlist' => 1024],
+            //                ],
+            //                [
+            //                    'fieldName' => 'face_id',
+            //                    'indexName' => 'face_id_idx',
+            //                    'params' => ['index_type' => 'STL_SORT'],
+            //                ],
+            //            ],
+        ]);
+        if ($resp['code'] != MilvusSupport::CODE_SUCCESS) {
+            throw new Exception($resp['message']);
+        }
+
+        $resp = $this->milvusSupport->post('indexes/create', [
+            'collectionName' => config('milvus.collection'),
             'indexParams' => [
                 [
-                    'fieldName' => 'embedding',
                     'metricType' => 'COSINE',
+                    'fieldName' => 'embedding',
                     'indexName' => 'embedding_idx',
-                    'params' => ['index_type' => 'HNSW', 'nlist' => 1024],
+                    'indexConfig' => [
+                        'index_type' => 'AUTOINDEX',
+                        'nlist' => '1024',
+                    ],
                 ],
                 [
                     'fieldName' => 'face_id',
                     'indexName' => 'face_id_idx',
-                    'params' => ['index_type' => 'STL_SORT'],
+                    'index_type' => 'STL_SORT',
+                    'metricType' => '',
+                    'indexConfig' => [
+                        'index_type' => 'STL_SORT',
+                    ],
                 ],
             ],
         ]);
-
-        if ($resp['code'] != 200) {
+        if ($resp['code'] != MilvusSupport::CODE_SUCCESS) {
             throw new Exception($resp['message']);
         }
+
     }
 
     /**
@@ -65,10 +92,10 @@ return new class extends Migration
     public function down(): void
     {
         $resp = $this->milvusSupport->post('collections/drop', [
-            'collectionName' => 'oauth',
+            'collectionName' => config('milvus.collection'),
         ]);
 
-        if ($resp['code'] != 200) {
+        if ($resp['code'] != MilvusSupport::CODE_SUCCESS) {
             throw new Exception($resp['message']);
         }
     }
