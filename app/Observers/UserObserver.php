@@ -48,8 +48,7 @@ class UserObserver
             } else {
                 $user->real_name_verified_at = now();
 
-                $idCardSupport = new IdCardSupport();
-                $user->birthday_at = $idCardSupport->getBirthday($user->id_card);
+                $user->birthday_at = (new IdCardSupport())->getBirthday($user->id_card);
             }
         }
 

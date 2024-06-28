@@ -11,7 +11,7 @@ class InitCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'init {type=web} {--host=0.0.0.0} {--port=8000} {--queue=default} {--workers=1} {--name=default}';
+    protected $signature = 'init {type=web} {--server=roadrunner} {--host=0.0.0.0} {--port=8000} {--queue=default} {--workers=1} {--name=default}';
 
     /**
      * The console command description.
@@ -43,6 +43,7 @@ class InitCommand extends Command
     public function startWeb()
     {
         $this->call('octane:start', [
+            '--server' => $this->option('server'),
             '--host' => $this->option('host'),
             '--port' => $this->option('port'),
             '--workers' => $this->option('workers'),

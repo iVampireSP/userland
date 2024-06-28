@@ -24,8 +24,8 @@ spec:
             secretName: oauth-secret
       containers:
         - name: web
-          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-5
-          imagePullPolicy: IfNotPresent
+          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-6
+          imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
             - init
@@ -33,6 +33,7 @@ spec:
             - --host=0.0.0.0
             - --port=8000
             - --workers=1
+            - --server=roadrunner
           envFrom:
             - configMapRef:
                 name: oauth-env
@@ -112,8 +113,8 @@ spec:
             secretName: oauth-secret
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-5
-          imagePullPolicy: IfNotPresent
+          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-6
+          imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
             - schedule:work
@@ -177,8 +178,8 @@ spec:
         - name: leafdev-registry
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-5
-          imagePullPolicy: IfNotPresent
+          image: registry.leafdev.top/ecosystem/oauth:v0-1.0-fix-6
+          imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
             - init
