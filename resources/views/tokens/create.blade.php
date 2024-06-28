@@ -22,7 +22,7 @@
             <span class="input-group-text">权限</span>
             <select class="form-select" name="scopes[]" multiple>
                 @foreach($scopes as $scope)
-                    <option value="{{ $scope->id }}">{{ $scope->description }}</option>
+                    <option value="{{ $scope->id }}">{{ $scope->id }} - {{ $scope->description }}</option>
                 @endforeach
             </select>
         </div>
