@@ -28,7 +28,7 @@
                 <br/>
 
                 @if ($client->personal_access_client)
-                    <span class="badge bg-primary">个人访问</span>
+                    <span class="badge bg-primary">个人令牌访问</span>
                 @endif
 
                 @if ($client->password_client)

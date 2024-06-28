@@ -50,24 +50,24 @@
                    value="{{ $client->redirect }}">
         </div>
 
-        {{--    密码访问客户端    --}}
+        {{--    令牌访问客户端    --}}
         <div class="input-group mb-3">
             <div class="input-group-text">
                 <input class="form-check-input" type="checkbox" value="1"
                        @if($client->personal_access_client) checked @endif name="personal_access_client"
-                       id="personal_access_client" aria-label="是否是个人访问客户端">
+                       id="personal_access_client" aria-label="是否是个人令牌访问客户端">
             </div>
-            <span class="form-control">是否是个人访问客户端</span>
+            <span class="form-control">是否是个人令牌访问客户端</span>
         </div>
 
-        <div class="input-group mb-3">
-            <div class="input-group-text">
-                <input class="form-check-input" type="checkbox" value="1"
-                       @if($client->password_client) checked @endif name="password_client"
-                       id="password_client" aria-label="是否是密码访问客户端">
-            </div>
-            <span class="form-control">是否是密码访问客户端</span>
-        </div>
+{{--        <div class="input-group mb-3">--}}
+{{--            <div class="input-group-text">--}}
+{{--                <input class="form-check-input" type="checkbox" value="1"--}}
+{{--                       @if($client->password_client) checked @endif name="password_client"--}}
+{{--                       id="password_client" aria-label="是否是密码访问客户端">--}}
+{{--            </div>--}}
+{{--            <span class="form-control">是否是密码访问客户端</span>--}}
+{{--        </div>--}}
 
 
         <button type="submit" class="btn btn-primary mt-3">

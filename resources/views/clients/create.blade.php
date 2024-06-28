@@ -27,13 +27,13 @@
             </label>
         </div>
 
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" name="password_client"
-                   id="password_client">
-            <label class="form-check-label" for="password_client">
-                启用密码登录支持
-            </label>
-        </div>
+{{--        <div class="form-check">--}}
+{{--            <input class="form-check-input" type="checkbox" value="1" name="password_client"--}}
+{{--                   id="password_client">--}}
+{{--            <label class="form-check-label" for="password_client">--}}
+{{--                启用密码登录支持--}}
+{{--            </label>--}}
+{{--        </div>--}}
 
         <button type="submit" class="btn btn-primary mt-3">新建</button>
     </form>

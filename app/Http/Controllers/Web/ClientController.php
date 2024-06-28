@@ -32,14 +32,14 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'redirect' => 'required|url',
             'personal_access_client' => 'boolean',
-            'password_client' => 'boolean',
+//            'password_client' => 'boolean',
         ]);
 
         $clients = new ClientRepository();
 
         $client = $clients->create(
             $request->user()->getAuthIdentifier(), $request->input('name'), $request->input('redirect'),
-            null, $request->boolean('personal_access_client'), $request->boolean('password_client')
+            null, $request->boolean('personal_access_client')
         );
 
         return redirect()->route('clients.show', compact('client'));
@@ -81,8 +81,8 @@ class ClientController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => 'required|url',
-            'password_client' => 'boolean',
             'personal_access_client' => 'boolean',
+//            'password_client' => 'boolean',
         ]);
 
         $client = auth('web')->user()->clients()->findOrFail($id);
@@ -90,8 +90,8 @@ class ClientController extends Controller
         $client->update([
             'name' => $request->input('name'),
             'redirect' => $request->input('redirect'),
-            'password_client' => $request->boolean('password_client'),
             'personal_access_client' => $request->boolean('personal_access_client'),
+//            'password_client' => $request->boolean('password_client'),
         ]);
 
         return redirect()->route('clients.show', compact('client'));
