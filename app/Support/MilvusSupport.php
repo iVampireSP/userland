@@ -97,4 +97,42 @@ class MilvusSupport
             'collectionName' => $collectionName
         ]);
     }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function insert(array $data): array
+    {
+        return $this->post('entities/insert', [
+            "data" => [$data],
+            "collectionName" => config('milvus.collection')
+        ]);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function delete(string $filter): array
+    {
+        return $this->post('entities/delete', [
+            "filter" => $filter,
+            "collectionName" => config('milvus.collection')
+        ]);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function search(array $vector): array
+    {
+        return $this->post('entities/search', [
+            "data" => [$vector],
+            "annsField" => "embedding",
+            "limit" => 5,
+            "collectionName" => config('milvus.collection'),
+            "outputFields" => [
+                "face_id"
+            ],
+        ]);
+    }
 }

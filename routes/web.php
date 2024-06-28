@@ -85,6 +85,12 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
 
         /* Start 人脸 */
         Route::get('faces', [FaceController::class, 'index'])->name('faces.index');
+        Route::get('faces/capture', [FaceController::class, 'capture'])->name('faces.capture');
+        Route::post('faces/capture', [FaceController::class, 'capture']);
+        Route::delete('faces', [FaceController::class, 'destroy'])->name('faces.destroy');
+
+        Route::get('faces/test', [FaceController::class, 'test'])->name('faces.test');
+        Route::post('faces/test', [FaceController::class, 'test']);
         /* End 人脸 */
 
         // Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');

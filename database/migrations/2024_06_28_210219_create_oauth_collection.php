@@ -25,9 +25,13 @@ return new class extends Migration
                 "enabledDynamicField" => true,
                 "fields" => [
                     [
-                        "fieldName" => "face_id",
+                        "fieldName" => "id",
                         "dataType" => "Int64",
                         "isPrimary" => true,
+                    ],
+                    [
+                        "fieldName" => "face_id",
+                        "dataType" => "Int64",
                     ],
                     [
                         "fieldName" => "embedding",

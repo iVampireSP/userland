@@ -19,6 +19,9 @@ class Face extends Model
     // 用户验证的类型
     public const string TYPE_VALIDATE = 'validate';
 
+    public const string EXT = 'jpeg';
+
+
 
     public function user(): BelongsTo
     {
@@ -35,12 +38,12 @@ class Face extends Model
 
     public function getPath(): string
     {
-        return $this->created_at->format('Y/m/d').'/faces/'.$this->id;
+        return '/' . $this->created_at->format('Y/m/d').'/faces/'.$this->id .'.'.self::EXT;
     }
 
     public function putFile($file = null): bool
     {
-        $success = Storage::disk('s3')->putFileAs($this->getPath(), $file, $this->id);
+        $success = Storage::disk('s3')->put($this->getPath(), $file);
 
         return !$success == false;
     }
@@ -48,6 +51,7 @@ class Face extends Model
 
     public function getTempLink(): string
     {
+        // Minio 不支持 temporaryUrl, 所以创建 presignedUrl
         return Storage::disk('s3')->temporaryUrl($this->getPath(), now()->addMinutes(5));
     }
 

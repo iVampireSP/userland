@@ -12,6 +12,7 @@
         "ext-bcmath": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
+        "aws/aws-sdk-php": "*",
         "guzzlehttp/guzzle": "^7.2",
         "helgesverre/milvus": "^0.1.0",
         "laravel/framework": "^11.0",
