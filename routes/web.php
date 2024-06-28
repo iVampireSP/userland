@@ -88,3 +88,6 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
 );
 
 Route::get('scopes', [TokenController::class, 'display_scopes'])->name('tokens.scopes');
+
+Route::view('tos', 'tos')->name('tos');
+Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
