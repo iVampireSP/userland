@@ -13,7 +13,9 @@ class MilvusSupport
 
     private function http()
     {
-        return Http::baseUrl('http://'.config('milvus.host').':'.config('milvus.port').'/'.$this->api_version.'/vectordb');
+        return Http::baseUrl('http://'.config('milvus.host').':'.config('milvus.port').'/'.$this->api_version.'/vectordb')->withOptions([
+            'version' => '2',
+        ]);
     }
 
     private function header(): array
