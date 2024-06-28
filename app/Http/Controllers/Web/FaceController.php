@@ -138,17 +138,21 @@ class FaceController extends Controller
         }
 
         try {
-            $face = $faceSupport->search($embedding);
+            $faces = $faceSupport->search($embedding);
         } catch (CommonException $e) {
             return back()->with('error', $e->getMessage());
         }
 
-        if (!$face) {
+        if (!$faces) {
             return back()->with('error', "找不到这位。");
         }
 
-        if ($request->user('web')->id !== $face->user_id) {
-            return back()->with('error', "不是本人。");
+        if (count($faces) > 1) {
+            return redirect()->route('faces.index')->with('success', '验证成功，但你可能录入了多个账户。');
+        }
+
+        if ($faces[0]['user_id'] != auth('web')->user()->id) {
+            return redirect()->route('faces.index')->with('failed', '验证失败。');
         }
 
         return redirect()->route('faces.index')->with('success', '验证成功。');

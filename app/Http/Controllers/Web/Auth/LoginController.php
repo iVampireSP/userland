@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
+use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Support\FaceSupport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -33,6 +35,45 @@ class LoginController extends Controller
         auth('web')->login($user, true);
 
         return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    public function faceLogin(Request $request)
+    {
+        $request->validate([
+            'image_b64' => 'required|string',
+        ]);
+
+        $image_b64 = $request->input('image_b64');
+
+        $faceSupport = new FaceSupport();
+        try {
+            $faceSupport->check($image_b64);
+            $embedding = $faceSupport->test_image($image_b64);
+        } catch (CommonException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        try {
+            $face = $faceSupport->search($embedding);
+        } catch (CommonException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        if (!$face) {
+            return back()->with('error', "找不到这位。");
+        }
+
+        auth('web')->login($face->user, true);
+
+        return redirect()->intended(RouteServiceProvider::HOME);
+
+    }
+
+    public function showFaceLoginForm()
+    {
+        return view('faces.capture', [
+            'type' => 'login'
+        ]);
     }
 
     public function showLoginForm()

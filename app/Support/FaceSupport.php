@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Exceptions\CommonException;
 use App\Models\Face;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -97,7 +98,7 @@ class FaceSupport
     /**
      * @throws CommonException
      */
-    public function search(array $embedding): Face|false
+    public function search(array $embedding): Collection|false
     {
         $milvusSupport = new MilvusSupport();
         try {
@@ -106,18 +107,28 @@ class FaceSupport
             throw new CommonException('搜索特征时发现了错误，请再次尝试。');
         }
 
-        $first = $results['data'][0];
 
-        if ($first['distance'] < 0.85) {
+        $face_ids = [];
+
+        foreach ($results['data'] as $result) {
+
+            if ($result['distance'] < 0.85) {
+                continue;
+            }
+            $face_ids[] = $result['face_id'];
+        }
+
+        if (count($face_ids) == 0) {
             return false;
         }
 
-        $face = Face::find($first['face_id']);
-        if ($face) {
-            return $face;
+        $faces = Face::whereIn('id', $face_ids)->get();
+
+        if (count($faces) == 0) {
+            return false;
         }
 
-        return false;
+        return $faces;
     }
 
 }

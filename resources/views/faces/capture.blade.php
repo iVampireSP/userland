@@ -29,6 +29,11 @@
             @csrf
             <input type="hidden" name="image_b64" id="image-value">
         </form>
+    @elseif ($type == "login")
+        <form action="{{ route('login.face-login') }}" id="validate-form" method="post">
+            @csrf
+            <input type="hidden" name="image_b64" id="image-value">
+        </form>
     @endif
 
 

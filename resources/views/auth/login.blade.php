@@ -25,6 +25,10 @@
     <br/>
 
 
+    <a class="link" href="{{ route('login.face-login') }}">
+        人脸登录
+    </a>
+    &nbsp;
     <a class="link" href="{{ route('register') }}">
         {{ __('Register') }}
     </a>
@@ -48,8 +52,6 @@
         const loginBtn = document.getElementById('login-btn')
         const imgContainer = document.getElementById('img-container')
 
-
-        const validateUrl = "{{ route('login.exists-if-user') }}"
 
         function canSubmit() {
             return !(account.value === '' || passwordInput.value === '');
