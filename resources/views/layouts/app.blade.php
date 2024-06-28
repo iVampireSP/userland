@@ -11,8 +11,8 @@
     <title>@yield('title', config('app.display_name'))</title>
 
 
-    <link rel="icon" href="{{ asset('/images/lae-fav.png') }}" />
-    <link rel="apple-touch-icon" href="{{ asset('/images/lae-fav.png') }}" />
+{{--    <link rel="icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
+{{--    <link rel="apple-touch-icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
 
     <!-- Fonts -->
     {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
