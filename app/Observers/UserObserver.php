@@ -33,7 +33,11 @@ class UserObserver
             }
         }
 
-        if ($user->isDirty('email')) {
+        if ($user->isDirty('email') && !empty($user->email)) {
+            $user->email_md5 = md5($user->email);
+        }
+
+        if (! $user->email_md5 && !empty($user->email)) {
             $user->email_md5 = md5($user->email);
         }
 
@@ -54,10 +58,6 @@ class UserObserver
 
         if (! $user->uuid) {
             $user->uuid = Str::uuid();
-        }
-
-        if (! $user->email_md5) {
-            $user->email_md5 = md5($user->email);
         }
     }
 
