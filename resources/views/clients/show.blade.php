@@ -96,27 +96,27 @@
 
     <div class="mt-3">
         <h3>OpenID Connect 发现</h3>
-        {{ route('openid.discovery') }}
+        GET {{ route('openid.discovery') }}
     </div>
 
     <div class="mt-3">
         <h3>JWKs(JSON Web Key Sets) 端点</h3>
-        {{ route('openid.jwks') }}
+       GET  {{ route('openid.jwks') }}
     </div>
 
     <div class="mt-3">
         <h3>授权端点</h3>
-        {{ route('passport.authorizations.authorize') }}
+        GET {{ route('passport.authorizations.authorize') }}
     </div>
 
     <div class="mt-3">
         <h3>令牌端点</h3>
-        {{ route('passport.token') }}
+        POST {{ route('passport.token') }}
     </div>
 
     <div class="mt-3">
         <h3>用户信息端点</h3>
-        {{ route('openid.userinfo') }}
+        GET {{ route('openid.userinfo') }}
     </div>
 
 
