@@ -41,9 +41,9 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerScopes(): void
     {
-        Passport::tokensExpireIn(now()->addMinutes(30));
-        Passport::refreshTokensExpireIn(now()->addDays(5));
-        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+        Passport::tokensExpireIn(now()->addMinutes(config('passport.token_lifetime.token')));
+        Passport::refreshTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.refresh_token')));
+        Passport::personalAccessTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.personal_access_token')));
         Passport::setDefaultScope('openid');
 
     }

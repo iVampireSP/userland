@@ -100,6 +100,11 @@
     </div>
 
     <div class="mt-3">
+        <h3>JWKs(JSON Web Key Sets) 端点</h3>
+        {{ route('openid.jwks') }}
+    </div>
+
+    <div class="mt-3">
         <h3>授权端点</h3>
         {{ route('passport.authorizations.authorize') }}
     </div>
@@ -110,13 +115,16 @@
     </div>
 
     <div class="mt-3">
-        <h3>用户端点</h3>
+        <h3>用户信息端点</h3>
         {{ route('openid.userinfo') }}
     </div>
 
+
+
     <div class="mt-3">
-        <h3>Jwks 端点</h3>
-        {{ route('openid.jwks') }}
+        <h3>Token 有效时间</h3>
+        令牌有效时间: {{config('passport.token_lifetime.token')}} 分钟 <br />
+        刷新令牌有效时间: {{config('passport.token_lifetime.refresh_token')}} 分钟
     </div>
 
 

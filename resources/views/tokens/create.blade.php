@@ -27,8 +27,11 @@
             </select>
         </div>
 
+        个人访问令牌有效时间: {{config('passport.token_lifetime.personal_access_token')}} 分钟。时间过长的令牌可能不太安全，非必要情况，请不要创建。
+        <br />
 
-        <button type="submit" class="btn btn-primary">新建</button>
+
+        <button type="submit" class="btn btn-primary mt-3">新建</button>
     </form>
 
 @endsection
