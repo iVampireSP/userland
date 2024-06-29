@@ -1,24 +1,24 @@
 import * as faceapi from "face-api.js";
 
-async function start(video, callback) {
+async function start(video, callback, clip) {
     Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
         // faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
         // faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
         // faceapi.nets.faceExpressionNet.loadFromUri('./models'),
     ]).then(() => {
-        startVideo(video, callback)
+        startVideo(video, callback, clip)
     })
 }
 
-function startVideo(video, callback) {
+function startVideo(video, callback, clip) {
     navigator.mediaDevices.getUserMedia({ video: {} })
         .then(stream => {
             video.srcObject = stream
             console.log("摄像头已成功开启")
 
             video.addEventListener("play", () => {
-                handlePlayEvent(video, callback)
+                handlePlayEvent(video, callback, clip)
             })
         })
         .catch(err => {
@@ -53,7 +53,7 @@ function removeListeners(video) {
     video.removeEventListener('play', handlePlayEvent)
 }
 
-function handlePlayEvent(video, callback) {
+function handlePlayEvent(video, callback, clip) {
     let stopped = false
 
     setInterval(async () => {
@@ -70,6 +70,10 @@ function handlePlayEvent(video, callback) {
             stopped = true
 
             let image = getImage(video)
+
+            if (clip) {
+                clipFace(image, detections)
+            }
 
             clearInterval(this)
 

@@ -7,6 +7,7 @@ use App\Models\Face;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class FaceSupport
 {
@@ -117,6 +118,7 @@ class FaceSupport
         try {
             $results = $milvusSupport->search($embedding);
         } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
             throw new CommonException('搜索特征时发现了错误，请再次尝试。');
         }
 
