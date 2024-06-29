@@ -97,7 +97,7 @@
 
                 imageValue.value = b64
                 validateForm.submit()
-            })
+            }, true)
 
         });
     </script>
