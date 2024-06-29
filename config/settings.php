@@ -18,7 +18,7 @@ return [
         ],
         'face' => [
             'api' => env('SUPPORT_FACE_API', ''),
-            'dimension' => 4096,
+            'dimension' => 512,
         ],
     ],
 ];

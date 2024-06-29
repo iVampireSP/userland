@@ -96,8 +96,9 @@
                 alertSuccess.classList.remove('d-none')
 
                 imageValue.value = b64
+                // console.log(b64)
                 validateForm.submit()
-            }, true)
+            }, false)
 
         });
     </script>

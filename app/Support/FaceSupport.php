@@ -43,6 +43,13 @@ class FaceSupport
      */
     public function embedding(string $image_b64): array
     {
+        $clip = $this->post('clip', [
+            'image_b64' => $image_b64,
+        ]);
+
+
+        $image_b64 = $clip['image_b64'];
+
         return $this->post('embedding', [
             'image_b64' => $image_b64,
         ]);
@@ -99,10 +106,11 @@ class FaceSupport
             if ($embeddings['embeddings']['embedding']) {
                 $embedding = $embeddings['embeddings']['embedding'];
             } else {
-                throw new CommonException('提取特征时发现了错误，请再次尝试。');
+                throw new CommonException('尝试提取特征时发现了错误，请再次尝试。');
             }
 
         } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
             throw new CommonException('提取特征时发现了错误，请再次尝试。');
         }
 
