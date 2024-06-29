@@ -1,5 +1,7 @@
 import * as faceapi from "face-api.js";
 
+const imageType = 'image/jpeg'
+
 async function start(video, callback, clip) {
     Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -101,7 +103,7 @@ function getImage(video) {
     context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
 
     const img = new Image()
-    img.src = canvas.toDataURL('image/jpeg', 0.5)
+    img.src = canvas.toDataURL(imageType, 0.5)
 
     return img
 }
@@ -150,7 +152,7 @@ function clipFace(image, faces, callback) {
         )
 
         const link = document.createElement('a')
-        link.href = canvas.toDataURL('image/jpeg', 0.6)
+        link.href = canvas.toDataURL(imageType, 0.6)
 
         callback(link.href)
         // 转换为 base64
