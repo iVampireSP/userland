@@ -58,8 +58,7 @@ class FaceController extends Controller
         // decode
         $face = $face->createFace(Face::TYPE_VALIDATE, $request->user('web'));
 
-        $img = str_replace('data:image/jpeg;base64,', '', $image_b64);
-        $face->putFile(base64_decode($img));
+        $face->putFile($image_b64);
 
         // 存入 Milvus
         $milvusSupport = new MilvusSupport();

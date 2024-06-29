@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Exceptions\CommonException;
+use App\Support\ImageSupport;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class Face extends Model
@@ -39,6 +42,18 @@ class Face extends Model
 
     public function putFile($file = null): bool
     {
+        if (! $file) {
+            return false;
+        }
+
+        try {
+            $file = (new ImageSupport())->convertToJpeg($file);
+        } catch (CommonException $e) {
+            Log::error($e->getMessage());
+
+            return false;
+        }
+
         $success = Storage::disk('s3')->put($this->getPath(), $file);
 
         return ! $success == false;

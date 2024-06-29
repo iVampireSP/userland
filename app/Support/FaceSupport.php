@@ -40,13 +40,15 @@ class FaceSupport
 
     /**
      * @throws ConnectionException
+     * @throws CommonException
      */
     public function embedding(string $image_b64): array
     {
+        $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
+
         $clip = $this->post('clip', [
             'image_b64' => $image_b64,
         ]);
-
 
         $image_b64 = $clip['image_b64'];
 
@@ -77,11 +79,6 @@ class FaceSupport
             throw new CommonException('图片大小不能超过 1mb。');
         }
 
-        // 检测是不是 data:image/jpeg;base64
-        if (! preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
-            throw new CommonException('图片格式错误，需要为 jpeg。');
-        }
-
         return true;
     }
 
@@ -90,6 +87,7 @@ class FaceSupport
      */
     public function test_image(string $image_b64): array
     {
+        $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
         try {
             $liveness = $this->liveness($image_b64);
 
@@ -97,6 +95,7 @@ class FaceSupport
                 throw new CommonException('活体检测失败，请重新尝试。');
             }
         } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
             throw new CommonException('验证活体时发生了错误。');
         }
 
