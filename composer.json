@@ -24,7 +24,9 @@
         "ronvanderheijden/openid-connect": "^1.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spiral/roadrunner-cli": "^2.6",
-        "spiral/roadrunner-http": "^3.5"
+        "spiral/roadrunner-http": "^3.5",
+        "ext-fileinfo": "*",
+        "ext-gd": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",
