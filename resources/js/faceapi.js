@@ -150,7 +150,7 @@ function clipFace(image, faces, callback) {
         )
 
         const link = document.createElement('a')
-        link.href = canvas.toDataURL('image/png', 0.6)
+        link.href = canvas.toDataURL('image/jpeg', 0.6)
 
         callback(link.href)
         // 转换为 base64
