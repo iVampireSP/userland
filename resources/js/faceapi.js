@@ -71,17 +71,23 @@ function handlePlayEvent(video, callback, clip) {
 
             let image = getImage(video)
 
-            if (clip) {
-                clipFace(image, detections)
-            }
-
             clearInterval(this)
 
             stopVideo(video)
 
+            if (clip) {
+                clipFace(image, detections, function(src) {
+                    if (callback) {
+                        callback(src)
+                    }
+                })
+            }
+
             if (callback) {
                 callback(image.src)
             }
+
+
 
         }
     }, 100)
@@ -100,7 +106,7 @@ function getImage(video) {
     return img
 }
 
-function clipFace(image, faces) {
+function clipFace(image, faces, callback) {
     const box = {
         bottom: -Infinity,
         left: Infinity,
@@ -146,10 +152,9 @@ function clipFace(image, faces) {
         const link = document.createElement('a')
         link.href = canvas.toDataURL('image/png', 0.6)
 
+        callback(link.href)
         // 转换为 base64
-        console.log(link.href)
-
-
+        // console.log()
     }
 
 }
