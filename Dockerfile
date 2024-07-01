@@ -1,4 +1,4 @@
-FROM registry.leafdev.top/leaf/docker-php-image:latest
+FROM registry.leafdev.top/leaf/docker-php-image:8.3
 
 WORKDIR /app
 
@@ -6,10 +6,6 @@ COPY . /app
 COPY start.sh /usr/bin/start.sh
 
 RUN useradd -ms /bin/bash -u 1337 www && chown -R 1337:1337 /app && chmod +x /usr/bin/start.sh
-RUN wget https://github.com/roadrunner-server/roadrunner/releases/download/v2024.1.5/roadrunner-2024.1.5-linux-amd64.deb -O /tmp/rr.deb && \
-    apt autoremove --purge roadrunner* -y && \
-    dpkg -i /tmp/rr.deb  && \
-    rm /tmp/rr.deb
 
 # Switch to non-root user 
 USER www
@@ -24,6 +20,7 @@ RUN composer config -g repo.packagist composer https://packagist.org &&  \
     composer dump-autoload --optimize --no-dev --classmap-authoritative && \
     composer clear-cache && \
     art view:cache && \
+    ./vendor/bin/rr get-binary && \
     art octane:install --server=roadrunner
 
 
