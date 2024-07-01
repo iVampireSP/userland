@@ -42,7 +42,6 @@
     <form class="d-none" id="multiuser-switch-user-form" action="{{ route('login.switch') }}" method="post">
         @csrf
         <input type="hidden" name="user_id" id="user_id">
-        <input type="hidden" name="type" id="login-type">
     </form>
 
     <script>
