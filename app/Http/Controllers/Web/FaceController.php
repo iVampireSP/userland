@@ -141,7 +141,7 @@ class FaceController extends Controller
         }
 
         if (! $faces) {
-            return back()->with('error', '找不到这位。');
+            return back()->with('error', '我们检测到了人脸，但是这不是您。');
         }
 
         if (count($faces) > 1) {

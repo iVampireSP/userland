@@ -61,7 +61,7 @@ class LoginController extends Controller
         }
 
         if (! $faces) {
-            return back()->with('error', '找不到这位。');
+            return back()->with('error', '找不到对应的用户。');
         }
 
         if (count($faces) > 1) {
