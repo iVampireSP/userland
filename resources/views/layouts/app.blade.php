@@ -63,9 +63,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @if (Auth::guard('admin')->check())
-
                             <li class="nav-item">
-
                                 @if (Auth::guard('web')->check())
                                     <a class="nav-link"
                                         href="{{ route('admin.users.edit', Auth::guard('web')->id()) }}">回到
@@ -74,8 +72,32 @@
                                     <a class="nav-link" href="{{ route('admin.index') }}">切换到后台</a>
                                 @endif
                             </li>
-
                         @endif
+
+                        @php
+                            $multiUser = new App\Support\MultiUserSupport();
+                            $multiUserCount = $multiUser->count();
+                        @endphp
+{{--                        切换账户 --}}
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown-switchUser" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                切换账户 @if ($multiUserCount) ({{$multiUserCount}})@endif
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown-switchUser">
+                                <x-switch-account :type="\App\View\Components\SwitchAccount::TYPE_DROPDOWN" />
+
+                                <a class="dropdown-item" href="{{ route('login') }}">添加账号</a>
+
+                                @auth('web')
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="document.getElementById('logout-form').submit();return false;">
+                                        {{ __('Logout') }}
+                                    </a>
+                                @endauth
+                            </div>
+                        </li>
 
                         <!-- Authentication Links -->
                         @guest
@@ -152,6 +174,9 @@
             nav.classList.remove('bg-body');
         @endif
     </script>
+
+    <x-switch-account :type="\App\View\Components\SwitchAccount::TYPE_ELEMENT" />
+
 
 </body>
 

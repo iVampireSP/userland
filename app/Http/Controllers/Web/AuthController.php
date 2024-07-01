@@ -22,7 +22,6 @@ class AuthController extends Controller
     {
         return
             $request->user('web')?->with('status')
-
                 ?
                 view('index')
                 :
@@ -113,58 +112,5 @@ class AuthController extends Controller
         $request->user()->delete();
 
         return redirect()->route('index')->with('success', '已删除用户。');
-    }
-
-    public function show_authrequest($token)
-    {
-        $data = Cache::get('auth_request:'.$token);
-
-        if (empty($data)) {
-            return redirect()->route('index')->with('error', '登录请求的 Token 不存在或已过期。');
-        }
-
-        if (isset($data['user'])) {
-            return redirect()->route('index')->with('error', '登录请求的 Token 已被使用。');
-        }
-
-        // 登录后跳转的地址
-        session(['url.intended' => route('auth_request.show', $token)]);
-
-        return view('tokens.jwt_request', [
-            'data' => $data,
-        ]);
-    }
-
-    public function accept_authrequest(Request $request): RedirectResponse|View
-    {
-        $request->validate([
-            'token' => 'required|string|max:128',
-        ]);
-
-        $data = Cache::get('auth_request:'.$request->input('token'));
-
-        if (empty($data)) {
-            return back()->with('error', '登录请求的 Token 不存在或已过期。');
-        }
-
-        if (isset($data['user'])) {
-            return back()->with('error', '登录请求的 Token 已被使用。');
-        }
-
-        $user = $request->user('web');
-
-        $data['user'] = $user->getOnlyPublic([], [
-            'email',
-            'email_verified_at',
-            'real_name_verified_at',
-        ]);
-
-        Cache::put('auth_request:'.$request->input('token'), $data, 60);
-
-        if (isset($data['meta']['callback_uri']) && $data['meta']['callback_uri']) {
-            return redirect()->to($data['meta']['callback_uri'].'?auth_request='.$request->input('token'));
-        }
-
-        return view('close');
     }
 }

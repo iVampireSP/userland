@@ -126,4 +126,8 @@
         </div>
     @endif
 
+    <div class="mt-3">
+        <x-switch-account />
+    </div>
+
 @endsection

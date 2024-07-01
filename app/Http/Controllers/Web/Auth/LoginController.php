@@ -7,12 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Support\FaceSupport;
+use App\Support\MultiUserSupport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
+    protected MultiUserSupport $multiUser;
+
+    public function __construct()
+    {
+        $this->multiUser = new MultiUserSupport();
+    }
+
     public function passwordLogin(Request $request)
     {
         $request->validate([
@@ -32,6 +39,8 @@ class LoginController extends Controller
         if (! Hash::check($request->password, $user->password)) {
             return back()->with('error', __('auth.password'));
         }
+
+        $this->multiUser->add($user);
 
         auth('web')->login($user, true);
 
@@ -65,17 +74,13 @@ class LoginController extends Controller
         }
 
         if (count($faces) > 1) {
-            //            进入多账户选择
             // 只提取 user
-            $users = $faces->map(function ($face) {
-                return $face->user;
+            $faces->map(function ($face) {
+                $this->multiUser->add($face->user);
             });
-            Session::put('switch-users', $users);
 
-            return redirect()->route('login.select');
+            return redirect()->to($this->multiUser->url());
         }
-
-        auth('web')->login($faces[0]->user, true);
 
         return redirect()->intended(RouteServiceProvider::HOME);
 
@@ -93,64 +98,49 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        auth('web')->logout();
+        $user = auth('web');
+        $this->multiUser->remove($user->user());
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $user->logout();
 
         return redirect('/');
     }
 
-    public function selectAccount(Request $request)
+    public function selectAccount()
     {
-        // 如果不包含
-        if (! Session::has('switch-users')) {
-            return redirect(RouteServiceProvider::HOME)->with('error', '你无法进入本页面。');
-        }
-
-        $users = Session::get('switch-users');
-
         return view('auth.select', [
-            'users' => $users,
+            'users' => $this->multiUser->get(),
         ]);
-
     }
 
     public function switchAccount(Request $request)
     {
-        // 如果不包含
-        if (! Session::has('switch-users')) {
-            return redirect(RouteServiceProvider::HOME)->with('error', '你不能选择账户。');
-        }
-
-        $users = Session::get('switch-users');
-
         $request->validate([
             'user_id' => 'required',
         ]);
 
-        $user_id = $request->input('user_id');
+        // logout
+        auth('web')->logout();
 
-        $selected_user = null;
+        $users = $this->multiUser->get();
 
-        foreach ($users as $user) {
-            if ($user->id == $user_id) {
-                $selected_user = $user;
-                break;
-            }
+        if (! $users->count()) {
+            return back()->with('error', '你没有登录过其他账号。');
         }
 
-        // if not found, return error
-        if (! $selected_user) {
-            return back()->with('error', '你无法选择此账户。');
+        $user = $users->firstWhere('id', $request->input('user_id'));
+
+        if (! $this->multiUser->contains($user)) {
+            return back()->with('error', '会话中没有找到此用户。');
         }
 
-        auth('web')->login($selected_user, true);
+        $login = $this->multiUser->switch($user);
 
-        Session::forget('switch-users');
+        if (! $login) {
+            return back()->with('error', '切换用户失败。');
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
