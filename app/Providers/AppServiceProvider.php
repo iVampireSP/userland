@@ -45,6 +45,5 @@ class AppServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.refresh_token')));
         Passport::personalAccessTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.personal_access_token')));
         Passport::setDefaultScope('openid');
-
     }
 }
