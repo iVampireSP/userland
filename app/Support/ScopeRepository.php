@@ -14,13 +14,13 @@ class ScopeRepository implements ScopeRepositoryInterface
         $grantType,
         ClientEntityInterface $clientEntity,
         $userIdentifier = null
-    ) {
+    ): array {
         return array_filter($scopes, function (ScopeEntityInterface $scope) {
             return $this->getScopeEntityByIdentifier($scope->getIdentifier());
         });
     }
 
-    public function getScopeEntityByIdentifier($identifier)
+    public function getScopeEntityByIdentifier($identifier): ScopeEntity|false
     {
         $config_scopes = config('openid.passport.tokens_can');
         $scopes = [];
@@ -30,7 +30,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         }
 
         if (array_key_exists($identifier, $scopes) === false) {
-            return;
+            return false;
         }
 
         $scope = new ScopeEntity();

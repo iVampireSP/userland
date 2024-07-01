@@ -23,8 +23,9 @@ return [
      * Place your custom claim sets here.
      */
     'custom_claim_sets' => [
-        'login' => [
-            'last-login',
+        'realname' => [
+            'realname',
+            'realname_verified',
         ],
         // 'company' => [
         //     'company_name',
@@ -38,10 +39,10 @@ return [
      * You can override the repositories below.
      */
     'repositories' => [
-        'identity' => \OpenIDConnect\Repositories\IdentityRepository::class,
+        //        'identity2' => \OpenIDConnect\Repositories\IdentityRepository::class,
+        'identity' => \App\Support\IdentityRepositorySupport::class,
         // 'scope' => \OpenIDConnect\Repositories\ScopeRepository::class,
         'scope' => \App\Support\ScopeRepository::class,
-
     ],
 
     /**

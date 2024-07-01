@@ -20,9 +20,7 @@
         "id": 1,
         "name": "test", // profile
         "email": "user@example.com",  // email
-        "email_md5": "b58996c504c5638798eb6b511e6f49af"
-        "email_verified_at": "2000-00-00T00:00:00.000000Z", // email, 邮箱验证时间，存在则说明已验证
-        "avatar": "https://cravatar.cn/avatar/b58996c504c5638798eb6b511e6f49af"
+        "email_verified": true, // email, 邮箱验证状态，布尔值
         "real_name": "姓名", // realname
         "id_card": "身份证号", // realname
         "real_name_verified_at": "2000-00-00T00:00:00.000000Z", // profile, 实名认证时间，存在则说明已认证
