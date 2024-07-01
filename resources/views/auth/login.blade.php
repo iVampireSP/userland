@@ -29,10 +29,12 @@
         人脸登录
     </a>
     &nbsp;
-    <a class="link" href="{{ route('register') }}">
-        {{ __('Register') }}
-    </a>
-    &nbsp;
+    @guest('web')
+        <a class="link" href="{{ route('register') }}">
+            {{ __('Register') }}
+        </a>
+        &nbsp;
+    @endguest
     <a class="link" href="{{ route('password.request') }}">
         {{ __('Forgot Your Password?') }}
     </a>
