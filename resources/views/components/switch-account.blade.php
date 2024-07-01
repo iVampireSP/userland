@@ -14,14 +14,13 @@
                     user-id="{{$u->id}}"
                     class="list-group-item list-group-item-action multiuser-switch-user " style="cursor: pointer">
                     {{ $u->name }}
-                    <br />
-                    {{ $u->email }}
-                    <br />
                     @auth('web')
                         @if ($u->id == $user->id)
                             <span class="badge bg-primary">当前</span>
                         @endif
                     @endauth
+                    <br />
+                    {{ $u->email }}
                 </div>
             @endforeach
         </div>
