@@ -24,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // 如果在 dev
+        if ($this->app->environment('local')) {
+            $this->useStoragePassportKeys();
+        }
         Paginator::useBootstrapFive();
 
         Passport::useClientModel(Client::class);
@@ -45,5 +49,11 @@ class AppServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.refresh_token')));
         Passport::personalAccessTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.personal_access_token')));
         Passport::setDefaultScope('openid');
+    }
+
+    private function useStoragePassportKeys(): void
+    {
+        config(['passport.private_key' => file_get_contents(storage_path('oauth-private.key'))]);
+        config(['passport.public_key' => file_get_contents(storage_path('oauth-public.key'))]);
     }
 }
