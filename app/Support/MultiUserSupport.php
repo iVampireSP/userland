@@ -48,7 +48,9 @@ class MultiUserSupport
     {
         $users = $this->get();
 
-        return $users->contains($user);
+        return $users->contains(function ($u) use ($user) {
+            return $u->id === $user->id;
+        });
     }
 
     public function switch(User $user): bool
@@ -73,9 +75,9 @@ class MultiUserSupport
             return false;
         }
 
-        $users = $this->get();
-
-        $users->forget($users->search($user));
+        $users = $this->get()->filter(function ($u) use ($user) {
+            return $u->id !== $user->id;
+        });
 
         Session::put($this->session_key, $users);
 

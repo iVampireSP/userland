@@ -101,9 +101,13 @@ class LoginController extends Controller
     public function logout()
     {
         $user = auth('web');
-        $this->multiUser->remove($user->user());
+        $success = $this->multiUser->remove($user->user());
 
         $user->logout();
+
+        if (! $success) {
+            return back()->with('error', '切换用户失败。');
+        }
 
         return redirect('/');
     }

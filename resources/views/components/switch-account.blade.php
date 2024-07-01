@@ -17,9 +17,11 @@
                     <br />
                     {{ $u->email }}
                     <br />
-                    @if ($u->id == $user->id)
-                        <span class="badge bg-primary">当前</span>
-                    @endif
+                    @auth('web')
+                        @if ($u->id == $user->id)
+                            <span class="badge bg-primary">当前</span>
+                        @endif
+                    @endauth
                 </div>
             @endforeach
         </div>
@@ -27,9 +29,15 @@
     </div>
 
 @elseif($type == \App\View\Components\SwitchAccount::TYPE_DROPDOWN)
-    @foreach($users as $u)
-        <a user-id="{{$u->id}}" class="dropdown-item multiuser-switch-user @if($u->id == $user->id) active @endif" href="#"> {{ $u->name }}</a>
-    @endforeach
+    @auth('web')
+        @foreach($users as $u)
+            <a user-id="{{$u->id}}" class="dropdown-item multiuser-switch-user @if(($u->id) == $user->id) active @endif" href="#"> {{ $u->name }}</a>
+        @endforeach
+    @else
+        @foreach($users as $u)
+            <a user-id="{{$u->id}}" class="dropdown-item multiuser-switch-user" href="#"> {{ $u->name }}</a>
+        @endforeach
+    @endauth
 @elseif ($type == \App\View\Components\SwitchAccount::TYPE_ELEMENT)
     <form class="d-none" id="multiuser-switch-user-form" action="{{ route('login.switch') }}" method="post">
         @csrf

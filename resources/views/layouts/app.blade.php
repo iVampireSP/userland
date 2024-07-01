@@ -78,8 +78,7 @@
                             $multiUser = new App\Support\MultiUserSupport();
                             $multiUserCount = $multiUser->count();
                         @endphp
-{{--                        切换账户 --}}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown @guest('web') @if (!$multiUserCount) d-none @endif  @endguest">
                             <a id="navbarDropdown-switchUser" class="nav-link dropdown-toggle" href="#" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 切换账户 @if ($multiUserCount) ({{$multiUserCount}})@endif
