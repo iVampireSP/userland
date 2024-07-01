@@ -145,7 +145,7 @@ class FaceController extends Controller
         }
 
         if (count($faces) > 1) {
-            return redirect()->route('faces.index')->with('success', '验证成功，但你可能录入了多个账户。');
+            return redirect()->route('faces.index')->with('success', '验证成功。你可能录入了多个账户，在使用人脸登录时，您可以同时登录到这些账户。');
         }
 
         if ($faces[0]['user_id'] != auth('web')->user()->id) {

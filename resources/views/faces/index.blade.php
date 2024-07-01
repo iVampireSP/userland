@@ -2,15 +2,15 @@
 
 @section('content')
     @if(!$face)
-        <h3>你还没有录入人脸。</h3>
+        <h3>你还没有采集人脸。</h3>
 
-        <p>要录入人脸，请点击下面的按钮。</p>
+        <p>要采集人脸，请点击下面的按钮。</p>
 
-        <a href="{{ route('faces.capture')  }}" class="btn btn-primary">录入</a>
+        <a href="{{ route('faces.capture')  }}" class="btn btn-primary">采集</a>
     @else
-        <h3>您已录入</h3>
+        <h3>您已采集</h3>
 
-        <p>您可以点击下方按钮来测试。</p>
+        <p>您可以点击下方按钮来测试。在登录时，您可以通过人脸来登录。</p>
 
         <a href="{{ route('faces.test')  }}" class="btn btn-primary">测试</a>
 
