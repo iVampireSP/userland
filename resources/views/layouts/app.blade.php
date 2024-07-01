@@ -172,6 +172,12 @@
             nav.style.backgroundColor = 'rgb(234 234 234 / 9%)';
             nav.classList.remove('bg-body');
         @endif
+
+        const app = document.getElementById('app');
+        app.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', function () {
+            app.style.display = '';
+        });
     </script>
 
     <x-switch-account :type="\App\View\Components\SwitchAccount::TYPE_ELEMENT" />
