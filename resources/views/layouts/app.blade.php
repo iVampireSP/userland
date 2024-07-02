@@ -27,7 +27,7 @@
         <nav class="navbar navbar-expand-lg bd-navbar sticky-top bg-body" id="nav">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('index') }}">
-                    {{ config('app.display_name') }}
+                    @yield('subtitle', config('app.display_name'))
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $client->name)
+@section('subtitle', $client->name)
+
 @section('content')
 <section>
     <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
