@@ -21,7 +21,7 @@
                         <hr />
                             客户端 ID: {{ $client->id }}<br />
                             客户端名称: {{ $client->name }}<br />
-                            所属用户: {{ $client->user->id }}<br />
+                            所属用户: {{ $client->user->name }}<br />
                     </div>
                 </div>
 
