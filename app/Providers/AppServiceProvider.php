@@ -8,6 +8,7 @@ use App\Observers\UserObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Laravel\Pulse\Facades\Pulse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,12 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerObservers();
         $this->registerScopes();
+
+        Pulse::user(fn (User $user) => [
+            'name' => $user->name,
+            'extra' => $user->email,
+            'avatar' => $user->avatar(),
+        ]);
     }
 
     private function registerObservers(): void

@@ -10,6 +10,8 @@
     "require": {
         "php": "^8.3",
         "ext-bcmath": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
         "aws/aws-sdk-php": "*",
@@ -17,25 +19,23 @@
         "laravel/framework": "^11.0",
         "laravel/octane": "^2.4",
         "laravel/passport": "^12.0",
-        "laravel/pulse": "^1.0@beta",
+        "laravel/pulse": "^1.2",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.28",
         "predis/predis": "^2.2",
         "ronvanderheijden/openid-connect": "^1.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spiral/roadrunner-cli": "^2.6",
-        "spiral/roadrunner-http": "^3.5",
-        "ext-fileinfo": "*",
-        "ext-gd": "*"
+        "spiral/roadrunner-http": "^3.5"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.21",
+        "laravel-lang/common": "^6.3",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
         "phpunit/phpunit": "^10.0",
-        "spatie/laravel-ignition": "^2.0",
-        "fakerphp/faker": "^1.21"
-
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
