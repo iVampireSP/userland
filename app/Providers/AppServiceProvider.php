@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Laravel\Pulse\Facades\Pulse;
@@ -36,12 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerObservers();
         $this->registerScopes();
-
-        Pulse::user(fn (User $user) => [
-            'name' => $user->name,
-            'extra' => $user->email,
-            'avatar' => $user->avatar(),
-        ]);
+        $this->setupPulse();
     }
 
     private function registerObservers(): void
@@ -62,5 +59,17 @@ class AppServiceProvider extends ServiceProvider
     {
         config(['passport.private_key' => file_get_contents(storage_path('oauth-private.key'))]);
         config(['passport.public_key' => file_get_contents(storage_path('oauth-public.key'))]);
+    }
+
+    private function setupPulse(): void
+    {
+        Pulse::user(fn (User $user) => [
+            'name' => $user->name,
+            'extra' => $user->email,
+            'avatar' => $user->avatar(),
+        ]);
+        Gate::forUser(auth('admin')->user())->define('viewPulse', function (Admin $admin) {
+            return true;
+        });
     }
 }
