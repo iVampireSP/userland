@@ -17,7 +17,7 @@ class PassportCustomLogin
     {
         $response = $next($request);
 
-        if ($response->getStatusCode() == 302) {
+        if ($response->getStatusCode() == 302 && auth('web')->guest()) {
             return redirect()->route('login.custom', [
                 'client' => $request->input('client_id'),
             ]);
