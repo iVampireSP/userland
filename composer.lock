@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4331da0d15151525e01ab4b21b72c46d",
+    "content-hash": "d7b8ee53acbf5c5f4aa6d2f10563abe0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5090,67 +5090,6 @@
                 }
             ],
             "time": "2024-04-11T14:08:46+00:00"
-        },
-        {
-            "name": "ronvanderheijden/openid-connect",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ronvanderheijden/openid-connect.git",
-                "reference": "429fe56ac46caeb7e91597052dc9ecec973319ee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ronvanderheijden/openid-connect/zipball/429fe56ac46caeb7e91597052dc9ecec973319ee",
-                "reference": "429fe56ac46caeb7e91597052dc9ecec973319ee",
-                "shasum": ""
-            },
-            "require": {
-                "lcobucci/jwt": "^4.0",
-                "league/oauth2-server": "^8.2.0",
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "guzzlehttp/psr7": "^1.7",
-                "http-interop/http-factory-guzzle": "^1.0",
-                "league/oauth2-client": "^2.6",
-                "overtrue/phplint": "^2.3",
-                "phpunit/phpunit": "^9.4.2",
-                "slevomat/coding-standard": "^6.4.1",
-                "slim/slim": "4.*",
-                "symplify/easy-coding-standard": "^9.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "OpenIDConnect\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ron van der Heijden",
-                    "email": "r.heijden@live.nl"
-                }
-            ],
-            "description": "OpenID Connect support to the PHP League's OAuth2 Server. Compatible with Laravel Passport.",
-            "homepage": "https://github.com/ronvanderheijden/openid-connect",
-            "keywords": [
-                "OpenId",
-                "laravel",
-                "oauth2",
-                "oidc",
-                "openid-connect",
-                "passport"
-            ],
-            "support": {
-                "issues": "https://github.com/ronvanderheijden/openid-connect/issues",
-                "source": "https://github.com/ronvanderheijden/openid-connect/tree/1.2.0"
-            },
-            "time": "2024-06-17T10:28:22+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",

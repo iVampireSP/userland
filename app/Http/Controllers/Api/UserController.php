@@ -30,8 +30,8 @@ class UserController extends Controller
 
         if ($user->tokenCan('profile')) {
             $data['name'] = $user->name;
-            $data['email_verified_at'] = $user->email_verified_at;
-            $data['real_name_verified_at'] = $user->real_name_verified_at;
+            $data['email_verified'] = $user->email_verified_at !== null;
+            $data['real_name_verified'] = $user->real_name_verified_at !== null;
         }
 
         if ($user->tokenCan('email')) {
@@ -43,7 +43,6 @@ class UserController extends Controller
             $data['id_card'] = $user->id_card;
         }
 
-        // append created_at
         $data['created_at'] = $user->created_at;
 
         return $this->success($data);

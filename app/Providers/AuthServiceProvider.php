@@ -7,11 +7,6 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 class AuthServiceProvider extends ServiceProvider
 {
-    private static $scopes = [
-        'realname' => '获取用户的实名信息（包括姓名、身份证号）',
-
-    ];
-
     /**
      * The model to policy mappings for the application.
      *

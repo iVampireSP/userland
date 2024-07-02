@@ -99,10 +99,10 @@
         GET {{ route('openid.discovery') }}
     </div>
 
-    <div class="mt-3">
-        <h3>JWKs(JSON Web Key Sets) 端点</h3>
-       GET  {{ route('openid.jwks') }}
-    </div>
+{{--    <div class="mt-3">--}}
+{{--        <h3>JWKs(JSON Web Key Sets) 端点</h3>--}}
+{{--       GET  {{ route('openid.jwks') }}--}}
+{{--    </div>--}}
 
     <div class="mt-3">
         <h3>授权端点</h3>

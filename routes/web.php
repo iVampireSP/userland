@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Public\DiscoveryController;
+use App\Http\Controllers\Public\JwksController;
 use App\Http\Controllers\Web\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
 use App\Http\Controllers\Web\Auth\LoginController;
@@ -13,13 +15,12 @@ use App\Http\Controllers\Web\FaceController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
-use OpenIDConnect\Laravel\DiscoveryController;
-use OpenIDConnect\Laravel\JwksController;
 
-Route::get('/.well-known/jwks', JwksController::class)
-    ->name('openid.jwks');
 Route::get('/.well-known/openid-configuration', DiscoveryController::class)
     ->name('openid.discovery');
+
+//Route::get('/.well-known/jwks', JwksController::class)
+//    ->name('openid.jwks');
 
 Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
 

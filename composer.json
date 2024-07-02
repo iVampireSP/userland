@@ -23,7 +23,6 @@
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.28",
         "predis/predis": "^2.2",
-        "ronvanderheijden/openid-connect": "^1.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spiral/roadrunner-cli": "^2.6",
         "spiral/roadrunner-http": "^3.5"
