@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Auth;
 
 use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Support\FaceSupport;
@@ -96,6 +97,13 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth.login');
+    }
+
+    public function showCustomLoginForm(Request $request, Client $client)
+    {
+        $client->load('user');
+
+        return view('auth.custom_login', compact('client'));
     }
 
     public function logout()

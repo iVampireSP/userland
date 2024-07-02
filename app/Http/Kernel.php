@@ -6,6 +6,7 @@ use App\Http\Middleware\Admin\ValidateReferer;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\JsonRequest;
+use App\Http\Middleware\PassportCustomLogin;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RealNamed;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -101,5 +102,6 @@ class Kernel extends HttpKernel
         'scopes' => CheckScopes::class,
         'scope' => CheckForAnyScope::class,
         'validate_application' => ValidateApplication::class,
+        'passport.custom_login' => PassportCustomLogin::class,
     ];
 }

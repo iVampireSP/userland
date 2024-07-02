@@ -6,8 +6,10 @@ use App\Models\Admin;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Support\RemovableRoutesMixin;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Laravel\Pulse\Facades\Pulse;
@@ -31,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local')) {
             $this->useStoragePassportKeys();
         }
+
+        Route::mixin(new RemovableRoutesMixin());
+        Route::removeGet('/oauth/authorize');
+
         Paginator::useBootstrapFive();
 
         Passport::useClientModel(Client::class);

@@ -15,6 +15,7 @@ use App\Http\Controllers\Web\FaceController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Http\Controllers\AuthorizationController;
 
 Route::get('/.well-known/openid-configuration', DiscoveryController::class)
     ->name('openid.discovery');
@@ -26,6 +27,7 @@ Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('i
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::get('login/{client}', [LoginController::class, 'showCustomLoginForm'])->name('login.custom');
     Route::post('login', [LoginController::class, 'passwordLogin']);
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
@@ -106,3 +108,6 @@ Route::get('scopes', [TokenController::class, 'display_scopes'])->name('tokens.s
 
 Route::view('tos', 'tos')->name('tos');
 Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
+
+/* Passport Route override */
+Route::get('/oauth/authorize', [AuthorizationController::class, 'authorize'])->middleware('web', 'passport.custom_login')->name('passport.authorizations.authorize');

@@ -46,6 +46,12 @@
                                value="{{ $client->redirect }}">
                     </div>
 
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">描述</span>
+                        <input aria-label="描述" type="text" class="form-control" name="description" placeholder="将会显示在登录页面"
+                               value="{{ $client->description }}">
+                    </div>
+
 
 {{--                    <div class="input-group mb-3">--}}
 {{--                        <span class="input-group-text">提供方</span>--}}

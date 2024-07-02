@@ -80,6 +80,7 @@ class ClientController extends Controller
             'password_client' => 'boolean',
             'personal_access_client' => 'boolean',
             'trusted' => 'nullable|boolean',
+            'description' => 'nullable|string',
         ]);
 
         $client->update([
@@ -88,6 +89,7 @@ class ClientController extends Controller
             'password_client' => $request->boolean('password_client'),
             'personal_access_client' => $request->boolean('personal_access_client'),
             'trusted' => $request->boolean('trusted'),
+            'description' => $request->input('description'),
         ]);
 
         return redirect()->route('admin.clients.show', compact('client'));

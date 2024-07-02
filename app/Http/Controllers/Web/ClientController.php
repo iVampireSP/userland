@@ -82,6 +82,7 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'redirect' => 'required|url',
             'personal_access_client' => 'boolean',
+            'description' => 'nullable|string',
             //            'password_client' => 'boolean',
         ]);
 
@@ -91,7 +92,7 @@ class ClientController extends Controller
             'name' => $request->input('name'),
             'redirect' => $request->input('redirect'),
             'personal_access_client' => $request->boolean('personal_access_client'),
-            //            'password_client' => $request->boolean('password_client'),
+            'description' => $request->input('description'),
         ]);
 
         return redirect()->route('clients.show', compact('client'));
