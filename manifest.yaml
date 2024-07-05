@@ -24,7 +24,7 @@ spec:
             secretName: oauth-secret
       containers:
         - name: web
-          image: registry.leafdev.top/ecosystem/oauth:v0-1-2-fix-2
+          image: registry.leafdev.top/ecosystem/oauth:v0-1-3
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
@@ -128,7 +128,7 @@ spec:
             secretName: oauth-secret
       containers:
         - name: schedule
-          image: registry.leafdev.top/ecosystem/oauth:v0-1-2-fix-2
+          image: registry.leafdev.top/ecosystem/oauth:v0-1-3
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
@@ -208,7 +208,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: worker
-          image: registry.leafdev.top/ecosystem/oauth:v0-1-2-fix-2
+          image: registry.leafdev.top/ecosystem/oauth:v0-1-3
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
@@ -336,6 +336,10 @@ spec:
 #  MILVUS_HOST: ""
 #  MILVUS_PORT: ""
 #  MILVUS_DB_NAME: "oauth"
+#  SUPPORT_SMS_APP_KEY=
+#  SUPPORT_SMS_APP_SECRET=
+#  SUPPORT_SMS_SIGN_ID=
+#  SUPPORT_SMS_TEMPLATE_VERIFY_CODE=
 #---
 #apiVersion: v1
 #kind: Secret
