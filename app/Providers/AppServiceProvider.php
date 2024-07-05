@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Contracts\SMS;
 use App\Models\Admin;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Support\RemovableRoutesMixin;
+use App\Support\SMSSupport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->bind(SMS::class, SMSSupport::class);
     }
 
     /**

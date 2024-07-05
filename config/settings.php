@@ -20,5 +20,14 @@ return [
             'api' => env('SUPPORT_FACE_API', ''),
             'dimension' => 512,
         ],
+        'sms' => [
+            'app_key' => env('SUPPORT_SMS_APP_KEY', ''),
+            'app_secret' => env('SUPPORT_SMS_APP_SECRET', ''),
+//            https://www.guoyangyun.com/
+            'sign' => env('SUPPORT_SMS_SIGN_ID', ''), // 短信签名
+            'templates' => [ // 短信模板
+                'verify_code' => env('SUPPORT_SMS_TEMPLATE_VERIFY_CODE', ''),
+            ]
+        ]
     ],
 ];
