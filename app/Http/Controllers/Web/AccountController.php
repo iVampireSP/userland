@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use App\Support\MultiUserSupport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,8 +18,15 @@ use function redirect;
 use function session;
 use function view;
 
-class AuthController extends Controller
+class AccountController extends Controller
 {
+    protected MultiUserSupport $multiUser;
+
+    public function __construct()
+    {
+        $this->multiUser = new MultiUserSupport();
+    }
+
     public function index(Request $request): View|RedirectResponse
     {
         return
@@ -112,5 +121,42 @@ class AuthController extends Controller
         $request->user()->delete();
 
         return redirect()->route('index')->with('success', '已删除用户。');
+    }
+
+    public function selectAccount()
+    {
+        return view('auth.select', [
+            'users' => $this->multiUser->get(),
+        ]);
+    }
+
+    public function switchAccount(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        // logout
+        auth('web')->logout();
+
+        $users = $this->multiUser->get();
+
+        if (! $users->count()) {
+            return back()->with('error', '你没有登录过其他账号。');
+        }
+
+        $user = $users->firstWhere('id', $request->input('user_id'));
+
+        if (! $this->multiUser->contains($user)) {
+            return back()->with('error', '会话中没有找到此用户。');
+        }
+
+        $login = $this->multiUser->switch($user);
+
+        if (! $login) {
+            return back()->with('error', '切换用户失败。');
+        }
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

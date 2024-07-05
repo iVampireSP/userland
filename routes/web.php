@@ -8,7 +8,7 @@ use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\Auth\VerificationController;
-use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\FaceController;
@@ -23,7 +23,7 @@ Route::get('/.well-known/openid-configuration', DiscoveryController::class)
 //Route::get('/.well-known/jwks', JwksController::class)
 //    ->name('openid.jwks');
 
-Route::get('/', [AuthController::class, 'index'])->middleware('banned')->name('index');
+Route::get('/', [AccountController::class, 'index'])->middleware('banned')->name('index');
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -32,8 +32,8 @@ Route::prefix('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
     Route::post('face-login', [LoginController::class, 'faceLogin']);
-    Route::get('select', [LoginController::class, 'selectAccount'])->name('login.select');
-    Route::post('switch', [LoginController::class, 'switchAccount'])->name('login.switch');
+    Route::get('select', [AccountController::class, 'selectAccount'])->name('login.select');
+    Route::post('switch', [AccountController::class, 'switchAccount'])->name('login.switch');
 
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register']);
@@ -50,7 +50,7 @@ Route::prefix('auth')->group(function () {
     Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
-    Route::get('token/{token}', [AuthController::class, 'fastLogin'])->name('auth.fast-login');
+    Route::get('token/{token}', [AccountController::class, 'fastLogin'])->name('auth.fast-login');
 });
 
 Route::middleware(['auth:web', 'banned', 'verified'])->group(
@@ -62,8 +62,8 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
             }
         );
 
-        Route::withoutMiddleware('verified')->patch('user', [AuthController::class, 'update'])->name('users.update');
-        Route::withoutMiddleware('verified')->delete('user', [AuthController::class, 'destroy'])->name('users.destroy');
+        Route::withoutMiddleware('verified')->patch('user', [AccountController::class, 'update'])->name('users.update');
+        Route::withoutMiddleware('verified')->delete('user', [AccountController::class, 'destroy'])->name('users.destroy');
         Route::view('user/delete', 'delete')->withoutMiddleware('verified')->name('users.delete');
         /* End 账户区域 */
 
@@ -82,7 +82,7 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* End 客户端 */
 
         /* Start 状态 */
-        Route::post('status', [AuthController::class, 'status'])->name('status.update');
+        Route::post('status', [AccountController::class, 'status'])->name('status.update');
         /* End 状态 */
 
         /* Start 封禁 */
@@ -99,8 +99,8 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::post('faces/test', [FaceController::class, 'test']);
         /* End 人脸 */
 
-        // Route::get('auth_request/{token}', [AuthController::class, 'show_authrequest'])->name('auth_request.show');
-        // Route::post('auth_request', [AuthController::class, 'accept_authrequest'])->name('auth_request.accept');
+        // Route::get('auth_request/{token}', [AccountController::class, 'show_authrequest'])->name('auth_request.show');
+        // Route::post('auth_request', [AccountController::class, 'accept_authrequest'])->name('auth_request.accept');
     }
 );
 
