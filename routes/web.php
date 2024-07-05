@@ -2,16 +2,17 @@
 
 use App\Http\Controllers\Public\DiscoveryController;
 use App\Http\Controllers\Public\JwksController;
+use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\Auth\VerificationController;
-use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\FaceController;
+use App\Http\Controllers\Web\PhoneController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::prefix('auth')->group(function () {
     Route::get('login/{client}', [LoginController::class, 'showCustomLoginForm'])->name('login.custom');
     Route::post('login', [LoginController::class, 'passwordLogin']);
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('logout-all', [LoginController::class, 'logoutAll'])->name('logout.all');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
     Route::post('face-login', [LoginController::class, 'faceLogin']);
     Route::get('select', [AccountController::class, 'selectAccount'])->name('login.select');
@@ -84,6 +86,18 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* Start 状态 */
         Route::post('status', [AccountController::class, 'status'])->name('status.update');
         /* End 状态 */
+
+        /* Start 手机号 */
+        Route::get('phone', [PhoneController::class, 'create'])->name('phone.create');
+        Route::post('phone', [PhoneController::class, 'store'])->name('phone.store');
+        Route::post('phone/verify', [PhoneController::class, 'verify'])->name('phone.verify');
+        Route::get('phone/validate', [PhoneController::class, 'show_validate_form'])->name('phone.validate');
+        Route::post('phone/validate/send', [PhoneController::class, 'send_validate_code'])->name('phone.validate.send');
+        Route::post('phone/validate', [PhoneController::class, 'validate_code']);
+        Route::post('phone/resend', [PhoneController::class, 'resend'])->name('phone.resend');
+        Route::get('phone/edit', [PhoneController::class, 'edit'])->middleware('phone.confirm')->name('phone.edit');
+        Route::delete('phone', [PhoneController::class, 'unbind'])->middleware('phone.confirm')->name('phone.unbind');
+        /* End 手机号 */
 
         /* Start 封禁 */
         Route::resource('bans', BanController::class)->only(['index']);

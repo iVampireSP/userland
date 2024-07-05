@@ -15,11 +15,11 @@ class DiscoveryController extends Controller
             'authorization_endpoint' => route('passport.authorizations.authorize'),
             'token_endpoint' => route('passport.token'),
         ];
-        
+
         if (Route::has('openid.jwks')) {
             $response['jwks_uri'] = route('openid.jwks');
         }
-        
+
         if (Route::has('openid.userinfo')) {
             $response['userinfo_endpoint'] = route('openid.userinfo');
         }

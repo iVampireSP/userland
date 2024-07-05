@@ -21,13 +21,15 @@ return [
             'dimension' => 512,
         ],
         'sms' => [
+            // 验证码有效时间
+            'interval' => env('SUPPORT_SMS_INTERVAL', 60),
             'app_key' => env('SUPPORT_SMS_APP_KEY', ''),
             'app_secret' => env('SUPPORT_SMS_APP_SECRET', ''),
-//            https://www.guoyangyun.com/
+            //            https://www.guoyangyun.com/
             'sign' => env('SUPPORT_SMS_SIGN_ID', ''), // 短信签名
             'templates' => [ // 短信模板
                 'verify_code' => env('SUPPORT_SMS_TEMPLATE_VERIFY_CODE', ''),
-            ]
-        ]
+            ],
+        ],
     ],
 ];

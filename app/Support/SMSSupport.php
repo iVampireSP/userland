@@ -12,16 +12,19 @@ use Illuminate\Support\Facades\Http;
 class SMSSupport implements SMS
 {
     private string $templateId;
+
     private string $phone;
+
     private string $content;
+
     private array $variables;
 
-//    https://www.guoyangyun.com/
-    public const string VARIABLE_SEND_API = "https://api.guoyangyun.com/api/sms/smsmtm.htm";
-    public const string SEND_API = "https://api.guoyangyun.com/api/sms/sendSmsApi.htm";
+    //    https://www.guoyangyun.com/
+    public const string VARIABLE_SEND_API = 'https://api.guoyangyun.com/api/sms/smsmtm.htm';
+
+    public const string SEND_API = 'https://api.guoyangyun.com/api/sms/sendSmsApi.htm';
 
     /**
-     * @param string $templateId
      * @return $this
      */
     public function setTemplateId(string $templateId): self
@@ -32,7 +35,7 @@ class SMSSupport implements SMS
     }
 
     /**
-     * @param array $variables ['k' => 'v']
+     * @param  array  $variables  ['k' => 'v']
      * @return $this
      */
     public function setVariableContent(array $variables = []): self
@@ -50,7 +53,6 @@ class SMSSupport implements SMS
     }
 
     /**
-     * @param string $phone
      * @return $this
      */
     public function setPhone(string $phone): self
@@ -61,7 +63,6 @@ class SMSSupport implements SMS
     }
 
     /**
-     * @return Response
      * @throws SMSFailedException
      * @throws RequestException
      */
@@ -128,7 +129,7 @@ class SMSSupport implements SMS
             ]);
             $response->throw();
             // 如果 code 是 0，则成功
-            if ($response->json('code') !== 0) {
+            if ($response->json('code') != '0') {
                 throw new SMSFailedException($response->json('msg'));
             }
 
@@ -152,4 +153,19 @@ class SMSSupport implements SMS
         return Http::asForm()->post($url, $data);
     }
 
+    /**
+     * @return $this
+     *
+     * @throws SMSFailedException
+     */
+    public function validate(): self
+    {
+        $p = (bool) preg_match('#^13[\d]{9}$|^14[5,6,7,8,9]{1}\d{8}$|^15[^4]{1}\d{8}$|^16[6]{1}\d{8}$|^17[0,1,2,3,4,5,6,7,8]{1}\d{8}$|^18[\d]{9}$|^19[8,9]{1}\d{8}$#', $this->phone);
+
+        if (! $p) {
+            throw new SMSFailedException('手机号码格式不正确');
+        }
+
+        return $this;
+    }
 }

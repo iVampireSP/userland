@@ -123,5 +123,15 @@ class LoginController extends Controller
         return redirect('/');
     }
 
+    public function logoutAll(Request $request)
+    {
+        // 刷新 session
+        auth()->guard('web')->logout();
 
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 }

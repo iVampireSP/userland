@@ -126,6 +126,22 @@
         </div>
     @endif
 
+    @if (!$user->isPhoneVerified())
+        <div class="mt-3">
+            <h3>验证并绑定手机号</h3>
+            <div class="mt-1">
+                部分应用程序可能要求您<a href="{{ route('phone.create') }}">验证手机号</a>。
+            </div>
+        </div>
+    @else
+        <div class="mt-3">
+            <h3>已验证手机号</h3>
+            <div class="mt-1">
+                您已验证手机号，如果您有需要，可以查看<a href="{{ route('phone.create') }}">此页面</a>。
+            </div>
+        </div>
+    @endif
+
     <div class="mt-3">
         <x-switch-account />
     </div>

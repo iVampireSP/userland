@@ -10,6 +10,7 @@ use App\Http\Middleware\PassportCustomLogin;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RealNamed;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\RequirePhone;
 use App\Http\Middleware\ResourceOwner;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -103,5 +104,6 @@ class Kernel extends HttpKernel
         'scope' => CheckForAnyScope::class,
         'validate_application' => ValidateApplication::class,
         'passport.custom_login' => PassportCustomLogin::class,
+        'phone.confirm' => RequirePhone::class,
     ];
 }

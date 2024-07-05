@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\SMSSupport;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Laravel\Passport\HasApiTokens;
 
 // use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -69,6 +72,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isRealNamed(): bool
     {
         return $this->real_name_verified_at !== null;
+    }
+
+    // has phone number
+    public function hasPhoneNumber(): bool
+    {
+        return $this->phone !== null;
+    }
+
+    // 是否验证手机号
+    public function isPhoneVerified(): bool
+    {
+        return $this->phone_verified_at !== null;
     }
 
     public function scopeBirthday(): User
@@ -136,5 +151,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function faces(): HasMany
     {
         return $this->hasMany(Face::class);
+    }
+
+    public function sendSmsVerificationCode(): bool
+    {
+        $code = rand(1000, 9999);
+
+        $sms = new SMSSupport();
+
+        $sms->setPhone($this->phone);
+        $sms->setTemplateId(config('settings.supports.sms.templates.verify_code'));
+        $sms->setVariableContent([
+            'code' => $code,
+        ]);
+
+        try {
+            $sms->sendVariable();
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+
+            return false;
+        }
+
+        Cache::set('sms:user:code:'.$this->id, $code, config('settings.supports.sms.interval'));
+
+        return true;
+    }
+
+    public function getSmsVerificationCode(): string
+    {
+        return Cache::get('sms:user:code:'.$this->id);
     }
 }

@@ -90,9 +90,9 @@
                                 <a class="dropdown-item" href="{{ route('login') }}">添加账号</a>
 
                                 @auth('web')
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="document.getElementById('logout-form').submit();return false;">
-                                        {{ __('Logout') }}
+                                    <a class="dropdown-item" href="#"
+                                       onclick="document.getElementById('logout-all-form').submit();return false;">
+                                        登出全部
                                     </a>
                                 @endauth
                             </div>
@@ -137,6 +137,9 @@
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                    <form id="logout-all-form" action="{{ route('logout.all') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
