@@ -83,8 +83,11 @@ class LoginController extends Controller
             return redirect()->to($this->multiUser->url());
         }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = $faces->first()->user;
+        $this->multiUser->add($user);
+        $this->multiUser->switch($user);
 
+        return redirect()->intended(RouteServiceProvider::HOME)->with('success', '登录成功。');
     }
 
     public function showFaceLoginForm()
@@ -120,40 +123,5 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    public function selectAccount()
-    {
-        return view('auth.select', [
-            'users' => $this->multiUser->get(),
-        ]);
-    }
 
-    public function switchAccount(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required',
-        ]);
-
-        // logout
-        auth('web')->logout();
-
-        $users = $this->multiUser->get();
-
-        if (! $users->count()) {
-            return back()->with('error', '你没有登录过其他账号。');
-        }
-
-        $user = $users->firstWhere('id', $request->input('user_id'));
-
-        if (! $this->multiUser->contains($user)) {
-            return back()->with('error', '会话中没有找到此用户。');
-        }
-
-        $login = $this->multiUser->switch($user);
-
-        if (! $login) {
-            return back()->with('error', '切换用户失败。');
-        }
-
-        return redirect()->intended(RouteServiceProvider::HOME);
-    }
 }
