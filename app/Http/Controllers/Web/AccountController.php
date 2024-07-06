@@ -267,7 +267,7 @@ class AccountController extends Controller
 
         Cache::forget($token_key);
         // 24 小时只能修改一次。
-//        Cache::forget($this->change_email_prefix.'users:'.$request->user('web')->id);
+        //        Cache::forget($this->change_email_prefix.'users:'.$request->user('web')->id);
 
         return redirect()->to(RouteServiceProvider::HOME)->with('success', '邮箱更改成功。');
     }

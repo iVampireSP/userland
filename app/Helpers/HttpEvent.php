@@ -2,6 +2,4 @@
 
 namespace App\Helpers;
 
-trait HttpEvent
-{
-}
+trait HttpEvent {}

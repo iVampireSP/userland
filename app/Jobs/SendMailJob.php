@@ -21,8 +21,7 @@ class SendMailJob implements ShouldQueue
     public function __construct(
         protected User|string $to,
         protected Mailable $mailable,
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.

@@ -20,8 +20,7 @@ class EmailChange extends Mailable
         protected string $token,
         protected string $email,
         protected User $user
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
