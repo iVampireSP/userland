@@ -12,6 +12,7 @@ use App\Support\SMSSupport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Laravel\Pulse\Facades\Pulse;
@@ -47,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerObservers();
         $this->registerScopes();
         $this->setupPulse();
+
+        $this->forceHttps();
     }
 
     private function registerObservers(): void
@@ -82,5 +85,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::forUser(auth('admin')->user())->define('viewPulse', function (Admin $admin) {
             return true;
         });
+    }
+
+    private function forceHttps(): void
+    {
+        if (config('app.force_https')) {
+            URL::forceScheme('https');
+        }
     }
 }
