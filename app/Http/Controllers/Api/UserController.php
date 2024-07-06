@@ -32,6 +32,7 @@ class UserController extends Controller
             $data['name'] = $user->name;
             $data['email_verified'] = $user->email_verified_at !== null;
             $data['real_name_verified'] = $user->real_name_verified_at !== null;
+            $data['phone_verified'] = $user->phone_verified_at !== null;
         }
 
         if ($user->tokenCan('email')) {
@@ -41,6 +42,10 @@ class UserController extends Controller
         if ($user->tokenCan('realname')) {
             $data['real_name'] = $user->real_name;
             $data['id_card'] = $user->id_card;
+        }
+
+        if ($user->tokenCan('phone')) {
+            $data['phone'] = $user->phone;
         }
 
         $data['created_at'] = $user->created_at;
