@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Public\DiscoveryController;
-use App\Http\Controllers\Public\JwksController;
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
 use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\Auth\QuickController;
 use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\Auth\VerificationController;
@@ -59,6 +59,10 @@ Route::prefix('auth')->group(function () {
     Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
     Route::get('token/{token}', [AccountController::class, 'fastLogin'])->name('auth.fast-login');
+
+    /* Start 快速操作 */
+    Route::get('quick-login/{token}', [QuickController::class, 'quickLogin'])->name('quick.login');
+    /* End 快速操作 */
 });
 
 Route::middleware(['auth:web', 'banned', 'verified'])->group(

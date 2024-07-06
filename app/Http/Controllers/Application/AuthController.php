@@ -11,16 +11,12 @@ use App\Support\MilvusSupport;
 use Exception;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     protected FaceSupport $faceSupport;
 
     protected MilvusSupport $milvusSupport;
-
-    protected string $face_reg_prefix = 'face:reg:';
 
     public function __construct()
     {
@@ -92,17 +88,12 @@ class AuthController extends Controller
             return $this->serverError('保存特征数据时发生了错误');
         }
 
-        $token = Str::random(128);
-
-        // 创建快速登录链接
-        Cache::set($this->face_reg_prefix.$token, [
-            'user_id' => $user->id,
-        ], 60 * 60 * 24);
+        $token = $user->createLoginToken(now()->addDay());
 
         return $this->success([
             'token' => $token,
             'user' => $user,
+            'url' => route('quick.login', $token),
         ]);
-
     }
 }

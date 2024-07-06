@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
 // use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -194,5 +196,47 @@ class User extends Authenticatable
         }
 
         return $confirm;
+    }
+
+    public function createLoginToken(Carbon $expired_at): string
+    {
+        $token = Str::random(128);
+
+        $sec = $expired_at->diffInSeconds(now());
+
+        if ($sec < 60) {
+            $sec = 60;
+        }
+
+        Cache::set('login:token:'.$token, [
+            'user_id' => $this->id,
+            'expired_at' => $expired_at,
+        ], $sec);
+
+        return $token;
+    }
+
+    public function getLoginToken(string $token, bool $delete = true): ?self
+    {
+        $data = Cache::get('login:token:'.$token);
+
+        if (! $data) {
+            return null;
+        }
+
+        $user_id = $data['user_id'];
+
+        $expired_at = $data['expired_at'];
+
+        if ($delete) {
+            Cache::forget('login:token:'.$token);
+        }
+
+        // 是否过期
+        if ($expired_at->isPast()) {
+            return null;
+        }
+
+        return self::find($user_id);
     }
 }
