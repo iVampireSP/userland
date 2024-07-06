@@ -38,6 +38,8 @@ spec:
             - configMapRef:
                 name: oauth-env
           env:
+            - name: TZ
+              value: Asia/Shanghai
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
@@ -137,6 +139,8 @@ spec:
             - configMapRef:
                 name: oauth-env
           env:
+            - name: TZ
+              value: Asia/Shanghai
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
@@ -219,6 +223,8 @@ spec:
             - configMapRef:
                 name: oauth-env
           env:
+            - name: TZ
+              value: Asia/Shanghai
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
