@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Contracts\SMS;
 use App\Exceptions\SMS\SMSFailedException;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Support\SMSSupport;
 use Illuminate\Http\Client\RequestException;
@@ -43,6 +44,12 @@ class PhoneController extends Controller
         $user = $request->user('web');
         if ($user->isPhoneVerified()) {
             return redirect()->route('phone.index');
+        }
+
+        $exists = User::wherePhone($request->input('phone'))->exists();
+
+        if ($exists) {
+            return $this->badRequest('该手机号已被使用。');
         }
 
         // 检查缓存是否存在
@@ -98,6 +105,12 @@ class PhoneController extends Controller
             'phone' => 'required|string|max:11',
             'code' => 'required|string|max:4',
         ]);
+
+        $exists = User::wherePhone($request->input('phone'))->exists();
+
+        if ($exists) {
+            return $this->badRequest('该手机号已被使用。');
+        }
 
         $this->sms->setPhone($request->input('phone'));
 

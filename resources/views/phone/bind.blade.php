@@ -57,7 +57,7 @@
 
             }).catch(function (error) {
                 console.log(error);
-                alert('验证码发送失败');
+                alert('验证码发送失败，' + error.response.data.message);
             });
         });
     </script>
