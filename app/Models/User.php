@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Support\SMSSupport;
 use Exception;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,7 +17,7 @@ use Laravel\Passport\HasApiTokens;
 
 // use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -84,6 +83,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isPhoneVerified(): bool
     {
         return $this->phone_verified_at !== null;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->email_verified_at !== null;
     }
 
     public function scopeBirthday(): User
