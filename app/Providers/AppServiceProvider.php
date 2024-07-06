@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Laravel\Pulse\Facades\Pulse;
+use Overtrue\Wechat\Server as WechatServer;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -25,7 +25,8 @@
         "predis/predis": "^2.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spiral/roadrunner-cli": "^2.6",
-        "spiral/roadrunner-http": "^3.5"
+        "spiral/roadrunner-http": "^3.5",
+        "w7corp/easywechat": "^6.15"
     },
     "require-dev": {
         "fakerphp/faker": "^1.21",
