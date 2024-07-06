@@ -2,22 +2,34 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
+use App\Contracts\SMS;
 use App\Exceptions\CommonException;
+use App\Exceptions\SMS\SMSFailedException;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Support\FaceSupport;
 use App\Support\MultiUserSupport;
+use App\Support\SMSSupport;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class LoginController extends Controller
 {
     protected MultiUserSupport $multiUser;
 
+    protected SMS $sms;
+
+    protected string $prefix = 'sms_login_';
+
     public function __construct()
     {
+        $this->sms = new SMSSupport();
         $this->multiUser = new MultiUserSupport();
     }
 
@@ -90,13 +102,6 @@ class LoginController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME)->with('success', '登录成功。');
     }
 
-    public function showFaceLoginForm()
-    {
-        return view('faces.capture', [
-            'type' => 'login',
-        ]);
-    }
-
     public function showLoginForm()
     {
         return view('auth.login');
@@ -107,6 +112,110 @@ class LoginController extends Controller
         $client->load('user');
 
         return view('auth.custom_login', compact('client'));
+    }
+
+    public function sendSMS(Request $request)
+    {
+        if (! $request->ajax()) {
+            return redirect()->back();
+        }
+
+        $request->validate([
+            'phone' => 'required',
+        ]);
+
+        // 检查缓存是否存在
+        $cacheKey = $this->prefix.$request->input('phone');
+        if (cache()->has($cacheKey)) {
+            return $this->badRequest('验证码已发送，请稍后重试');
+        }
+
+        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
+
+        if (! $user) {
+            return $this->notFound('找不到用户');
+        }
+
+        if (! $user->isPhoneVerified()) {
+            return $this->badRequest('您还未绑定手机号');
+        }
+
+        $this->sms->setPhone($request->input('phone'));
+        try {
+            $this->sms->validate();
+        } catch (SMSFailedException $e) {
+            return $this->serverError($e->getMessage());
+        }
+
+        $code = rand(1000, 9999);
+
+        $cacheKey = $this->prefix.$request->input('phone');
+
+        $this->sms->setTemplateId(config('settings.supports.sms.templates.verify_code'));
+        $this->sms->setVariableContent([
+            'code' => $code,
+        ]);
+
+        try {
+            $this->sms->sendVariable();
+        } catch (SMSFailedException|RequestException $e) {
+            return $this->serverError($e->getMessage());
+        }
+
+        // 设置 key
+        cache()->put($cacheKey, $code, config('settings.supports.sms.interval'));
+
+        return $this->success();
+    }
+
+    public function SMSValidate(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required',
+        ]);
+
+        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
+
+        if (! $user) {
+            return back()->with('error', '你中途修改了手机号。我们找不到对应的用户');
+        }
+
+        if (! $user->isPhoneVerified()) {
+            return back()->with('error', '你可能中途修改了手机号，这个手机号对应的用户没有绑定手机号。。');
+        }
+
+        $request->validate([
+            'phone' => 'required|string|max:11',
+            'code' => 'required|string|max:4',
+        ]);
+
+        $this->sms->setPhone($request->input('phone'));
+
+        try {
+            $this->sms->validate();
+        } catch (SMSFailedException $e) {
+            return back()->withErrors(['phone' => $e->getMessage()]);
+        }
+
+        $cacheKey = $this->prefix.$request->input('phone');
+
+        if (! cache()->has($cacheKey)) {
+            return back()->with('error', '验证码已过期');
+        }
+
+        try {
+            if (cache()->get($cacheKey) !== $request->input('code')) {
+                return back()->with('error', '验证码错误');
+            }
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            Log::error($e->getMessage());
+
+            return back()->with('error', '暂时无法验证。');
+        }
+
+        auth('web')->login($user);
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     public function logout()

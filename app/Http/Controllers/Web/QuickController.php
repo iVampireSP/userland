@@ -11,6 +11,6 @@ class QuickController extends Controller
 
     public function quickRegister(Request $request)
     {
-//        return view('web.quick.index');
+        //        return view('web.quick.index');
     }
 }
