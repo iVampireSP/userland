@@ -53,6 +53,16 @@ class FaceController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
+        try {
+            $faces = $faceSupport->search($embedding);
+        } catch (CommonException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        if (count($faces) > 5) {
+            return redirect()->route('faces.index')->with('error', '你不能录入太多账户。');
+        }
+
         $face = new Face;
 
         // decode

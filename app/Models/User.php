@@ -186,4 +186,13 @@ class User extends Authenticatable
     {
         return Cache::get('sms:user:code:'.$this->id);
     }
+
+    public function delete(bool $confirm = false): bool
+    {
+        if ($confirm) {
+            parent::delete();
+        }
+
+        return $confirm;
+    }
 }

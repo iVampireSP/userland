@@ -71,9 +71,17 @@ class UserObserver
         }
     }
 
-    public function forceDeleted(User $user): void
-    {
-        $user->tokens()->delete();
-        $user->clients()->delete();
-    }
+    //    public function deleted(User $user): void
+    //    {
+    //        $user->faces()->delete();
+    //        $user->tokens()->delete();
+    //        $user->clients()->delete();
+    //    }
+    //
+    //    public function forceDeleted(User $user): void
+    //    {
+    //        $user->faces()->delete();
+    //        $user->tokens()->delete();
+    //        $user->clients()->delete();
+    //    }
 }

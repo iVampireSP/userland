@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\UserDeleteJob;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -112,9 +113,9 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        $user->delete();
+        dispatch(new UserDeleteJob($user));
 
-        return redirect()->route('admin.users.index')->with('success', '已删除此用户。');
+        return redirect()->route('admin.users.index')->with('success', '正在删除此用户。');
     }
 
     public function status(Request $request, User $user): RedirectResponse

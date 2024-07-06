@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>删除账号</h3>
+    <h3>请求删除账号</h3>
 
     <p>如果您删除了账号，您使用 {{ config('app.display_name') }} 的所有数据将会被永久删除，您也可能无法使用依赖 {{ config('app.display_name') }} 的应用。</p>
 

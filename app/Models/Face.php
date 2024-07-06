@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Exceptions\CommonException;
 use App\Support\ImageSupport;
+use App\Support\MilvusSupport;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -80,11 +82,29 @@ class Face extends Model
      */
     public function delete(): bool
     {
+        if (! $this->deleteEmbedding()) {
+            throw new Exception('删除向量失败');
+        }
+
         if (! $this->deleteFile()) {
             throw new Exception('删除文件失败');
         }
 
         return parent::delete();
+    }
+
+    public function deleteEmbedding(): bool
+    {
+        $milvusSupport = new MilvusSupport();
+        try {
+            $milvusSupport->delete('face_id == '.$this->id);
+        } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
+
+            return false;
+        }
+
+        return true;
     }
 
     // scope validate

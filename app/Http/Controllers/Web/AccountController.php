@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendMailJob;
+use App\Jobs\UserDeleteJob;
 use App\Mail\EmailChange;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -123,9 +124,9 @@ class AccountController extends Controller
             return back()->with('error', '密码错误。');
         }
 
-        $request->user()->delete();
+        dispatch(new UserDeleteJob($request->user('web')));
 
-        return redirect()->route('index')->with('success', '已删除用户。');
+        return redirect()->route('index')->with('success', '已请求删除。');
     }
 
     public function selectAccount()
