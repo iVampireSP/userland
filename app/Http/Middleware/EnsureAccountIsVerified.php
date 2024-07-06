@@ -13,28 +13,20 @@ class EnsureAccountIsVerified
 {
     /**
      * Specify the redirect route for the middleware.
-     *
-     * @param string $route
-     * @return string
      */
     public static function redirectTo(string $route): string
     {
-        return static::class . ':' . $route;
+        return static::class.':'.$route;
     }
 
     /**
      * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure $next
-     * @param string|null $redirectToRoute
-     * @return Response|RedirectResponse|null
      */
-    public function handle(Request $request, Closure $next, string $redirectToRoute = null): Response|RedirectResponse|null
+    public function handle(Request $request, Closure $next, ?string $redirectToRoute = null): Response|RedirectResponse|null
     {
         $user = $request->user('web');
 
-        if (!$user || (!$user->isPhoneVerified() || !$user->isEmailVerified())) {
+        if (! $user || (! $user->isPhoneVerified() || ! $user->isEmailVerified())) {
             if ($request->expectsJson()) {
                 abort(403, 'Your account is not verified.');
             } else {
