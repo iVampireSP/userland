@@ -4,7 +4,6 @@ namespace App\Support;
 
 use App\Exceptions\CommonException;
 use App\Models\Face;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -119,7 +118,7 @@ class FaceSupport
     /**
      * @throws CommonException
      */
-    public function search(array $embedding): Collection|false
+    public function search(array $embedding): \Illuminate\Support\Collection
     {
         $milvusSupport = new MilvusSupport();
         try {
@@ -140,13 +139,13 @@ class FaceSupport
         }
 
         if (count($face_ids) == 0) {
-            return false;
+            return collect();
         }
 
         $faces = Face::whereIn('id', $face_ids)->with('user')->get();
 
         if (count($faces) == 0) {
-            return false;
+            return collect();
         }
 
         return $faces;
