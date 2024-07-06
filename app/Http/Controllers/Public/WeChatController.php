@@ -28,6 +28,7 @@ class WeChatController extends Controller
     public function __construct()
     {
         $this->officialAccount = app(OfficialAccount::class);
+        $this->officialAccount->setRequestFromSymfonyRequest(request());
         $this->server = $this->officialAccount->getServer();
     }
 
