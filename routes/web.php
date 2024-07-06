@@ -75,6 +75,16 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::view('user/delete', 'delete')->withoutMiddleware('verified')->name('users.delete');
         /* End 账户区域 */
 
+        /* Start 电子邮件修改 */
+        Route::withoutMiddleware(['verified'])->group(
+            function () {
+                Route::get('email/change', [AccountController::class, 'showChangeEmailForm'])->name('email.edit');
+                Route::post('email/change', [AccountController::class, 'sendChangeEmail']);
+                Route::get('email/change/{token}', [AccountController::class, 'changeEmail'])->name('email.change');
+            }
+        );
+        /* End 电子邮件修改 */
+
         /* Start 实名认证 */
         Route::get('real_name', [RealNameController::class, 'create'])->name('real_name.create');
         Route::post('real_name', [RealNameController::class, 'store'])->name('real_name.store');

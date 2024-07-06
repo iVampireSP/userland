@@ -1,13 +1,33 @@
 @extends('layouts.app')
 
-@section('content')
+@php($user = auth('web')->user())
 
-    @if (!auth('web')->user()->hasVerifiedEmail())
+@section('content')
+    @if ($user->email)
+        @if (!auth('web')->user()->hasVerifiedEmail())
+            <div class="mb-3">
+                <h3>验证邮箱</h3>
+                <p>应用程序需要验证您的邮箱，请先<a href="{{ route('verification.notice') }}">验证您的邮箱</a>。</p>
+            </div>
+        @else
+            <div class="mb-3">
+                <h3>更改邮箱</h3>
+                <p>
+                    您可以更改您的邮箱，但您必须验证您的新邮箱地址。
+                    <a href="{{ route('email.edit') }}">修改邮件地址</a>。
+                </p>
+            </div>
+        @endif
+    @else
         <div class="mb-3">
-            <h3>验证邮箱</h3>
-            <p>应用程序需要验证您的邮箱，请先<a href="{{ route('verification.notice') }}">验证您的邮箱</a>。</p>
+            <h3>绑定邮箱</h3>
+            <p>
+                部分应用程序需要您绑定电子邮件地址才能正常运行，请
+                <a href="{{ route('email.edit') }}">绑定电子邮件</a>。
+            </p>
         </div>
     @endif
+
 
     <h3>嗨, <span class="link" data-bs-toggle="modal" data-bs-target="#userInfo"
                   style="cursor: pointer">{{ auth('web')->user()->name }}</span></h3>

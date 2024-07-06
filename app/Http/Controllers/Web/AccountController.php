@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendMailJob;
+use App\Mail\EmailChange;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Support\MultiUserSupport;
@@ -11,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 use function back;
@@ -21,6 +24,8 @@ use function view;
 class AccountController extends Controller
 {
     protected MultiUserSupport $multiUser;
+
+    protected string $change_email_prefix = 'user:change-email:';
 
     public function __construct()
     {
@@ -158,5 +163,112 @@ class AccountController extends Controller
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    public function showChangeEmailForm(Request $request)
+    {
+        //        $user = $request->user('web');
+        //        $user_key = $this->change_email_prefix.'users:'.$user->id;
+
+        //        $exists = Cache::has($user_key);
+
+        return view('user.change_email');
+    }
+
+    public function sendChangeEmail(Request $request)
+    {
+        // 检测邮箱是否存在
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = $request->user('web');
+
+        $user_key = $this->change_email_prefix.'users:'.$user->id;
+
+        // 检查是否已经申请过
+        if (Cache::has($user_key)) {
+            return back()->with('error', '您已经申请过更改邮箱，24 小时内只能更改一次。');
+        }
+
+        if ($user->email === $request->input('email')) {
+            return back()->with('error', '新邮箱不能和旧邮箱一样。');
+        }
+        $token = Str::random(128);
+
+        $token_key = $this->change_email_prefix.'tokens:'.$token;
+
+        $exists = User::where('email', $request->input('email'))->exists();
+
+        Cache::put($token_key, [
+            'user_id' => $user->id,
+            'email' => $request->input('email'),
+        ], 60 * 60 * 24);
+        Cache::put($user_key, $token, 60 * 60 * 24);
+
+        // 发送验证
+        $job = new SendMailJob($request->input('email'), new EmailChange(
+            token: $token,
+            email: $request->input('email'),
+            user: $user,
+        ));
+        dispatch($job);
+
+        $r = back()->with('success', '我们已向新邮箱发送了一封邮件，请于 24 小时内完成验证。');
+
+        if ($exists) {
+            $r->with('info', '这个邮箱绑定了其他账户，如果您确认更改，则原先的账户的邮箱将被解绑。');
+        }
+
+        return $r;
+
+    }
+
+    public function changeEmail(Request $request, string $token)
+    {
+        $token_key = $this->change_email_prefix.'tokens:'.$token;
+
+        if (! Cache::has($token_key)) {
+            return redirect()->to(RouteServiceProvider::HOME)->with('error', '找不到对应的请求。');
+        }
+
+        $info = Cache::get($token_key);
+
+        $user_id = $info['user_id'];
+        $email = $info['email'];
+
+        if ($user_id != $request->user('web')->id) {
+            return redirect()->to(RouteServiceProvider::HOME)->with('error', '你必须登录为 '.$email.' 才能更改。');
+        }
+
+        // 检查原来的用户
+        $origin_email_user = User::whereEmail($email)->first();
+
+        if ($origin_email_user) {
+            if ($origin_email_user->id === $user_id) {
+                $origin_email_user->email = $email;
+                $origin_email_user->email_verified_at = now();
+            } else {
+                $origin_email_user->email = null;
+                $origin_email_user->email_verified_at = null;
+            }
+
+            $origin_email_user->save();
+        }
+        // 如果原来的邮箱没有用户
+        $user = User::find($user_id);
+        if (! $user) {
+            return redirect()->to(RouteServiceProvider::HOME)->with('error', '无法找到用户。');
+        } else {
+            $user->email = $email;
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        Cache::forget($token_key);
+        // 24 小时只能修改一次。
+//        Cache::forget($this->change_email_prefix.'users:'.$request->user('web')->id);
+
+        return redirect()->to(RouteServiceProvider::HOME)->with('success', '邮箱更改成功。');
     }
 }
