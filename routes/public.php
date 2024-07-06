@@ -7,6 +7,7 @@
 use App\Http\Controllers\Public\RealNameController;
 use App\Http\Controllers\Public\StatusController;
 use App\Http\Controllers\Public\WeChatController;
+use App\Http\Middleware\JsonRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::match(['post', 'get'], 'real_name/notify', [RealNameController::class, 'verify'])->name('real-name.notify');
@@ -16,7 +17,7 @@ Route::match(['post', 'get'], 'real_name/pay_process', [RealNameController::clas
 
 Route::get('status/{user}', StatusController::class)->name('status.show');
 
-Route::any('/wechat/callback', WeChatController::class)->name('wechat.callback');
+Route::withoutMiddleware(JsonRequest::class)->any('/wechat/callback', [WeChatController::class, 'serve'])->name('wechat.callback');
 
 // /* Start Auth Request */
 // Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request.store');

@@ -15,6 +15,7 @@ use App\Http\Controllers\Web\FaceController;
 use App\Http\Controllers\Web\PhoneController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
+use App\Http\Controllers\Web\WeChatController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Controllers\AuthorizationController;
 
@@ -24,7 +25,7 @@ Route::get('/.well-known/openid-configuration', DiscoveryController::class)
 //Route::get('/.well-known/jwks', JwksController::class)
 //    ->name('openid.jwks');
 
-Route::get('/', [AccountController::class, 'index'])->middleware('banned')->name('index');
+Route::get('/', [AccountController::class, 'index'])->middleware(['auth:web', 'banned'])->name('index');
 
 Route::prefix('auth')->group(function () {
     /* Start 短信验证码登录 */
@@ -132,6 +133,11 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::get('faces/test', [FaceController::class, 'test'])->name('faces.test');
         Route::post('faces/test', [FaceController::class, 'test']);
         /* End 人脸 */
+
+        /* Start 微信绑定 */
+        Route::get('wechat', [WeChatController::class, 'index'])->name('wechat.bind');
+        Route::delete('wechat', [WeChatController::class, 'unbind'])->name('wechat.unbind');
+        /* End 微信绑定 */
 
         // Route::get('auth_request/{token}', [AccountController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AccountController::class, 'accept_authrequest'])->name('auth_request.accept');

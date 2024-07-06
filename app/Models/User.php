@@ -92,6 +92,11 @@ class User extends Authenticatable
         return $this->email_verified_at !== null;
     }
 
+    public function hasWeChatOpenID(): bool
+    {
+        return ! is_null($this->wechat_open_id);
+    }
+
     public function scopeBirthday(): User
     {
         /** @noinspection PhpUndefinedMethodInspection */
@@ -198,9 +203,14 @@ class User extends Authenticatable
         return $confirm;
     }
 
-    public function createLoginToken(Carbon $expired_at): string
+    public function createLoginToken(Carbon $expired_at, int $length = 128, string $prefix = 'login', bool $avoid_confusion = false): string
     {
-        $token = Str::random(128);
+        if ($avoid_confusion) {
+            $pool = '23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
+            $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
+        } else {
+            $token = Str::random($length);
+        }
 
         $sec = $expired_at->diffInSeconds(now());
 
@@ -208,7 +218,12 @@ class User extends Authenticatable
             $sec = 60;
         }
 
-        Cache::set('login:token:'.$token, [
+        // 如果 $prefix 不是以 : 结尾，则增加
+        if (! str_ends_with($prefix, ':')) {
+            $prefix .= ':';
+        }
+
+        Cache::set("token:$prefix".$token, [
             'user_id' => $this->id,
             'expired_at' => $expired_at,
         ], $sec);
@@ -216,9 +231,13 @@ class User extends Authenticatable
         return $token;
     }
 
-    public function getLoginToken(string $token, bool $delete = true): ?self
+    public function getLoginToken(string $token, bool $delete = true, string $prefix = 'login'): ?self
     {
-        $data = Cache::get('login:token:'.$token);
+        if (! str_ends_with($prefix, ':')) {
+            $prefix .= ':';
+        }
+
+        $data = Cache::get("token:$prefix".$token);
 
         if (! $data) {
             return null;
@@ -229,7 +248,7 @@ class User extends Authenticatable
         $expired_at = $data['expired_at'];
 
         if ($delete) {
-            Cache::forget('login:token:'.$token);
+            Cache::forget("token:$prefix".$token);
         }
 
         // 是否过期

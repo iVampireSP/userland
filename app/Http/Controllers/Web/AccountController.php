@@ -33,14 +33,13 @@ class AccountController extends Controller
         $this->multiUser = new MultiUserSupport();
     }
 
-    public function index(Request $request): View|RedirectResponse
+    public function index(Request $request): View|RedirectResponse|JsonResponse
     {
-        return
-            $request->user('web')?->with('status')
-                ?
-                view('index')
-                :
-                view('auth.login');
+        if ($request->ajax()) {
+            return $this->success($request->user('web'));
+        }
+
+        return view('index');
     }
 
     public function update(Request $request): RedirectResponse|JsonResponse

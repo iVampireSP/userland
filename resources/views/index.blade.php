@@ -162,6 +162,15 @@
         </div>
     @endif
 
+    @if (!$user->hasWeChatOpenID())
+        <div class="mt-3">
+            <h3>绑定微信</h3>
+            <div class="mt-1">
+                绑定微信后，您可以发送验证码快速登录。<a href="{{ route('wechat.bind') }}">绑定</a>
+            </div>
+        </div>
+    @endif
+
     <div class="mt-3">
         <x-switch-account />
     </div>
