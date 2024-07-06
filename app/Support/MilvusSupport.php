@@ -4,6 +4,7 @@ namespace App\Support;
 
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MilvusSupport
 {
@@ -120,10 +121,16 @@ class MilvusSupport
      */
     public function delete(string $filter): array
     {
-        return $this->post('entities/delete', [
+        $r = $this->post('entities/delete', [
             'filter' => $filter,
             'collectionName' => config('milvus.collection'),
         ]);
+
+        Log::info('Milvus 删除', [
+            'response' => $r,
+        ]);
+
+        return $r;
     }
 
     /**
