@@ -12,8 +12,6 @@ use EasyWeChat\OfficialAccount\Message;
 use EasyWeChat\OfficialAccount\Server;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use Throwable;
 
@@ -45,7 +43,6 @@ class WeChatController extends Controller
      */
     public function serve(Request $request)
     {
-
         $this->server->addMessageListener('text', function (Message $message) {
             return $this->handleChatMessage($message);
         });
