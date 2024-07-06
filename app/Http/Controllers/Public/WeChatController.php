@@ -10,7 +10,6 @@ use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\OfficialAccount\Application as OfficialAccount;
 use EasyWeChat\OfficialAccount\Message;
 use EasyWeChat\OfficialAccount\Server;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ReflectionException;
 use Throwable;
@@ -34,8 +33,6 @@ class WeChatController extends Controller
 
     /**
      * Handle the incoming request.
-     *
-     * @return JsonResponse
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
