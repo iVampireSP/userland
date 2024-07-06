@@ -166,7 +166,14 @@
         <div class="mt-3">
             <h3>绑定微信</h3>
             <div class="mt-1">
-                绑定微信后，您可以发送验证码快速登录。<a href="{{ route('wechat.bind') }}">绑定</a>
+                绑定微信后，可以使用口令操作一些服务，<a href="{{ route('wechat.bind') }}">绑定</a>。
+            </div>
+        </div>
+    @else
+        <div class="mt-3">
+            <h3>已绑定微信</h3>
+            <div class="mt-1">
+                您已绑定微信，如果您需要，可以<a href="{{ route('wechat.unbind') }}">更换绑定</a>。
             </div>
         </div>
     @endif
