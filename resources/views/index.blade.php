@@ -5,7 +5,7 @@
     @if (!auth('web')->user()->hasVerifiedEmail())
         <div class="mb-3">
             <h3>验证邮箱</h3>
-            <p>在继续之前，请先 <a href="{{ route('verification.notice') }}">验证您的邮箱</a>。</p>
+            <p>应用程序需要验证您的邮箱，请先<a href="{{ route('verification.notice') }}">验证您的邮箱</a>。</p>
         </div>
     @endif
 

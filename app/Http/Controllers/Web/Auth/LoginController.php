@@ -16,6 +16,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -130,15 +131,7 @@ class LoginController extends Controller
             return $this->badRequest('验证码已发送，请稍后重试');
         }
 
-        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
-
-        if (! $user) {
-            return $this->notFound('找不到用户');
-        }
-
-        if (! $user->isPhoneVerified()) {
-            return $this->badRequest('您还未绑定手机号');
-        }
+        //        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
 
         $this->sms->setPhone($request->input('phone'));
         try {
@@ -174,16 +167,6 @@ class LoginController extends Controller
             'phone' => 'required',
         ]);
 
-        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
-
-        if (! $user) {
-            return back()->with('error', '你中途修改了手机号。我们找不到对应的用户');
-        }
-
-        if (! $user->isPhoneVerified()) {
-            return back()->with('error', '你可能中途修改了手机号，这个手机号对应的用户没有绑定手机号。。');
-        }
-
         $request->validate([
             'phone' => 'required|string|max:11',
             'code' => 'required|string|max:4',
@@ -211,6 +194,18 @@ class LoginController extends Controller
             Log::error($e->getMessage());
 
             return back()->with('error', '暂时无法验证。');
+        }
+
+        // 成功
+        $user = User::wherePhone($request->input('phone'))->limit(5)->first();
+
+        if (! $user) {
+            // 为注册，将自动创建用户
+            $user = User::create([
+                'name' => $request->input('phone'),
+                'phone' => $request->input('phone'),
+                'password' => Hash::make(Str::random(18)),
+            ]);
         }
 
         auth('web')->login($user);

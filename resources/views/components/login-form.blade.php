@@ -2,17 +2,17 @@
     <ul class="nav nav-pills mb-3" id="login-method-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#login-method-password" type="button"
-                    role="tab">密码登录
+                    role="tab">账户密码
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-face" type="button" role="tab">
-                面部扫瞄登录
+                面部扫瞄
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-sms" type="button" role="tab">
-                短信验证码登录
+                短信验证码
             </button>
         </li>
     </ul>
@@ -63,6 +63,7 @@
              tabindex="0">
             <form action="{{ route('login.sms.validate') }}" method="post">
                 @csrf
+                <p>如果当前手机号没有注册，将会自动为您创建一个账号。</p>
                 <div class="form-group">
                     <label for="phone">手机号</label>
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号"
@@ -76,7 +77,7 @@
                     <button class="btn btn-outline-secondary" type="button" id="button-send-code">发送验证码</button>
                 </div>
 
-                <button type="submit" class="btn btn-primary">提交</button>
+                <button type="submit" class="btn btn-primary">登录 / 注册</button>
             </form>
         </div>
     </div>
@@ -86,8 +87,12 @@
 
 
     @guest('web')
+        <a class="link" id="sms-register" href="#">
+            手机号注册
+        </a>
+        &nbsp;
         <a class="link" href="{{ route('register') }}">
-            {{ __('Register') }}
+            邮箱注册
         </a>
         &nbsp;
     @endguest
@@ -205,7 +210,7 @@
         tabEl.addEventListener('shown.bs.tab', event => {
             if (event.relatedTarget.getAttribute('data-bs-target') === '#login-method-face') {
                 if (started) {
-                    restoreBtn()
+                    setTimeout(restoreBtn, 1000)
                 }
             }
             if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
@@ -213,6 +218,12 @@
                     startBtn.click()
                 })
             }
+        })
+
+        document.getElementById('sms-register')?.addEventListener('click', function () {
+            const b = document.querySelector('[data-bs-target="#login-method-sms"]');
+
+            b.click()
         })
     </script>
 
