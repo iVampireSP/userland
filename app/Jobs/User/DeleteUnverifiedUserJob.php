@@ -15,7 +15,7 @@ class DeleteUnverifiedUserJob implements ShouldQueue
 
     public function handle(): void
     {
-        // 删除注册时间超过 3 天的未验证邮箱用户。
-        (new User)->where('email_verified_at', null)->where('created_at', '<', now()->subDays(3))->delete();
+        // 删除注册时间超过 3 天的未验证邮箱或手机号的用户。
+        (new User)->whereNull('email_verified_at')->whereNull('phone_verified_at')->where('created_at', '<', now()->subDays(3))->delete();
     }
 }
