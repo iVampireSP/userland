@@ -16,7 +16,10 @@ class UserObserver
             $user->name = Str::before($user->email, '@');
         }
 
-        $user->email_md5 = md5($user->email);
+        if ($user->email) {
+            $user->email_md5 = md5($user->email);
+        }
+
         $user->uuid = Str::uuid();
     }
 
@@ -33,13 +36,20 @@ class UserObserver
             }
         }
 
-        if ($user->isDirty('email') && ! empty($user->email)) {
-            $user->email_md5 = md5($user->email);
+        if ($user->isDirty('email')) {
+            // 如果邮箱不是空的
+            if (empty($user->email)) {
+                $user->email_md5 = null;
+                $user->email_verified_at = null;
+            } else {
+                $user->email_md5 = md5($user->email);
+                $user->email_verified_at = now();
+            }
         }
 
-        if (! $user->email_md5 && ! empty($user->email)) {
-            $user->email_md5 = md5($user->email);
-        }
+        //        if (! $user->email_md5 && ! empty($user->email)) {
+        //            $user->email_md5 = md5($user->email);
+        //        }
 
         // 如果密码没有被 bcrypt 加密过，就加密
         if ($user->isDirty('password') && ! Str::startsWith($user->password, '$2y$')) {
