@@ -75,6 +75,7 @@
         startBtn.addEventListener('click', async () => {
             if (started) {
                 restoreBtn()
+                return;
             }
 
             started = true
