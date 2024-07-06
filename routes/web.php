@@ -27,9 +27,15 @@ Route::get('/.well-known/openid-configuration', DiscoveryController::class)
 Route::get('/', [AccountController::class, 'index'])->middleware('banned')->name('index');
 
 Route::prefix('auth')->group(function () {
+    /* Start 短信验证码登录 */
+
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::get('login/{client}', [LoginController::class, 'showCustomLoginForm'])->name('login.custom');
     Route::post('login', [LoginController::class, 'passwordLogin']);
+    Route::post('sms-login', [LoginController::class, 'sendSMS'])->name('login.sms');
+    Route::post('sms-login/validate', [LoginController::class, 'SMSValidate'])->name('login.sms.validate');
+    /* End 短信验证码登录 */
+
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('logout-all', [LoginController::class, 'logoutAll'])->name('logout.all');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
