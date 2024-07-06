@@ -213,6 +213,27 @@ class LoginController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
+    public function tokenLogin(Request $request)
+    {
+        $request->validate([
+            'token' => 'string|required',
+        ]);
+
+        $user = (new User)->getLoginToken(
+            token: $request->input('token'),
+            prefix: 'token',
+        );
+
+        if (! $user) {
+            return back()->with('error', '找不到对应的登录请求。');
+        }
+
+        $this->multiUser->add($user);
+        $this->multiUser->switch($user);
+
+        return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
     public function logout()
     {
         $user = auth('web');

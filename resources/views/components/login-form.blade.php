@@ -15,6 +15,11 @@
                 短信验证码
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-wechat-msg" type="button" role="tab">
+                微信口令
+            </button>
+        </li>
     </ul>
     <div class="tab-content" id="login-method-tabContent">
         <div class="tab-pane fade show active" id="login-method-password" role="tabpanel" tabindex="0">
@@ -33,8 +38,6 @@
                     <label>密码</label>
                 </div>
 
-                <p>如果您继续，则代表同意 <a class="link" target="_blank" href="{{ route('tos') }}">服务条款</a> 和 <a
-                        class="link" target="_blank" href="{{ route('privacy_policy') }}">隐私政策</a>。</p>
                 <button id="login-btn" type="submit" class="d-none mt-3 btn btn-primary">登录</button>
 
             </form>
@@ -80,7 +83,33 @@
                 <button type="submit" class="btn btn-primary">登录 / 注册</button>
             </form>
         </div>
+
+        <div class="tab-pane fade" id="login-method-wechat-msg" role="tabpanel" aria-labelledby="pills-contact-tab"
+             tabindex="0">
+
+            <p>使用微信扫码下方二维码，或者通过微信号搜索并关注公众号 {{ config('wechat.id') }}。</p>
+            <img style="width: 18rem" id="wechat-msg-login-qrcode" alt="微信公众号二维码"/>
+
+            <p>关注公众号后，向公众号发送小写字母 <code>t</code>，随后输入代码。</p>
+
+            <form id="tokenLoginForm" method="post" action="{{ route('login.token') }}">
+                @csrf
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="口令代码"
+                           name="token" required maxlength="16"
+                           value="{{ old('token') }}">
+                    <label>口令代码</label>
+                </div>
+
+
+                <button id="login-btn" type="submit" class="d-none mt-3 btn btn-primary">登录</button>
+
+            </form>
+        </div>
     </div>
+
+    <p class="mt-3">如果您继续登录，则代表同意 <a class="link" target="_blank" href="{{ route('tos') }}">服务条款</a> 和 <a
+            class="link" target="_blank" href="{{ route('privacy_policy') }}">隐私政策</a>。</p>
 
 
     <br/>
@@ -216,6 +245,12 @@
             if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
                 setTimeout(() => {
                     startBtn.click()
+                })
+            }
+            if (event.target.getAttribute('data-bs-target') === '#login-method-wechat-msg') {
+                setTimeout(() => {
+                    const img = document.getElementById('wechat-msg-login-qrcode');
+                    img.src = "https://open.weixin.qq.com/qr/code?username={{config('wechat.id')}}"
                 })
             }
         })

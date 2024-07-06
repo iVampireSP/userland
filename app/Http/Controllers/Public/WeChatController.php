@@ -70,6 +70,7 @@ class WeChatController extends Controller
 
         return match ($firstChar) {
             'b' => $this->wechatBind($message),
+            't' => $this->createLoginToken($message),
             default => $this->noSuchCommand(),
         };
     }
@@ -100,5 +101,29 @@ class WeChatController extends Controller
         }
 
         return '找不到对应的绑定请求。';
+    }
+
+    private function createLoginToken(Message $message): string
+    {
+        $wechat_openid = $message['FromUserName'];
+
+        $user = User::whereWechatOpenId($wechat_openid)->first();
+
+        if (! $user) {
+            return '找不到对应的用户。';
+        }
+
+        $minute = 5;
+
+        $token = $user->createLoginToken(
+            expired_at: now()->addMinutes(5),
+            length: 8,
+            prefix: 'token',
+            avoid_confusion: true,
+        );
+
+        $hello = '你好 '.$user->name.'，';
+
+        return $hello.'你的登录口令是 '.$token.'，有效期 '.$minute.' 分钟。';
     }
 }
