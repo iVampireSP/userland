@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     protected FaceSupport $faceSupport;
+
     protected MilvusSupport $milvusSupport;
+
     public function __construct()
     {
         $this->faceSupport = new FaceSupport();
@@ -51,8 +53,6 @@ class AuthController extends Controller
         }
 
         // 创建快速登录链接
-
-
 
     }
 }
