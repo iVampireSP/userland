@@ -10,6 +10,7 @@ use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\OfficialAccount\Application as OfficialAccount;
 use EasyWeChat\OfficialAccount\Message;
 use EasyWeChat\OfficialAccount\Server;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
@@ -36,16 +37,14 @@ class WeChatController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @return ResponseInterface
+     * @return JsonResponse
      *
      * @throws InvalidArgumentException
-     * @throws BadRequestException
      * @throws RuntimeException
      * @throws Throwable
      */
     public function serve(Request $request)
     {
-        Log::info('request arrived.');
 
         $this->server->addMessageListener('text', function (Message $message) {
             return $this->handleChatMessage($message);
@@ -55,7 +54,11 @@ class WeChatController extends Controller
             return '感谢您关注 '.config('app.display_name').'，我们的地址是: '.url('/').'。';
         });
 
-        return $this->server->serve();
+        try {
+            return $this->server->serve();
+        } catch (BadRequestException) {
+            return $this->badRequest();
+        }
     }
 
     private function handleChatMessage(Message $message): string
