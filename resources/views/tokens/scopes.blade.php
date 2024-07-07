@@ -23,7 +23,9 @@
         "email_verified": true, // email, 邮箱验证状态，布尔值
         "real_name": "姓名", // realname
         "id_card": "身份证号", // realname
-        "real_name_verified_at": "2000-00-00T00:00:00.000000Z", // profile, 实名认证时间，存在则说明已认证
+        "phone": "手机号", // phone
+        "phone_verified": "身份证号", // phone, 手机号验证状态，布尔值
+        "real_name_verified": false, // profile, 实名认证状态，布尔值
         "created_at": "2024-06-18T17:31:03.000000Z"
 }
     </pre>
