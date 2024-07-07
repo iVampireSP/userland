@@ -96,7 +96,10 @@ class LoginController extends Controller
             return redirect()->to($this->multiUser->url());
         }
 
-        $user = $faces->first()->user;
+        $user = $faces->first()?->user;
+        if (! $user) {
+            return back()->with('error', '寻找用户的时候出现了问题，可能这个账户现在已经被注销。');
+        }
         $this->multiUser->add($user);
         $this->multiUser->switch($user);
 
