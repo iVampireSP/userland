@@ -22,8 +22,6 @@
     @if ($type == "store")
         <form action="{{ route('faces.capture') }}" id="validate-form" method="post">
             @csrf
-            <x-recaptcha />
-
             <input type="hidden" name="image_b64" id="image-value">
         </form>
     @elseif ($type == "test")
