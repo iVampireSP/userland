@@ -7,7 +7,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-face" type="button" role="tab">
-                面部扫瞄
+                面部扫描
             </button>
         </li>
         <li class="nav-item" role="presentation">

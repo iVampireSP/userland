@@ -5,7 +5,7 @@
 @section('content')
     <h2>绑定微信</h2>
 
-    <p>请使用 微信 扫瞄下方的二维码，关注公众号。或者可以搜索微信号 <code>{{ config('wechat.id') }}</code> 并关注。</p>
+    <p>请使用 微信 扫描下方的二维码，关注公众号。或者可以搜索微信号 <code>{{ config('wechat.id') }}</code> 并关注。</p>
     <img style="width: 18rem" src="https://open.weixin.qq.com/qr/code?username={{config('wechat.id')}}&style=1" alt="公众号" />
 
     <p class="mt-3">随后，发送下方的代码并完成绑定。</p>

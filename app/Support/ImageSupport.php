@@ -13,7 +13,7 @@ class ImageSupport
     public function convertToJpeg(string $image_b64): string
     {
         if ($image_b64 == 'data:,') {
-            throw new CommonException('请重新扫瞄');
+            throw new CommonException('请重新扫描');
         }
 
         $fp = fopen('data://'.$image_b64, 'r');
