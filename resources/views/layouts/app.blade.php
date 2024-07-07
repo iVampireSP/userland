@@ -10,7 +10,6 @@
 
     <title>@yield('title', config('app.display_name'))</title>
 
-
 {{--    <link rel="icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
 {{--    <link rel="apple-touch-icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
 
@@ -20,6 +19,10 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
+    <script>
+        window.RECAPTCHA_SITE_KEY = "{{ config('recaptcha.site_key') }}";
+    </script>
 </head>
 
 <body>

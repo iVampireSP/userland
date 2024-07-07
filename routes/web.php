@@ -30,26 +30,26 @@ Route::get('/', [AccountController::class, 'index'])->middleware(['auth:web', 'b
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::get('login/{client}', [LoginController::class, 'showCustomLoginForm'])->name('login.custom');
-    Route::post('login', [LoginController::class, 'passwordLogin']);
+    Route::middleware(['recaptcha', 'throttle:10,1'])->post('login', [LoginController::class, 'passwordLogin']);
 
     /* Start 短信验证码登录 */
-    Route::post('sms-login', [LoginController::class, 'sendSMS'])->name('login.sms');
-    Route::post('sms-login/validate', [LoginController::class, 'SMSValidate'])->name('login.sms.validate');
+    Route::middleware(['throttle:3,1'])->post('sms-login', [LoginController::class, 'sendSMS'])->name('login.sms');
+    Route::middleware(['throttle:10,1'])->post('sms-login/validate', [LoginController::class, 'SMSValidate'])->name('login.sms.validate');
     /* End 短信验证码登录 */
 
     /* Start 口令登录 */
-    Route::post('token-login', [LoginController::class, 'tokenLogin'])->name('login.token');
+    Route::middleware(['recaptcha', 'throttle:5,1'])->post('token-login', [LoginController::class, 'tokenLogin'])->name('login.token');
     /* End 口令登录 */
 
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('logout-all', [LoginController::class, 'logoutAll'])->name('logout.all');
     Route::get('face-login', [LoginController::class, 'showFaceLoginForm'])->name('login.face-login');
-    Route::post('face-login', [LoginController::class, 'faceLogin']);
+    Route::middleware(['recaptcha'])->post('face-login', [LoginController::class, 'faceLogin']);
     Route::get('select', [AccountController::class, 'selectAccount'])->name('login.select');
     Route::post('switch', [AccountController::class, 'switchAccount'])->name('login.switch');
 
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('register', [RegisterController::class, 'register']);
+    Route::middleware(['recaptcha', 'throttle:5,1'])->post('register', [RegisterController::class, 'register']);
 
     Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');

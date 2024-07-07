@@ -23,7 +23,7 @@
     </ul>
     <div class="tab-content" id="login-method-tabContent">
         <div class="tab-pane fade show active" id="login-method-password" role="tabpanel" tabindex="0">
-            <form onsubmit="canPasswordSubmit()" id="passwordLoginForm" method="post" action="{{ route('login') }}">
+            <form id="passwordLoginForm" class="recaptcha-form" method="post" action="{{ route('login') }}">
                 @csrf
                 <div class="form-floating mb-2">
                     <input type="text" class="form-control" placeholder="邮箱 / 手机号"
@@ -38,7 +38,7 @@
                     <label>密码</label>
                 </div>
 
-                <button id="login-btn" type="submit" class="d-none mt-3 btn btn-primary">登录</button>
+                <button type="submit" class="mt-3 btn btn-primary">登录</button>
 
             </form>
         </div>
@@ -54,17 +54,17 @@
                 <div class="mt-3 text-center">
                     <button class="btn btn-primary" id="start-record">采集</button>
                     <p class="text-info mt-3">在点击采集后，可能需要一段时间加载。</p>
-
                 </div>
             </div>
-            <form action="{{ route('login.face-login') }}" id="validate-form" method="post">
+            <form action="{{ route('login.face-login') }}" id="validate-form" class="recaptcha-form" method="post">
                 @csrf
                 <input type="hidden" name="image_b64" id="image-value">
+                <input type="submit" class="d-none" id="face-login-submit-btn" />
             </form>
         </div>
         <div class="tab-pane fade" id="login-method-sms" role="tabpanel" aria-labelledby="pills-contact-tab"
              tabindex="0">
-            <form action="{{ route('login.sms.validate') }}" method="post">
+            <form action="{{ route('login.sms.validate') }}" class="recaptcha-form" method="post">
                 @csrf
                 <p>如果当前手机号没有注册，将会自动为您创建一个账号。</p>
                 <div class="form-group">
@@ -92,7 +92,7 @@
 
             <p>关注公众号后，向公众号发送小写字母 <code>t</code>，随后输入代码。</p>
 
-            <form id="tokenLoginForm" method="post" action="{{ route('login.token') }}">
+            <form id="tokenLoginForm" method="post" action="{{ route('login.token') }}" class="recaptcha-form">
                 @csrf
                 <div class="form-floating mb-2">
                     <input type="text" class="form-control" placeholder="口令代码"
@@ -102,7 +102,7 @@
                 </div>
 
 
-                <button id="login-btn" type="submit" class="d-none mt-3 btn btn-primary">登录</button>
+                <button type="submit" class="mt-3 btn btn-primary">登录</button>
 
             </form>
         </div>
@@ -110,7 +110,6 @@
 
     <p class="mt-3">如果您继续登录，则代表同意 <a class="link" target="_blank" href="{{ route('tos') }}">服务条款</a> 和 <a
             class="link" target="_blank" href="{{ route('privacy_policy') }}">隐私政策</a>。</p>
-
 
     <br/>
 
@@ -129,175 +128,152 @@
         {{ __('Forgot Your Password?') }}
     </a>
 
-    <br/>
-
-
-    <script>
-        const gravatar_url = "https://cravatar.cn/avatar/"
-
-        const login = "{{ route('login') }}"
-        const register = "{{ route('register') }}"
-
-
-        const account = document.getElementById('account');
-        const passwordInput = document.getElementById('password')
-        const loginBtn = document.getElementById('login-btn')
-        const imgContainer = document.getElementById('img-container')
-
-
-        function canPasswordSubmit() {
-            return !(account.value === '' || passwordInput.value === '');
-        }
-
-
-        account.oninput = toggleBtn
-        passwordInput.oninput = (e) => {
-            // must > 8
-            if (e.target.value.length > 8) {
-                toggleBtn()
-            }
-        }
-
-
-        function toggleBtn() {
-            if (account.value !== '' && passwordInput.value !== '') {
-                loginBtn.classList.remove('d-none')
-            } else {
-                loginBtn.classList.add('d-none')
-            }
-        }
-
-
-    </script>
-
-    <script>
-        let start = null
-        let stopVideo = null
-        // on ready
-        window.onload = function () {
-            start = window.face_capture.start
-            stopVideo = window.face_capture.stopVideo
-        }
-
-
-        const video = document.querySelector('#face-capture');
-        const alertSuccess = document.querySelector('#alert-success');
-        const alertFailed = document.querySelector('#alert-failed');
-        const alertCaptureFailed = document.querySelector('#alert-capture-failed');
-        const startBtn = document.querySelector('#start-record');
-        const validateForm = document.querySelector('#validate-form');
-        const imageValue = document.querySelector('#image-value');
-
-        let started = false
-
-        const textCapture = "采集"
-        const textStop = "停止"
-
-
-        function restoreBtn() {
-            started = false
-            stopVideo(video)
-            video.classList.add('d-none')
-            startBtn.innerText = textCapture
-            startBtn.classList.remove('btn-danger')
-            startBtn.classList.add('btn-primary')
-        }
-
-
-        startBtn.addEventListener('click', async () => {
-            if (started) {
-                restoreBtn()
-                return;
-            }
-
-            started = true
-
-            alertSuccess.classList.add('d-none')
-            alertFailed.classList.add('d-none')
-            alertCaptureFailed.classList.add('d-none')
-            startBtn.innerText = textStop
-            startBtn.classList.add('btn-danger')
-            startBtn.classList.remove('btn-primary')
-
-
-            video.classList.remove('d-none')
-            start(video, (b64) => {
-                video.classList.add('d-none')
-
-                restoreBtn()
-
-                alertSuccess.classList.remove('d-none')
-
-                imageValue.value = b64
-                // console.log(b64)
-                validateForm.submit()
-            }, false)
-
-        });
-
-        const tabEl = document.querySelector('#login-method-tab')
-        tabEl.addEventListener('shown.bs.tab', event => {
-            if (event.relatedTarget.getAttribute('data-bs-target') === '#login-method-face') {
-                if (started) {
-                    setTimeout(restoreBtn, 1000)
-                }
-            }
-            if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
-                setTimeout(() => {
-                    startBtn.click()
-                })
-            }
-            if (event.target.getAttribute('data-bs-target') === '#login-method-wechat-msg') {
-                setTimeout(() => {
-                    const img = document.getElementById('wechat-msg-login-qrcode');
-                    img.src = "https://open.weixin.qq.com/qr/code?username={{config('wechat.id')}}"
-                })
-            }
-        })
-
-        document.getElementById('sms-register')?.addEventListener('click', function () {
-            const b = document.querySelector('[data-bs-target="#login-method-sms"]');
-
-            b.click()
-        })
-    </script>
-
-    <script>
-        const sendCodeBtn = document.getElementById('button-send-code');
-        let expired_at = new Date().getTime();
-
-        sendCodeBtn.addEventListener('click', function () {
-            const phone = document.getElementById('phone').value;
-            if (!phone) {
-                alert('请输入手机号');
-                return;
-            }
-            // 发送验证码
-            axios.post('{{route('login.sms')}}', {
-                phone: phone,
-            }).then(function (response) {
-                console.log(response);
-                alert('验证码已发送');
-
-                sendCodeBtn.disabled = true;
-                expired_at = new Date().getTime() + {{config('settings.supports.sms.interval')}} * 1000;
-
-                setInterval(function () {
-                    if (new Date().getTime() > expired_at) {
-                        sendCodeBtn.disabled = false;
-                        sendCodeBtn.innerText = '重新发送';
-
-                    } else {
-                        // 计算剩余时间
-                        const remainingTime = Math.floor((expired_at - new Date().getTime()) / 1000);
-                        sendCodeBtn.innerText = '重新发送 (' + remainingTime + 's)';
-                    }
-                }, 100)
-
-            }).catch(function (error) {
-                console.log(error);
-                alert('验证码发送失败, ' +  error.response.data.message);
-            });
-        });
-    </script>
 </div>
+
+
+<script>
+    const gravatar_url = "https://cravatar.cn/avatar/"
+
+    const login = "{{ route('login') }}"
+    const register = "{{ route('register') }}"
+
+
+    const account = document.getElementById('account');
+    const passwordInput = document.getElementById('password')
+    const loginBtn = document.getElementById('login-btn')
+    const imgContainer = document.getElementById('img-container')
+
+
+</script>
+
+<script>
+    let start = null
+    let stopVideo = null
+    // on ready
+    window.onload = function () {
+        start = window.face_capture.start
+        stopVideo = window.face_capture.stopVideo
+    }
+
+
+    const video = document.querySelector('#face-capture');
+    const alertSuccess = document.querySelector('#alert-success');
+    const alertFailed = document.querySelector('#alert-failed');
+    const alertCaptureFailed = document.querySelector('#alert-capture-failed');
+    const startBtn = document.querySelector('#start-record');
+    const validateForm = document.querySelector('#validate-form');
+    const imageValue = document.querySelector('#image-value');
+
+    let started = false
+
+    const textCapture = "采集"
+    const textStop = "停止"
+
+
+    function restoreBtn() {
+        started = false
+        stopVideo(video)
+        video.classList.add('d-none')
+        startBtn.innerText = textCapture
+        startBtn.classList.remove('btn-danger')
+        startBtn.classList.add('btn-primary')
+    }
+
+
+    startBtn.addEventListener('click', async () => {
+        if (started) {
+            restoreBtn()
+            return;
+        }
+
+        started = true
+
+        alertSuccess.classList.add('d-none')
+        alertFailed.classList.add('d-none')
+        alertCaptureFailed.classList.add('d-none')
+        startBtn.innerText = textStop
+        startBtn.classList.add('btn-danger')
+        startBtn.classList.remove('btn-primary')
+
+
+        video.classList.remove('d-none')
+        start(video, (b64) => {
+            video.classList.add('d-none')
+
+            restoreBtn()
+
+            alertSuccess.classList.remove('d-none')
+
+            imageValue.value = b64
+            // console.log(b64)
+            // validateForm.submit()
+            document.querySelector('#face-login-submit-btn').click()
+        }, false)
+
+    });
+
+    const tabEl = document.querySelector('#login-method-tab')
+    tabEl.addEventListener('shown.bs.tab', event => {
+        if (event.relatedTarget.getAttribute('data-bs-target') === '#login-method-face') {
+            if (started) {
+                setTimeout(restoreBtn, 1000)
+            }
+        }
+        if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
+            setTimeout(() => {
+                startBtn.click()
+            })
+        }
+        if (event.target.getAttribute('data-bs-target') === '#login-method-wechat-msg') {
+            setTimeout(() => {
+                const img = document.getElementById('wechat-msg-login-qrcode');
+                img.src = "https://open.weixin.qq.com/qr/code?username={{config('wechat.id')}}"
+            })
+        }
+    })
+
+    document.getElementById('sms-register')?.addEventListener('click', function () {
+        const b = document.querySelector('[data-bs-target="#login-method-sms"]');
+
+        b.click()
+    })
+</script>
+
+<script>
+    const sendCodeBtn = document.getElementById('button-send-code');
+    let expired_at = new Date().getTime();
+
+    sendCodeBtn.addEventListener('click', function () {
+        const phone = document.getElementById('phone').value;
+        if (!phone) {
+            alert('请输入手机号');
+            return;
+        }
+        // 发送验证码
+        axios.post('{{route('login.sms')}}', {
+            phone: phone,
+        }).then(function (response) {
+            console.log(response);
+            alert('验证码已发送');
+
+            sendCodeBtn.disabled = true;
+            expired_at = new Date().getTime() + {{config('settings.supports.sms.interval')}} * 1000;
+
+            setInterval(function () {
+                if (new Date().getTime() > expired_at) {
+                    sendCodeBtn.disabled = false;
+                    sendCodeBtn.innerText = '重新发送';
+
+                } else {
+                    // 计算剩余时间
+                    const remainingTime = Math.floor((expired_at - new Date().getTime()) / 1000);
+                    sendCodeBtn.innerText = '重新发送 (' + remainingTime + 's)';
+                }
+            }, 100)
+
+        }).catch(function (error) {
+            console.log(error);
+            alert('验证码发送失败, ' +  error.response.data.message);
+        });
+    });
+</script>

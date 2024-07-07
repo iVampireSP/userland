@@ -9,6 +9,7 @@ use App\Http\Middleware\JsonRequest;
 use App\Http\Middleware\PassportCustomLogin;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RealNamed;
+use App\Http\Middleware\Recaptcha;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RequirePhone;
 use App\Http\Middleware\ResourceOwner;
@@ -105,5 +106,6 @@ class Kernel extends HttpKernel
         'validate_application' => ValidateApplication::class,
         'passport.custom_login' => PassportCustomLogin::class,
         'phone.confirm' => RequirePhone::class,
+        'recaptcha' => Recaptcha::class,
     ];
 }
