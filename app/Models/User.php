@@ -46,6 +46,9 @@ class User extends Authenticatable
         'password',
         'receive_marketing_email',
         'affiliate_id',
+        'phone',
+        'phone_verified_at',
+        'wechat_open_id',
     ];
 
     /**
