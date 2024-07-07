@@ -29,6 +29,9 @@ class User extends Authenticatable
         'name',
         'email',
         'real_name',
+        'phone',
+        'phone_verified_at',
+        'wechat_open_id',
     ];
 
     /**

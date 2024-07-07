@@ -92,8 +92,21 @@ class WeChatController extends Controller
         );
 
         if ($r) {
-            $r->wechat_open_id = $wechat_openid;
-            $r->save();
+            // 绑定之前，查找下之前的账户
+            $old_user = User::whereWechatOpenId($wechat_openid)->first();
+            if ($old_user) {
+                $old_user->update([
+                    'wechat_open_id' => null,
+                ]);
+            }
+
+            $r->update([
+                'wechat_open_id' => $wechat_openid,
+            ]);
+
+            if ($old_user) {
+                return '绑定成功，你好 '.$r->name.'。你之前绑定的账号 '.$old_user->name.' 已经失效。';
+            }
 
             return '绑定成功，你好 '.$r->name;
         }

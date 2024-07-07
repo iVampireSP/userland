@@ -46,11 +46,11 @@ class PhoneController extends Controller
             return redirect()->route('phone.index');
         }
 
-        $exists = User::wherePhone($request->input('phone'))->exists();
-
-        if ($exists) {
-            return $this->badRequest('该手机号已被使用。');
-        }
+        //        $exists = User::wherePhone($request->input('phone'))->exists();
+        //
+        //        if ($exists) {
+        //            return $this->badRequest('该手机号已被使用。');
+        //        }
 
         // 检查缓存是否存在
         $cacheKey = $this->prefix.$request->input('phone');
@@ -106,12 +106,6 @@ class PhoneController extends Controller
             'code' => 'required|string|max:4',
         ]);
 
-        $exists = User::wherePhone($request->input('phone'))->exists();
-
-        if ($exists) {
-            return $this->badRequest('该手机号已被使用。');
-        }
-
         $this->sms->setPhone($request->input('phone'));
 
         try {
@@ -136,14 +130,24 @@ class PhoneController extends Controller
             return back()->with('error', '暂时无法验证。');
         }
 
-        $user->phone = $request->input('phone');
-        $user->phone_verified_at = now();
-        $user->save();
+        $old_user = User::wherePhone($request->input('phone'))->first();
+
+        $old_user?->update([
+            'phone' => null,
+            'phone_verified_at' => null,
+        ]);
+
+        $user->update([
+            'phone' => $request->input('phone'),
+            'phone_verified_at' => now(),
+        ]);
 
         // 设置 phone_confirm session
         session()->put('auth.phone_confirmed_at', now());
 
-        return redirect()->to(RouteServiceProvider::HOME)->with('success', '绑定成功');
+        $msg = $old_user ? '绑定成功，但是这个手机号之前绑定过 '.$old_user->name.'，原账户已解绑。' : '绑定成功';
+
+        return redirect()->to(RouteServiceProvider::HOME)->with('success', $msg);
     }
 
     public function edit(Request $request)
@@ -162,10 +166,10 @@ class PhoneController extends Controller
             return view('phone.bind');
         }
 
-        $user->phone_verified_at = null;
-        $user->phone = null;
-
-        $user->save();
+        $user->update([
+            'phone' => $request->input('phone'),
+            'phone_verified_at' => now(),
+        ]);
 
         return redirect()->to(RouteServiceProvider::HOME)->with('success', '解绑成功');
     }
