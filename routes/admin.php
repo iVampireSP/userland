@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::withoutMiddleware(['auth:web', 'auth:admin',  'admin.validateReferer'])->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/', [AuthController::class, 'login']);
+    Route::middleware(['throttle:10,1'])->post('/', [AuthController::class, 'login']);
 });
 
 Route::get('/home', [AuthController::class, 'index'])->name('index');
