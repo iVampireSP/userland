@@ -353,7 +353,8 @@ spec:
 #  WECHAT_AES_KEY: ""
 #  RECAPTCHA_SITE_KEY: ""
 #  RECAPTCHA_SECRET_KEY: ""
-
+#  YUBIKEY_CLIENT_ID: ""
+#  YUBIKEY_CLIENT_SECRET: ""
 #---
 #apiVersion: v1
 #kind: Secret
