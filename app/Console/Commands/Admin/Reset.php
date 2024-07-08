@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Admin;
 
+use App\Contracts\YubicoOTP;
 use App\Models\Admin;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
@@ -20,7 +21,7 @@ class Reset extends Command
      *
      * @var string
      */
-    protected $description = '重置一个管理员的密码';
+    protected $description = '重置管理员的 Yubico OTP 设备';
 
     /**
      * Execute the console command.
@@ -40,14 +41,39 @@ class Reset extends Command
             return CommandAlias::FAILURE;
         }
 
-        // 密码
-        $password = $this->secret('请输入密码');
+        // 新 OTP
+        $otp = $this->ask('请输入新的 OTP');
 
-        $admin->password = bcrypt($password);
-        $admin->save();
+        $yubico = app(YubicoOTP::class);
+
+        $yubico->setOTP($otp);
+
+        if (! $yubico->verify()) {
+            $this->error('OTP 验证失败。');
+
+            return CommandAlias::FAILURE;
+        }
+
+        $device_id = $yubico->getDeviceID();
+
+        if ($admin->isRegisteredByModel($device_id)) {
+            $this->error('该设备已经注册过管理员 '.$admin->findByDeviceID($device_id)->name.'。');
+
+            return CommandAlias::FAILURE;
+        }
+
+        $admin->removeAllYubicoOTPDevice();
+
+        try {
+            $admin->addYubicoOTPDevice($device_id);
+        } catch (\Exception $e) {
+            $this->error('创建 Yubico OTP 设备失败。'.$e->getMessage());
+
+            return CommandAlias::FAILURE;
+        }
 
         // 输出信息
-        $this->info('管理员密码重置成功。');
+        $this->info('管理员 OTP 重置成功。');
 
         return CommandAlias::SUCCESS;
     }

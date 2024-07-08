@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\YubicoOTP;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -29,17 +30,28 @@ class AdminController extends Controller
         $request->validate([
             'email' => 'required|email|unique:admins,email',
             'name' => 'required|string|max:30',
+            'otp' => 'required|string|max:50',
         ]);
 
-        // 随机密码
-        $password = Str::random();
+        $otp = app(YubicoOTP::class);
+        $otp->setOTP($request->input('otp'));
+        if (! $otp->verify()) {
+            return redirect()->back()->with('error', 'OTP 验证失败。')->withInput();
+        }
+        $device_id = $otp->getDeviceID();
 
         $admin = (new Admin)->create([
+            'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($password),
         ]);
 
-        return redirect()->route('admin.admins.edit', $admin)->with('success', '管理员创建成功，密码为：'.$password.'。');
+        try {
+            $admin->addYubicoOTPDevice($device_id);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', '添加 YubiKey 失败，原因 '.$e->getMessage())->withInput();
+        }
+
+        return redirect()->route('admin.admins.edit', $admin)->with('success', '管理员创建成功。');
     }
 
     /**
@@ -68,18 +80,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:30',
         ]);
 
-        $msg = '管理员信息更新成功';
-
-        if ($request->filled('reset_password')) {
-            // 随机密码
-            $password = Str::random();
-
-            $msg .= '，新的密码为：'.$password;
-
-            $admin->password = bcrypt($password);
-        }
-
-        $msg .= '。';
+        $msg = '管理员信息更新成功。';
 
         $admin->name = $request->input('name');
         $admin->email = $request->input('email');

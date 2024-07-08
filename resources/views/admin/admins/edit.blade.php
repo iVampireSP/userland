@@ -19,13 +19,6 @@
             <input type="text" class="form-control" id="email" name="email" value="{{ $admin->email }}">
         </div>
 
-        <div class="form-check mt-1">
-            <input class="form-check-input" type="checkbox" value="1" id="reset_password" name="reset_password">
-            <label class="form-check-label" for="reset_password">
-                重置密码
-            </label>
-        </div>
-
         <button type="submit" class="btn btn-primary mt-3">提交</button>
     </form>
 

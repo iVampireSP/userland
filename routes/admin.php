@@ -8,7 +8,12 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'index'])->name('index')->middleware('auth:admin')->withoutMiddleware('admin.validateReferer');
+Route::withoutMiddleware(['auth:web', 'auth:admin',  'admin.validateReferer'])->group(function () {
+    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/', [AuthController::class, 'login']);
+});
+
+Route::get('/home', [AuthController::class, 'index'])->name('index');
 
 Route::resource('admins', AdminController::class)->except('show');
 
@@ -19,10 +24,5 @@ Route::resource('user/{user}/bans', BanController::class);
 Route::resource('clients', ClientController::class);
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
-
-Route::withoutMiddleware(['auth:admin', 'admin.validateReferer'])->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-});
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

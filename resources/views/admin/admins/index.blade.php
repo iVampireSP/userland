@@ -3,7 +3,6 @@
 @section('title', '管理员')
 
 @section('content')
-
     <h3>管理员</h3>
     <p>权力越大，责任越大</p>
     <a href="{{ route('admin.admins.create') }}">新建管理员</a>

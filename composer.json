@@ -26,7 +26,8 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spiral/roadrunner-cli": "^2.6",
         "spiral/roadrunner-http": "^3.5",
-        "w7corp/easywechat": "^6.15"
+        "w7corp/easywechat": "^6.15",
+        "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.21",

@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
+use App\Helpers\HasYubicoOTP;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
 {
+    use HasYubicoOTP;
+
     protected $table = 'admins';
 
     protected $fillable = [
-        'name',
         'email',
-        'password',
+        'name',
     ];
 
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 }

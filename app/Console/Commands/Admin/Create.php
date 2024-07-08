@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Admin;
 
+use App\Contracts\YubicoOTP;
 use App\Models\Admin;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
@@ -27,30 +28,51 @@ class Create extends Command
      */
     public function handle(): int
     {
-        // 名称
-        $name = $this->ask('请输入名称');
-
-        // 邮箱
-        $email = $this->ask('请输入邮箱');
-
-        // 密码
-        $password = $this->secret('请输入密码');
-        // 确认密码
-        $password_confirmation = $this->secret('请再次输入密码');
-
-        // 验证密码
-        if ($password !== $password_confirmation) {
-            $this->error('两次输入的密码不一致。');
+        // 按一下 Yubico 来输入 OTP
+        $otp = $this->ask('请输入 Yubico OTP');
+        if (! $otp) {
+            $this->error('OTP 不能为空。');
 
             return CommandAlias::FAILURE;
         }
+
+        $yubico = app(YubicoOTP::class);
+
+        $yubico->setOTP($otp);
+
+        if (! $yubico->verify()) {
+            $this->error('OTP 验证失败。');
+
+            return CommandAlias::FAILURE;
+        }
+
+        $device_id = $yubico->getDeviceID();
+
+        $admin = new Admin();
+
+        if ($admin->isRegisteredByModel($device_id)) {
+            $this->error('该设备已经注册过管理员 '.$admin->findByDeviceID($device_id)->name.'。');
+
+            return CommandAlias::FAILURE;
+        }
+
+        // 名称
+        $name = $this->ask('请输入名称');
+        $email = $this->ask('请输入邮箱');
 
         // 创建管理员
         $admin = (new Admin)->create([
             'name' => $name,
             'email' => $email,
-            'password' => bcrypt($password),
         ]);
+
+        try {
+            $admin->addYubicoOTPDevice($device_id);
+        } catch (\Exception $e) {
+            $this->error('创建 Yubico OTP 设备失败。'.$e->getMessage());
+
+            return CommandAlias::FAILURE;
+        }
 
         // 输出信息
         $this->info('管理员创建成功，ID 为: '.$admin->id.'。');

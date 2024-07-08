@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Contracts\SMS;
+use App\Contracts\YubicoOTP;
 use App\Models\Admin;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Support\RemovableRoutesMixin;
 use App\Support\SMSSupport;
+use App\Support\YubicoOTPSupport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,15 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(SMS::class, SMSSupport::class);
+        // bind and singleton
+        $this->app->bind(YubicoOTP::class, YubicoOTPSupport::class);
+        $this->app->singleton(YubicoOTPSupport::class, function () {
+            return new YubicoOTPSupport(
+                servers: config('yubico.otp_servers'),
+                client_id: config('yubico.client_id'),
+                client_secret: config('yubico.client_secret'),
+            );
+        });
     }
 
     /**
