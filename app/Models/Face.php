@@ -48,8 +48,11 @@ class Face extends Model
             return false;
         }
 
+        $image = new ImageSupport();
+
         try {
-            $file = (new ImageSupport())->convertToJpeg($file);
+            $file = $image->convertToJpeg($file);
+            $file = $image->base64ToJpeg($file);
         } catch (CommonException $e) {
             Log::error($e->getMessage());
 

@@ -45,4 +45,11 @@ class ImageSupport
 
         return $image_b64;
     }
+
+    public function base64ToJpeg(string $image_b64): string
+    {
+        $data = explode(',', $image_b64);
+
+        return base64_decode($data[1]);
+    }
 }
