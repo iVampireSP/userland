@@ -44,8 +44,7 @@
     "profile",
     "email",
     "phone"
-  ],
-  "custom": "myCustomClaim"
+  ]
 }
     </pre>
 
