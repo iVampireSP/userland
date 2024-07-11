@@ -30,7 +30,7 @@ class UserController extends Controller
 
         foreach ($all_scopes as $scope_name => $scope_description) {
             if ($user->tokenCan($scope_name)) {
-                $scopes[$scope_name] = $scope_description;
+                $scopes[] = $scope_name;
             }
         }
 
