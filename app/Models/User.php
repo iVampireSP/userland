@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\UserClaimsTrait;
 use App\Support\SMSSupport;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,11 +18,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
-// use Tymon\JWTAuth\Contracts\JWTSubject;
-
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, UserClaimsTrait;
 
     public array $publics = [
         'id',

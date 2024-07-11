@@ -14,10 +14,15 @@ class JwksController extends Controller
         // Source: https://www.tuxed.net/fkooman/blog/json_web_key_set.html
         $keyInfo = openssl_pkey_get_details(openssl_pkey_get_public($publicKey));
 
+        //        $bits = $keyInfo['bits'];
+
         $jsonData = [
             'keys' => [
                 [
+                    'kid' => config('openid.kid'),
+                    'alg' => config('jwt.algo'),
                     'kty' => 'RSA',
+                    'use' => 'sig',
                     'n' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['n'])), '='),
                     'e' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['e'])), '='),
                 ],

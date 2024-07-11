@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Public\DiscoveryController;
+use App\Http\Controllers\Public\JwksController;
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
@@ -22,8 +23,8 @@ use Laravel\Passport\Http\Controllers\AuthorizationController;
 Route::get('/.well-known/openid-configuration', DiscoveryController::class)
     ->name('openid.discovery');
 
-//Route::get('/.well-known/jwks', JwksController::class)
-//    ->name('openid.jwks');
+Route::get('/.well-known/jwks', JwksController::class)
+    ->name('openid.jwks');
 
 Route::get('/', [AccountController::class, 'index'])->middleware(['auth:web', 'banned'])->name('index');
 

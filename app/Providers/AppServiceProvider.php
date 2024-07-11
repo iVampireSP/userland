@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Support\AccessTokenResponse;
 use App\Support\RemovableRoutesMixin;
 use App\Support\SMSSupport;
 use App\Support\YubicoOTPSupport;
@@ -71,6 +72,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerScopes(): void
     {
+        Passport::useAccessTokenEntity(AccessTokenResponse::class);
         Passport::tokensExpireIn(now()->addMinutes(config('passport.token_lifetime.token')));
         Passport::refreshTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.refresh_token')));
         Passport::personalAccessTokensExpireIn(now()->addMinutes(config('passport.token_lifetime.personal_access_token')));

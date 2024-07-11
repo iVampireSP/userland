@@ -23,32 +23,18 @@ class UserController extends Controller
     public function user(Request $request)
     {
         $user = $request->user('api');
-        $data = [
-            'id' => $user->id,
-            'avatar' => $user->avatar(),
-        ];
 
-        if ($user->tokenCan('profile')) {
-            $data['name'] = $user->name;
-            $data['email_verified'] = $user->email_verified_at !== null;
-            $data['real_name_verified'] = $user->real_name_verified_at !== null;
-            $data['phone_verified'] = $user->phone_verified_at !== null;
+        $all_scopes = config('openid.passport.tokens_can');
+
+        $scopes = [];
+
+        foreach ($all_scopes as $scope_name => $scope_description) {
+            if ($user->tokenCan($scope_name)) {
+                $scopes[$scope_name] = $scope_description;
+            }
         }
 
-        if ($user->tokenCan('email')) {
-            $data['email'] = $user->email;
-        }
-
-        if ($user->tokenCan('realname')) {
-            $data['real_name'] = $user->real_name;
-            $data['id_card'] = $user->id_card;
-        }
-
-        if ($user->tokenCan('phone')) {
-            $data['phone'] = $user->phone;
-        }
-
-        $data['created_at'] = $user->created_at;
+        $data = $user->getClaims($scopes);
 
         return $this->success($data);
     }
