@@ -13,38 +13,52 @@
 
 <body style="height: 100vh">
 <div class="d-flex justify-content-center align-items-center" style="height:100%">
-    <div>
-        @if (!$client->trusted)
-            <div class="container">
-                <div class="row">
-                    <div>
+    @if (!$client->trusted)
+        <div class="d-flex justify-content-center align-items-center" style="height:98vh;width: 100%">
+            <div>
+                <section style="width: 80vh">
+                    <div class="text-center text-lg-start">
+                        <div class="container-fluid">
+                            <div class="row gx-lg-5 align-items-center">
+                                <div class="col-lg-6 mb-5 mb-lg-0">
+                                    <h1 class="my-5 display-3 fw-bold ls-tight">
+                                        应用授权 <br/>
+                                        <span class="text-primary">{{ $client->name }}</span>
+                                    </h1>
+                                    <div style="color: hsl(217, 10%, 50.8%);">
+                                        @if (!empty($client->description))
+                                            {{ $client->description }}
+                                            <br/>
+                                        @endif
+                                    </div>
+                                </div>
 
-                        <h1>授权请求</h1>
-                        <p><strong>{{ $client->name }}</strong> 正在申请访问您的账户。</p>
+                                <div class="col-lg-6 mb-5 mb-lg-0">
+                                    <!-- Scope List -->
+                                    @if (count($scopes) > 0)
+                                        <div class="scopes">
+                                            <p><strong>此应用程序将被允许: </strong></p>
 
-                        <!-- Scope List -->
-                        @if (count($scopes) > 0)
-                            <div class="scopes">
-                                <p><strong>此应用程序将被允许: </strong></p>
+                                            <ul>
+                                                @foreach ($scopes as $scope)
+                                                    <li>{{ $scope->description }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <div class="buttons">
+                                        <button class="btn btn-success btn-approve" onclick="accept()">授权</button>
 
-                                <ul>
-                                    @foreach ($scopes as $scope)
-                                        <li>{{ $scope->description }}</li>
-                                    @endforeach
-                                </ul>
+                                        <button class="btn btn-danger" onclick="deny()">取消</button>
+
+                                    </div>
+                                </div>
                             </div>
-                        @endif
-
-                        <div class="buttons">
-                            <button class="btn btn-success btn-approve" onclick="accept()">授权</button>
-
-                            <button class="btn btn-danger" onclick="deny()">取消</button>
-
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
-    </div>
+        </div>
     @else
 
         <h1>正在继续...</h1>
@@ -63,9 +77,7 @@
         </script>
 
     @endif
-
 </div>
-
 
 <!-- Authorize Button -->
 <form class="d-none" method="post" action="{{ route('passport.authorizations.approve') }}" id="authorize-form">
