@@ -29,8 +29,6 @@ trait CustomClaimsAccessTokenTrait
 
         $r->withClaim('scopes', $this->getScopes());
 
-        $r->withClaim('custom', 'myCustomClaim');
-
         return $r->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
     }
 
