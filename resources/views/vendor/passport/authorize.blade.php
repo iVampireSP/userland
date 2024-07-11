@@ -73,7 +73,7 @@
 
         <script>
             setTimeout(() => {
-                // accept()
+                accept()
             }, 100)
         </script>
 
