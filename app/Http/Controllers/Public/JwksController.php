@@ -20,7 +20,7 @@ class JwksController extends Controller
             'keys' => [
                 [
                     'kid' => config('openid.kid'),
-                    'alg' => config('jwt.algo'),
+                    'alg' => app(config('openid.signer'))->algorithmId(),
                     'kty' => 'RSA',
                     'use' => 'sig',
                     'n' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['n'])), '='),

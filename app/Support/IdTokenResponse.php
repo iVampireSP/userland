@@ -15,6 +15,8 @@ class IdTokenResponse extends BearerTokenResponse
 {
     protected Configuration $config;
 
+    protected array $scopes;
+
     public function __construct()
     {
         $this->config = Configuration::forSymmetricSigner(
@@ -31,13 +33,6 @@ class IdTokenResponse extends BearerTokenResponse
         $dateTimeImmutableObject = new DateTimeImmutable();
 
         $user = User::findOrFail($accessToken->getUserIdentifier());
-        $token_scopes = $accessToken->getScopes();
-
-        $scopes = [];
-
-        foreach ($token_scopes as $scope) {
-            $scopes[] = $scope->getIdentifier();
-        }
 
         $r = $this->config
             ->builder()
@@ -49,11 +44,11 @@ class IdTokenResponse extends BearerTokenResponse
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($user->id);
 
-        $r->withClaim('scopes', $scopes);
+        $r->withClaim('scopes', $this->getScopes($accessToken));
         $r->withHeader('kid', config('openid.kid'));
         $r->withHeader('typ', 'id_token');
 
-        $claims = $user->getClaims($scopes);
+        $claims = $user->getClaims($this->scopes);
         foreach ($claims as $key => $value) {
             $r->withClaim($key, $value);
         }
@@ -63,6 +58,11 @@ class IdTokenResponse extends BearerTokenResponse
 
     protected function getExtraParams(AccessTokenEntityInterface $accessToken): array
     {
+        // 如果有 openid scope
+        if (! in_array('openid', $this->getScopes($accessToken))) {
+            return [];
+        }
+
         $token = $this->getBuilder($accessToken)->getToken(
             $this->config->signer(),
             $this->config->signingKey(),
@@ -71,5 +71,24 @@ class IdTokenResponse extends BearerTokenResponse
         return [
             'id_token' => $token->toString(),
         ];
+    }
+
+    protected function getScopes(AccessTokenEntityInterface $accessToken): array
+    {
+        if (empty($this->scopes)) {
+            $token_scopes = $accessToken->getScopes();
+
+            $scopes = [];
+
+            foreach ($token_scopes as $scope) {
+                $scopes[] = $scope->getIdentifier();
+            }
+
+            $this->scopes = $scopes;
+
+            return $scopes;
+        }
+
+        return $this->scopes;
     }
 }
