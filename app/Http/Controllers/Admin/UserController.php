@@ -5,14 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\UserDeleteJob;
 use App\Models\User;
+use App\Support\MultiUserSupport;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    protected MultiUserSupport $multiUserSupport;
+
+    public function __construct()
+    {
+        $this->multiUserSupport = app(MultiUserSupport::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +61,8 @@ class UserController extends Controller
      */
     public function show(User $user): RedirectResponse
     {
-        Auth::guard('web')->login($user);
+        $this->multiUserSupport->add($user);
+        $this->multiUserSupport->switch($user);
 
         return back()->with('success', '您已切换到用户 '.$user->name.' 的身份。');
     }

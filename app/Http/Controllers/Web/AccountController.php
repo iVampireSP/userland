@@ -162,7 +162,7 @@ class AccountController extends Controller
             return back()->with('error', '切换用户失败。');
         }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->back();
     }
 
     public function showChangeEmailForm(Request $request)
