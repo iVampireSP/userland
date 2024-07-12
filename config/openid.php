@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'kid' => "1",
+    'kid' => '1',
 
     'passport' => [
         'tokens_can' => [
