@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <title>{{ config('app.display_name') }} - 授权</title>
+@section('title', config('app.display_name') . ' - 授权')
 
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
-
+@section('content')
 <body style="height: 100vh">
 <div class="d-flex justify-content-center align-items-center" style="height:100%">
     @if (!$client->trusted)
-        <div class="d-flex justify-content-center align-items-center" style="height:98vh;width: 100%">
+        <div class="d-flex justify-content-center align-items-center" style="height:70vh;width: 100%">
             <div>
                 <section style="width: 80vh">
                     <div class="text-center text-lg-start">
@@ -39,11 +32,11 @@
                                         <div class="scopes">
                                             <p><strong>此应用程序将被允许: </strong></p>
 
-                                            <ul>
+                                            <p class="text-left">
                                                 @foreach ($scopes as $scope)
-                                                    <li>{{ $scope->description }}</li>
+                                                    <span>{{ $scope->description }}</span><br />
                                                 @endforeach
-                                            </ul>
+                                            </p>
                                         </div>
                                     @endif
                                     <div class="buttons">
@@ -110,7 +103,4 @@
         document.getElementById('cancel-form').submit();
     }
 </script>
-
-</body>
-
-</html>
+@endsection
