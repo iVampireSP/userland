@@ -8,6 +8,7 @@ trait UserClaimsTrait
     {
         $data = [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'avatar' => $this->avatar(),
         ];
 

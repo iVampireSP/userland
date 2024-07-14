@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\User;
 use DateTimeImmutable;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
@@ -17,13 +18,15 @@ trait CustomClaimsAccessTokenTrait
     {
         $this->initJwtConfiguration();
 
+        $user = User::findOrFail($this->getUserIdentifier());
+
         $r = $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
             ->issuedAt(new DateTimeImmutable())
             ->canOnlyBeUsedAfter(new DateTimeImmutable())
             ->expiresAt($this->getExpiryDateTime())
-            ->relatedTo((string) $this->getUserIdentifier());
+            ->relatedTo($user->uuid);
 
         $r->withHeader('kid', config('openid.kid'));
         $r->withHeader('typ', 'JWT');

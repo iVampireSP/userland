@@ -42,7 +42,7 @@ class IdTokenResponse extends BearerTokenResponse
             ->issuedBy(url('/'))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
-            ->relatedTo($user->id);
+            ->relatedTo($user->uuid);
 
         $r->withClaim('scopes', $this->getScopes($accessToken));
         $r->withHeader('kid', config('openid.kid'));
