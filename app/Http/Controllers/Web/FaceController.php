@@ -150,11 +150,13 @@ class FaceController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
-        if (! $faces) {
-            return back()->with('error', '我们检测到了人脸，但是这不是您。');
+        $count = count($faces);
+
+        if ($count == 0) {
+            return redirect()->route('faces.index')->with('failed', '找不到对应的用户。');
         }
 
-        if (count($faces) > 1) {
+        if ($count > 1) {
             return redirect()->route('faces.index')->with('success', '验证成功。你可能录入了多个账户，在使用人脸登录时，您可以同时登录到这些账户。');
         }
 
