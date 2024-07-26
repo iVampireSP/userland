@@ -4,7 +4,6 @@ namespace App\Support;
 
 use App\Models\User;
 use DateTimeImmutable;
-use Illuminate\Support\Facades\Log;
 use Laravel\Passport\Bridge\AccessToken;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
@@ -46,5 +45,4 @@ class AccessTokenResponse extends AccessToken
     {
         return $this->convertToJWT()->toString();
     }
-
 }
