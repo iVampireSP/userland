@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('yubico_o_t_p_s');
+        Schema::dropIfExists('yubico_otps');
     }
 };
