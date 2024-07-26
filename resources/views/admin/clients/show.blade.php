@@ -11,6 +11,22 @@
                 </a>
 
                 <h2>{{ $client->name }}</h2>
+                <div class="mb-3">
+                    @if (empty($client->secret))
+                        <span class="badge bg-primary">PKCE</span>
+                    @else
+                        <span class="badge bg-primary">授权码</span>
+                    @endif
+
+                    @if ($client->personal_access_client)
+                        <span class="badge bg-primary">个人令牌访问</span>
+                    @endif
+
+                    @if ($client->password_client)
+                        <span class="badge bg-primary">密码访问</span>
+                    @endif
+                </div>
+
                 <div class="input-group mb-3">
                     <span class="input-group-text">客户端 ID</span>
                     <input aria-label="客户端 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>

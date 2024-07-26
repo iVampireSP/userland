@@ -16,15 +16,26 @@
             <th>名称</th>
             <th>重定向</th>
             <th>提供方</th>
-            <th>个人访问</th>
-            <th>密码访问</th>
+            <th>用户</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         @foreach($clients as $client)
             <tr>
-                <td>{{ $client->name }}</td>
+                <td>
+                    {{ $client->name }}
+                    <br/>
+                    @if (empty($client->secret))
+                        <span class="badge bg-primary">PKCE</span>
+                    @endif
+                    @if ($client->personal_access_client)
+                        <span class="badge bg-primary">个人访问</span>
+                    @endif
+                    @if ($client->password_client)
+                        <span class="badge bg-primary">密码访问</span>
+                    @endif
+                </td>
                 <td>{{ $client->redirect }}</td>
                 <td>
                     @if ($client->trusted)
@@ -36,13 +47,8 @@
                     @endif
                 </td>
                 <td>
-                    @if ($client->personal_access_client)
-                        <span class="badge bg-primary">个人访问</span>
-                    @endif
-                </td>
-                <td>
-                    @if ($client->password_client)
-                        <span class="badge bg-primary">密码访问</span>
+                    @if ($client->user_id)
+                        <a href="{{ route('admin.users.edit', $client->user_id) }}">{{ $client->user->name }}</a>
                     @endif
                 </td>
                 <td>
@@ -52,5 +58,7 @@
         @endforeach
         </tbody>
     </table>
+
+    {{ $clients->links() }}
 
 @endsection

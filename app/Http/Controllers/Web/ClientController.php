@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 
 class ClientController extends Controller
@@ -31,16 +32,23 @@ class ClientController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => 'required|url',
-            'personal_access_client' => 'boolean',
+            'pkce_client' => 'boolean',
             //            'password_client' => 'boolean',
         ]);
 
         $clients = new ClientRepository();
 
         $client = $clients->create(
-            $request->user()->getAuthIdentifier(), $request->input('name'), $request->input('redirect'),
-            null, $request->boolean('personal_access_client')
+            userId: $request->user()->getAuthIdentifier(),
+            name: $request->input('name'),
+            redirect: $request->input('redirect'),
         );
+
+        if ($request->boolean('pkce_client')) {
+            $client->update([
+                'secret' => null,
+            ]);
+        }
 
         return redirect()->route('clients.show', compact('client'));
     }
@@ -81,8 +89,9 @@ class ClientController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => 'required|url',
-            'personal_access_client' => 'boolean',
             'description' => 'nullable|string',
+            'reset_client_secret' => 'boolean',
+            'personal_access_client' => 'boolean',
             //            'password_client' => 'boolean',
         ]);
 
@@ -94,6 +103,12 @@ class ClientController extends Controller
             'personal_access_client' => $request->boolean('personal_access_client'),
             'description' => $request->input('description'),
         ]);
+
+        if ($request->boolean('reset_client_secret')) {
+            $client->update([
+                'secret' => Str::random(40),
+            ]);
+        }
 
         return redirect()->route('clients.show', compact('client'));
     }

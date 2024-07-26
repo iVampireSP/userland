@@ -18,7 +18,7 @@ class ClientController extends Controller
      */
     public function index(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        $clients = (new Client)->paginate(50);
+        $clients = (new Client)->load('user')->paginate(50);
 
         return view('admin.clients.index', compact('clients'));
     }
@@ -33,14 +33,24 @@ class ClientController extends Controller
             'redirect' => 'required|url',
             'personal_access_client' => 'boolean',
             'password_client' => 'boolean',
+            'pkce_client' => 'boolean',
         ]);
 
         $clients = new ClientRepository();
 
         $client = $clients->create(
-            null, $request->input('name'), $request->input('redirect'),
-            null, $request->boolean('personal_access_client'), $request->boolean('password_client')
+            userId: $request->user()->getAuthIdentifier(),
+            name: $request->input('name'),
+            redirect: $request->input('redirect'),
+            personalAccess: $request->boolean('personal_access_client'),
+            password: $request->boolean('password_client'),
         );
+
+        if ($request->boolean('pkce_client')) {
+            $client->update([
+                'secret' => null,
+            ]);
+        }
 
         return redirect()->route('admin.clients.show', compact('client'));
     }
