@@ -40,7 +40,7 @@ class InitCommand extends Command
         return 0;
     }
 
-    public function startWeb()
+    public function startWeb(): void
     {
         $this->call('octane:start', [
             '--server' => $this->option('server'),
@@ -50,7 +50,7 @@ class InitCommand extends Command
         ]);
     }
 
-    public function startQueue()
+    public function startQueue(): void
     {
         $this->call('queue:work', [
             '--queue' => $this->option('queue'),
