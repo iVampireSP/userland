@@ -27,6 +27,12 @@
                 {{ $client->redirect }}
                 <br/>
 
+                @if (empty($client->secret))
+                    <span class="badge bg-primary">PKCE</span>
+                @else
+                    <span class="badge bg-primary">授权码</span>
+                @endif
+
                 @if ($client->personal_access_client)
                     <span class="badge bg-primary">个人令牌访问</span>
                 @endif
@@ -39,5 +45,7 @@
         @endforeach
 
     </div>
+
+    {{ $clients->links() }}
 
 @endsection
