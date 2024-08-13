@@ -28,9 +28,9 @@ class EnsureAccountIsVerified
 
         if (! $user || (! $user->isPhoneVerified() || ! $user->isEmailVerified())) {
             if ($request->expectsJson()) {
-                abort(403, 'Your account is not verified.');
+                abort(403, '你需要先验证账户。');
             } else {
-                Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
+                return Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
             }
         }
 

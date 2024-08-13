@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Admin\ValidateReferer;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\EnsureAccountIsVerified;
 use App\Http\Middleware\JsonRequest;
 use App\Http\Middleware\PassportCustomLogin;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
@@ -96,7 +97,7 @@ class Kernel extends HttpKernel
         'password.confirm' => RequirePassword::class,
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class,
+        'verified' => EnsureAccountIsVerified::class,
         'banned' => ValidateUserIfBanned::class,
         'admin.validateReferer' => ValidateReferer::class,
         'real_named' => RealNamed::class,
