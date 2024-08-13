@@ -25,6 +25,10 @@
             @endforeach
         </div>
 
+        <div class="mt-3">
+            <a href="{{ route('index') }}" class="btn btn-primary">回到首页</a>
+        </div>
+
     </div>
 
 @elseif($type == \App\View\Components\SwitchAccount::TYPE_DROPDOWN)
