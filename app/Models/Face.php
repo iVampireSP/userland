@@ -96,6 +96,41 @@ class Face extends Model
         return parent::delete();
     }
 
+    public function setEmbedding(array $embedding, bool $delete_on_fail = false): bool
+    {
+        $milvusSupport = new MilvusSupport();
+
+        $r = $this->deleteEmbedding();
+        if (! $r) {
+            return false;
+        }
+
+        try {
+            $milvusSupport->insert([
+                'face_id' => $this->id,
+                'embedding' => $embedding,
+            ]);
+
+        } catch (ConnectionException $e) {
+
+            if ($delete_on_fail) {
+                try {
+                    $this->delete();
+                } catch (Exception $e) {
+                    Log::error($e);
+
+                    return false;
+                }
+            }
+
+            Log::error($e);
+
+            return false;
+        }
+
+        return true;
+    }
+
     public function deleteEmbedding(): bool
     {
         $milvusSupport = new MilvusSupport();
