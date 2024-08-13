@@ -21,6 +21,11 @@ class Recaptcha
             return $next($request);
         }
 
+        // 如果没有设置
+        if (! config('recaptcha.secret_key')) {
+            return $next($request);
+        }
+
         // 如果请求中不包含
         if (! $request->filled('g-recaptcha-response')) {
             return back()->with('error', '请先完成验证码验证');
