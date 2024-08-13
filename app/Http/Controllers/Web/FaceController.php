@@ -139,7 +139,7 @@ class FaceController extends Controller
         $count = count($faces);
 
         if ($count == 0) {
-            return redirect()->route('faces.index')->with('failed', '找不到对应的用户。');
+            return redirect()->route('faces.index')->with('error', '找不到对应的用户。');
         }
 
         if ($count > 1) {
@@ -147,7 +147,7 @@ class FaceController extends Controller
         }
 
         if ($faces[0]['user_id'] != auth('web')->user()->id) {
-            return redirect()->route('faces.index')->with('failed', '验证失败。');
+            return redirect()->route('faces.index')->with('error', '验证失败。');
         }
 
         return redirect()->route('faces.index')->with('success', '验证成功。');
