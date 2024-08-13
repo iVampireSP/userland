@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Exceptions\CommonException;
 use App\Models\Face;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -26,55 +27,15 @@ class FaceSupport
     }
 
 
+    /**
+     * @throws ConnectionException
+     */
     public function represent(string $image_b64): array
     {
         return $this->post('represent', [
-            'model_name' => 'Facenet',
+            'model_name' => 'Facenet512',
             'img' => $image_b64,
         ]);
-    }
-
-    // 活体检测
-
-    /**
-     * @throws ConnectionException
-     */
-    public function liveness(string $image_b64): array
-    {
-        return $this->post('liveness', [
-            'image_b64' => $image_b64,
-        ]);
-    }
-
-    /**
-     * @throws ConnectionException
-     * @throws CommonException
-     */
-    public function embedding(string $image_b64): array
-    {
-        $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
-
-        $clip = $this->post('clip', [
-            'image_b64' => $image_b64,
-        ]);
-
-        $image_b64 = $clip['image_b64'];
-
-        return $this->post('embedding', [
-            'image_b64' => $image_b64,
-        ]);
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function verify(string $image_b64, string $image_b64_2): array
-    {
-        return $this->post('verify', [
-            'image_b64' => $image_b64,
-            'image_b64_2' => $image_b64_2,
-        ]);
-
     }
 
     /**
@@ -97,28 +58,21 @@ class FaceSupport
     {
         $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
         try {
-            $liveness = $this->liveness($image_b64);
+            $represent = $this->represent($image_b64);
 
-            if ($liveness['result']['label'] != 'RealFace') {
-                throw new CommonException('活体检测失败，请重新尝试。');
+            if (count($represent['results']) > 1) {
+                throw new CommonException('画面中有多个人脸，请换个地方尝试。');
             }
+
+            if ($represent['results'][0]['face_confidence'] < 0.8) {
+                throw new CommonException('人脸置信度太低，请重新尝试。');
+            }
+
+            $embedding = $represent['results'][0]['embedding'];
+
         } catch (ConnectionException $e) {
             Log::error($e->getMessage());
             throw new CommonException('验证活体时发生了错误。');
-        }
-
-        try {
-            $embeddings = $this->embedding($image_b64);
-
-            if ($embeddings['embeddings']['embedding']) {
-                $embedding = $embeddings['embeddings']['embedding'];
-            } else {
-                throw new CommonException('尝试提取特征时发现了错误，请再次尝试。');
-            }
-
-        } catch (ConnectionException $e) {
-            Log::error($e->getMessage());
-            throw new CommonException('提取特征时发现了错误，请再次尝试。');
         }
 
         return $embedding;
@@ -127,7 +81,7 @@ class FaceSupport
     /**
      * @throws CommonException
      */
-    public function search(array $embedding): \Illuminate\Support\Collection
+    public function search(array $embedding): Collection
     {
         $milvusSupport = new MilvusSupport();
         try {
