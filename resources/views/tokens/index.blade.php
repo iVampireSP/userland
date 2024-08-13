@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '个人访问密钥')
+@section('title', '访问密钥')
 
 @section('content')
 
@@ -9,10 +9,10 @@
         <textarea aria-label="Token 区域" class="form-control mb-3" rows="5" readonly>{{ session('token') }}</textarea>
     @endif
 
-    <h3>个人访问密钥</h3>
+    <h3>访问密钥</h3>
 
     <div class="mb-3">
-        <a href="{{ route('tokens.create') }}">新建</a>
+        <a href="{{ route('tokens.create') }}">新建 PAT</a>
         <a href="#" onclick="delete_all()">删除所有</a>
     </div>
 

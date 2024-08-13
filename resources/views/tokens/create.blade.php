@@ -3,10 +3,10 @@
 @section('title', '新个人访问密钥')
 
 @section('content')
-    <h3>新个人访问密钥</h3>
+    <h3>新个人访问密钥(PAT)</h3>
 
     <div class="mb-3">
-        <a href="{{ route('tokens.index') }}">个人访问密钥列表</a>
+        <a href="{{ route('tokens.index') }}">访问密钥列表</a>
     </div>
 
 
