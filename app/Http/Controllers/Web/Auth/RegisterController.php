@@ -37,7 +37,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        return (new User)->create([
+        return (new User)->createOrRestore([
             'name' => $data['name'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
