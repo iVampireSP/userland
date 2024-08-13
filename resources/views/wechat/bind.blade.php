@@ -16,6 +16,10 @@
 
     <p class="mt-3">每个代码的有效时间是 {{ $minutes }} 分钟，您需要在 <code id="countdown"></code> 内完成验证。为了使您更容易看清代码，我们为每个字符添加了间距，您在输入时无需添加空格或间距，但是请注意大小写。</p>
 
+    <small>
+        在您绑定微信后，我们会保存 WeChat Open ID 到数据库中，如果您对 WeChat Open ID 有疑问，您可以联系微信客服。如果您不需要绑定微信，请 <a href="/">离开此页面</a>。
+    </small>
+
     <script>
         let minutes = {{ $minutes }};
 

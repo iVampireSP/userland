@@ -24,4 +24,9 @@
         <button type="submit" class="btn btn-primary mt-3">修改</button>
     </form>
 
+    <small>
+        我们会保存您的邮箱至数据库中，以便用于认证、授权、登录或向您发送通知、验证码、营销短信以及验证这个账号的身份、当前操作用户的身份，当前用户的头像（第三方提供）等。如果您不需要验证邮箱，请 <a href="/">离开此页面</a>。
+    </small>
+
+
 @endsection

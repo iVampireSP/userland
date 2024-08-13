@@ -22,6 +22,10 @@
         <button type="submit" class="btn btn-primary">提交</button>
     </form>
 
+    <small>
+        我们会保存您的手机号至数据库中，以便用于认证、授权、登录或向您发送通知、验证码、营销短信以及验证这个账号的身份、当前操作用户的身份等。如果您不需要验证手机号，请 <a href="/">离开此页面</a>。
+    </small>
+
 
     <script>
         const sendCodeBtn = document.getElementById('button-send-code');
