@@ -25,6 +25,15 @@ class FaceSupport
         return $http->json();
     }
 
+
+    public function represent(string $image_b64): array
+    {
+        return $this->post('represent', [
+            'model_name' => 'Facenet',
+            'img' => $image_b64,
+        ]);
+    }
+
     // 活体检测
 
     /**

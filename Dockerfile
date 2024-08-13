@@ -1,3 +1,5 @@
+# Build  docker build -t registry.leafdev.top/ecosystem/oauth:v0-1-7-fix-6 . && docker push registry.leafdev.top/ecosystem/oauth:v0-1-7-fix-6
+
 FROM registry.leafdev.top/leaf/docker-php-image:8.3
 
 WORKDIR /app
