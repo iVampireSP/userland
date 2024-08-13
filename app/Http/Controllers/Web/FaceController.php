@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Face;
 use App\Support\FaceSupport;
 use App\Support\MilvusSupport;
-use Exception;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 
@@ -70,22 +69,9 @@ class FaceController extends Controller
 
         $face->putFile($image_b64);
 
-        // 存入 Milvus
-        $milvusSupport = new MilvusSupport();
+        $s = $face->setEmbedding($embedding, true);
 
-        try {
-            $milvusSupport->insert([
-                'face_id' => $face->id,
-                'embedding' => $embedding,
-            ]);
-
-        } catch (ConnectionException $e) {
-            try {
-                $face->delete();
-            } catch (Exception $e) {
-                return redirect()->route('faces.index')->with('error', '特征无法保存，且回滚更改时也发生错误。');
-            }
-
+        if (! $s) {
             return redirect()->route('faces.index')->with('error', '保存特征数据时发生了错误。');
         }
 

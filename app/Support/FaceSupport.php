@@ -8,6 +8,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use ValueError;
 
 class FaceSupport
 {
@@ -25,7 +26,6 @@ class FaceSupport
 
         return $http->json();
     }
-
 
     /**
      * @throws ConnectionException
@@ -56,7 +56,12 @@ class FaceSupport
      */
     public function test_image(string $image_b64): array
     {
-        $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
+        try {
+            $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
+        } catch (ValueError $e) {
+            Log::error($e->getMessage());
+            throw new CommonException('无法解析图片，是否已经损坏？');
+        }
         try {
             $represent = $this->represent($image_b64);
 
