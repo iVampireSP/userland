@@ -12,8 +12,6 @@
         </div>
     @endif
 
-
-
     <h3>嗨, <span class="link" data-bs-toggle="modal" data-bs-target="#userInfo"
                   style="cursor: pointer">{{ auth('web')->user()->name }}</span></h3>
     @php($user = auth('web')->user())
@@ -191,6 +189,11 @@
 
     <div class="mt-3">
         <x-switch-account />
+    </div>
+
+    <div class="mt-3">
+        <h3>我们的 QQ 群</h3>
+        <p>我们的 QQ 群号码 <code>439747955</code>。如果您有需要，欢迎入群。</p>
     </div>
 
 @endsection
