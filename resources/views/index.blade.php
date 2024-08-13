@@ -3,6 +3,17 @@
 @php($user = auth('web')->user())
 
 @section('content')
+    @if (!$user->isRealNamed() && !$user->isPhoneVerified())
+        <div class="mb-3">
+            <h3>请验证账户</h3>
+            <div class="mt-1">
+                你还没有通过手机号或邮件方式来验证您的账户，如果您在注册之日起的 3 天内没有验证账户，您的账户将会被删除。
+            </div>
+        </div>
+    @endif
+
+
+
     <h3>嗨, <span class="link" data-bs-toggle="modal" data-bs-target="#userInfo"
                   style="cursor: pointer">{{ auth('web')->user()->name }}</span></h3>
     @php($user = auth('web')->user())
@@ -110,6 +121,7 @@
         update_receive_marketing_email_text()
 
     </script>
+
 
     @if ($user->email)
         @if (!auth('web')->user()->hasVerifiedEmail())
