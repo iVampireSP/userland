@@ -60,9 +60,11 @@ Route::prefix('auth')->group(function () {
     Route::get('password/confirm', [ConfirmPasswordController::class, 'showConfirmForm'])->name('password.confirm');
     Route::post('password/confirm', [ConfirmPasswordController::class, 'confirm']);
 
-    Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-    Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+    Route::withoutMiddleware(['banned', 'verified'])->group(function () {
+        Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+        Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+        Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+    });
 
     Route::get('token/{token}', [AccountController::class, 'fastLogin'])->name('auth.fast-login');
 
