@@ -82,8 +82,8 @@ spec:
                   key: MILVUS_PASSWORD
           resources:
             limits:
-              cpu: 100m
-              memory: 1024Mi
+              cpu: 500m
+              memory: 2Gi
           ports:
             - containerPort: 8000
               name: http-8000
