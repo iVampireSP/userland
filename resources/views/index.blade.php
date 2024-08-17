@@ -9,7 +9,7 @@
             <div class="mt-1">
                 你还没有通过手机号或邮件方式来验证您的账户，如果您在注册之日起的 3 天内没有验证账户，您的账户将会被删除。
                 @if ($user->email)
-                    <a href="{{ route('verification.verify') }}">验证邮箱</a>
+                    <a href="{{ route('verification.notice') }}">验证邮箱</a>
                 @endif
             </div>
         </div>
