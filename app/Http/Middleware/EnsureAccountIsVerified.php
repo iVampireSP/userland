@@ -26,7 +26,7 @@ class EnsureAccountIsVerified
     {
         $user = $request->user('web');
 
-        if (! $user || (! $user->isPhoneVerified() || ! $user->isEmailVerified())) {
+        if ($user || (! $user->isPhoneVerified() || ! $user->isEmailVerified())) {
             if ($request->expectsJson()) {
                 abort(403, '你需要先验证账户。');
             } else {

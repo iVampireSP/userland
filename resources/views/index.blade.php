@@ -3,7 +3,7 @@
 @php($user = auth('web')->user())
 
 @section('content')
-    @if (!$user->isRealNamed() && !$user->isPhoneVerified())
+    @if (!$user->isEmailVerified() && !$user->isPhoneVerified())
         <div class="mb-3">
             <h3>请验证账户</h3>
             <div class="mt-1">
