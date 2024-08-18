@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,11 @@ class EnsureAccountIsVerified
     {
         $user = $request->user('web');
 
-        if ($user || (! $user->isPhoneVerified() || ! $user->isEmailVerified())) {
+        if (!$user) {
+            return Redirect::to(RouteServiceProvider::HOME);
+        }
+
+        if (! $user->isPhoneVerified() && ! $user->isEmailVerified()) {
             if ($request->expectsJson()) {
                 abort(403, '你需要先验证账户。');
             } else {
