@@ -27,7 +27,7 @@ class EnsureAccountIsVerified
     {
         $user = $request->user('web');
 
-        if (!$user) {
+        if (! $user) {
             return Redirect::to(RouteServiceProvider::HOME);
         }
 
