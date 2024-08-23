@@ -77,24 +77,24 @@ class User extends Authenticatable
 
     public function isRealNamed(): bool
     {
-        return $this->real_name_verified_at !== null;
+        return ! is_null($this->real_name_verified_at);
     }
 
     // has phone number
     public function hasPhoneNumber(): bool
     {
-        return $this->phone !== null;
+        return ! is_null($this->phone);
     }
 
     // 是否验证手机号
     public function isPhoneVerified(): bool
     {
-        return $this->phone_verified_at !== null;
+        return ! is_null($this->phone_verified_at);
     }
 
     public function isEmailVerified(): bool
     {
-        return $this->email_verified_at !== null;
+        return ! is_null($this->email_verified_at);
     }
 
     public function hasWeChatOpenID(): bool
