@@ -208,6 +208,7 @@ class LoginController extends Controller
                 'name' => $request->input('phone'),
                 'phone' => $request->input('phone'),
                 'password' => Hash::make(Str::random(18)),
+                'phone_verified_at' => now(),
             ]);
         }
 
