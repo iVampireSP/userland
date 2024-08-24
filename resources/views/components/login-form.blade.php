@@ -2,7 +2,7 @@
     <ul class="nav nav-pills mb-3" id="login-method-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#login-method-password" type="button"
-                    role="tab">账户密码
+                role="tab">账户密码
             </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -16,7 +16,8 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-wechat-msg" type="button" role="tab">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-wechat-msg" type="button"
+                role="tab">
                 微信口令
             </button>
         </li>
@@ -26,15 +27,14 @@
             <form id="passwordLoginForm" class="recaptcha-form" method="post" action="{{ route('login') }}">
                 @csrf
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="邮箱 / 手机号"
-                           aria-label="邮箱 / 手机号" id="account" name="account" required maxlength="25"
-                           value="{{ old('account') }}">
+                    <input type="text" class="form-control" placeholder="邮箱 / 手机号" aria-label="邮箱 / 手机号" id="account"
+                        name="account" required maxlength="25" value="{{ old('account') }}">
                     <label>邮箱 / 手机号</label>
                 </div>
 
                 <div class="form-floating mb-2">
-                    <input type="password" class="form-control" placeholder="密码"
-                           aria-label="密码" name="password" id="password" required>
+                    <input type="password" class="form-control" placeholder="密码" aria-label="密码" name="password"
+                        id="password" required>
                     <label>密码</label>
                 </div>
 
@@ -63,14 +63,14 @@
             </form>
         </div>
         <div class="tab-pane fade" id="login-method-sms" role="tabpanel" aria-labelledby="pills-contact-tab"
-             tabindex="0">
+            tabindex="0">
             <form action="{{ route('login.sms.validate') }}" class="recaptcha-form" method="post">
                 @csrf
                 <p>如果当前手机号没有注册，将会自动为您创建一个账号。</p>
                 <div class="form-group">
                     <label for="phone">手机号</label>
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号"
-                           value="{{ old('phone') }}">
+                        value="{{ old('phone') }}">
                 </div>
                 <div class="mt-3"></div>
                 <label for="code">验证码</label>
@@ -85,19 +85,18 @@
         </div>
 
         <div class="tab-pane fade" id="login-method-wechat-msg" role="tabpanel" aria-labelledby="pills-contact-tab"
-             tabindex="0">
+            tabindex="0">
 
             <p>使用微信扫码下方二维码，或者通过微信号搜索并关注公众号 {{ config('wechat.id') }}。</p>
-            <img style="width: 18rem" id="wechat-msg-login-qrcode" alt="微信公众号二维码"/>
+            <img style="width: 18rem" id="wechat-msg-login-qrcode" alt="微信公众号二维码" />
 
             <p>关注公众号后，向公众号发送小写字母 <code>t</code>，随后输入代码。</p>
 
             <form id="tokenLoginForm" method="post" action="{{ route('login.token') }}" class="recaptcha-form">
                 @csrf
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="口令代码"
-                           name="token" required maxlength="16"
-                           value="{{ old('token') }}">
+                    <input type="text" class="form-control" placeholder="口令代码" name="token" required maxlength="16"
+                        value="{{ old('token') }}">
                     <label>口令代码</label>
                 </div>
 
@@ -108,10 +107,10 @@
         </div>
     </div>
 
-    <p class="mt-3">如果您继续登录，则代表同意 <a class="link" target="_blank" href="{{ route('tos') }}">服务条款</a> 和 <a
-            class="link" target="_blank" href="{{ route('privacy_policy') }}">隐私政策</a>。</p>
+    <p class="mt-3">如果您继续登录，则代表同意 <a class="link" target="_blank" href="{{ route('tos') }}">服务条款</a> 和 <a class="link"
+            target="_blank" href="{{ route('privacy_policy') }}">隐私政策</a>。</p>
 
-    <br/>
+    <br />
 
 
     @guest('web')
@@ -273,7 +272,17 @@
 
         }).catch(function (error) {
             console.log(error);
-            alert('验证码发送失败, ' +  error.response.data.message);
+            alert('验证码发送失败, ' + error.response.data.message);
         });
+    });
+</script>
+
+<script>
+    // 针对移动设备自动填充的处理
+    document.addEventListener('DOMContentLoaded', function () {
+        const tokenInputs = document.querySelectorAll('input[type=hidden][name="_token"]');
+        tokenInputs.forEach(function (input) {
+            input.value = '{{ csrf_token() }}'
+        })
     });
 </script>
