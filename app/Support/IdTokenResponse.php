@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\User;
 use DateInterval;
 use DateTimeImmutable;
+use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -42,15 +43,14 @@ class IdTokenResponse extends BearerTokenResponse
             ->issuedBy(url('/'))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
-            ->relatedTo($user->id);
-
-        $r->withClaim('scopes', $this->getScopes($accessToken));
-        $r->withHeader('kid', config('openid.kid'));
-        $r->withHeader('typ', 'id_token');
+            ->relatedTo($user->id)
+            ->withClaim('scopes', $this->getScopes($accessToken))
+            ->withHeader('kid', config('openid.kid'))
+            ->withHeader('typ', 'id_token');
 
         $claims = $user->getClaims($this->scopes);
         foreach ($claims as $key => $value) {
-            $r->withClaim($key, $value);
+            $r = $r->withClaim($key, $value);
         }
 
         return $r;

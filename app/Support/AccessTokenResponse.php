@@ -27,10 +27,9 @@ class AccessTokenResponse extends AccessToken
             ->issuedAt(new DateTimeImmutable())
             ->canOnlyBeUsedAfter(new DateTimeImmutable())
             ->expiresAt($this->getExpiryDateTime())
-            ->relatedTo($user->id);
-
-        $r->withHeader('kid', config('openid.kid'));
-        $r->withHeader('typ', 'JWT');
+            ->relatedTo($user->id)
+            ->withHeader('kid', config('openid.kid'))
+            ->withHeader('typ', 'JWT');
 
         // 绝对不要使用 Access Token 做认证。Access Token 本身不能标识用户是否已经认证。
         // Access Token 中只包含了用户 id，在 sub 字段。在你开发的应用中，应该将 Access Token 视为一个随机字符串，不要试图从中解析信息。
