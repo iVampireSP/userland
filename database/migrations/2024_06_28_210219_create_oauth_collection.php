@@ -64,7 +64,7 @@ return new class extends Migration
                     'metricType' => 'COSINE',
                     'fieldName' => 'embedding',
                     'indexName' => 'embedding_idx',
-                    'indexConfig' => [
+                    'params' => [
                         'index_type' => 'AUTOINDEX',
                         'nlist' => '1024',
                     ],
@@ -74,7 +74,7 @@ return new class extends Migration
                     'indexName' => 'face_id_idx',
                     'index_type' => 'STL_SORT',
                     'metricType' => '',
-                    'indexConfig' => [
+                    'params' => [
                         'index_type' => 'STL_SORT',
                     ],
                 ],
