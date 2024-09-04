@@ -31,7 +31,7 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'redirect' => 'required|url',
+            'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
             'pkce_client' => 'boolean',
             //            'password_client' => 'boolean',
         ]);
@@ -88,7 +88,7 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'redirect' => 'required|url',
+            'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
             'description' => 'nullable|string',
             'reset_client_secret' => 'boolean',
             'personal_access_client' => 'boolean',
