@@ -74,7 +74,7 @@ return [
 
     'token_lifetime' => [
         'token' => 30,
-        'refresh_token' => 5 * 24 * 60,
+        'refresh_token' => 30 * 24 * 60,
         'personal_access_token' => 6 * 30 * 24 * 60,
     ],
 
