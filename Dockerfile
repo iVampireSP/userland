@@ -1,4 +1,4 @@
-# Build  docker build -t leafdev.top/ecosystem/oauth:v0-1-9-fix-8 . && docker push leafdev.top/ecosystem/oauth:v0-1-9-fix-8
+# Build  docker build -t leafdev.top/ecosystem/oauth:v0-1-9-fix-10 . && docker push leafdev.top/ecosystem/oauth:v0-1-9-fix-10
 
 FROM leafdev.top/leaf/docker-php-image:8.3
 
@@ -9,7 +9,7 @@ COPY start.sh /usr/bin/start.sh
 
 RUN useradd -ms /bin/bash -u 1337 www && chown -R 1337:1337 /app && chmod +x /usr/bin/start.sh
 
-# Switch to non-root user 
+# Switch to non-root user
 USER www
 
 
