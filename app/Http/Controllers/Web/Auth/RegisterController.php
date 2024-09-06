@@ -37,11 +37,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        return (new User)->createOrRestore([
+        $u =  (new User)->createOrRestore([
             'name' => $data['name'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        // 发送注册确认邮件
+        $u->sendEmailVerificationNotification();
+        return $u;
     }
 
     public function showRegistrationForm()
