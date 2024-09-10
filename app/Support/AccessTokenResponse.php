@@ -44,4 +44,10 @@ class AccessTokenResponse extends AccessToken
     {
         return $this->convertToJWT()->toString();
     }
+
+    // to string
+    public function toString(): string
+    {
+        return $this->convertToJWT()->toString();
+    }
 }
