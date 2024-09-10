@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@php($title = '令牌范围')
+@php($title = '作用域')
 
 @section('title', $title)
 

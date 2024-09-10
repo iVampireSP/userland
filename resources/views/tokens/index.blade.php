@@ -9,7 +9,8 @@
         <textarea aria-label="Token 区域" class="form-control mb-3" rows="5" readonly>{{ session('token') }}</textarea>
     @endif
 
-    <h3>访问密钥</h3>
+    <h3>个人访问密钥</h3>
+    <p>Personal Access Token</p>
 
     <div class="mb-3">
         <a href="{{ route('tokens.create') }}">新建 PAT</a>
@@ -20,13 +21,12 @@
         <thead>
             <tr>
                 <th>名称</th>
-                <th>权限</th>
+                <th>作用域</th>
+                <th>创建时间</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
-
-
             @foreach ($tokens as $token)
                 <tr>
                     <td>{{ $token->name }}</td>
@@ -37,11 +37,12 @@
 
 
                     </td>
+                    <td>{{ $token->created_at }}</td>
                     <td>
                         <form method="post" action="{{ route('tokens.destroy', $token->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                            <button type="submit" class="btn btn-sm btn-danger">吊销</button>
                         </form>
                     </td>
                 </tr>

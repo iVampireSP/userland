@@ -2,11 +2,11 @@
 
 @section('content')
 
-    <h2>客户端</h2>
-    <p>您可以将您的客户端接入 {{ config('app.display_name') }}。</p>
+    <h2>应用程序</h2>
+    <p>您可以将您的应用程序接入 {{ config('app.display_name') }}。</p>
 
     <div class="mb-3">
-        <a href="{{route('clients.create')}}">新建客户端</a>
+        <a href="{{route('clients.create')}}">新建应用程序</a>
     </div>
 
     <div class="list-group" class="mt-3">

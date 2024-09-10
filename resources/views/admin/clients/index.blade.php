@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', "OAuth 客户端")
+@section('title', "OAuth 应用程序")
 
 @section('content')
 
-    <h2>OAuth 客户端</h2>
+    <h2>OAuth 应用程序</h2>
 
     <div class="mb-3">
-        <a href="{{route('admin.clients.create')}}">新建客户端</a>
+        <a href="{{route('admin.clients.create')}}">新建应用程序</a>
     </div>
 
     <table class="table table-striped">

@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>新建客户端</h2>
+    <h2>新建应用程序</h2>
 
-    <a href="{{route('clients.index')}}">客户端列表</a>
+    <a href="{{route('clients.index')}}">应用程序列表</a>
 
     <form action="{{ route('clients.store') }}" method="post" class="mt-3">
         @csrf
         <div class="form-floating mb-3">
-            <input type="text" id="name" name="name" class="form-control" placeholder="输入客户端名称">
+            <input type="text" id="name" name="name" class="form-control" placeholder="输入应用程序名称">
             <label for="name">名称</label>
         </div>
         <div class="form-floating mb-3">
             <input type="text" id="redirect" name="redirect" class="form-control"
-                   placeholder="输入客户端重定向地址">
+                   placeholder="输入应用程序重定向地址">
             <label for="redirect">重定向地址</label>
         </div>
 

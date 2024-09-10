@@ -28,13 +28,13 @@
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text">客户端 ID</span>
-                    <input aria-label="客户端 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>
+                    <span class="input-group-text">应用程序 ID</span>
+                    <input aria-label="应用程序 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>
                 </div>
 
                 <div class="input-group mb-3">
                     <div class="input-group-text">
-                        {{ __('客户端密钥') }} &nbsp;<input aria-label="客户端密钥" type="checkbox"
+                        {{ __('应用程序密钥') }} &nbsp;<input aria-label="应用程序密钥" type="checkbox"
                                                             id="secret-check-box"
                                                             data-secret="{{ $client->secret }}">
                     </div>
@@ -52,7 +52,7 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">名称</span>
-                        <input aria-label="名称" type="text" class="form-control" name="name" placeholder="客户端名称"
+                        <input aria-label="名称" type="text" class="form-control" name="name" placeholder="应用程序名称"
                                value="{{ $client->name }}">
                     </div>
 
@@ -77,23 +77,23 @@
 
 
 
-                    {{--    密码访问客户端    --}}
+                    {{--    密码访问应用程序    --}}
                     <div class="input-group mb-3">
                         <div class="input-group-text">
                             <input class="form-check-input" type="checkbox" value="1"
                                    @if($client->personal_access_client) checked @endif name="personal_access_client"
-                                   id="personal_access_client" aria-label="是否是个人访问客户端">
+                                   id="personal_access_client" aria-label="是否是个人访问应用程序">
                         </div>
-                        <span class="form-control">是否是个人访问客户端</span>
+                        <span class="form-control">是否是个人访问应用程序</span>
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-text">
                             <input class="form-check-input" type="checkbox" value="1"
                                    @if($client->password_client) checked @endif name="password_client"
-                                   id="password_client" aria-label="是否是密码访问客户端">
+                                   id="password_client" aria-label="是否是密码访问应用程序">
                         </div>
-                        <span class="form-control">是否是密码访问客户端</span>
+                        <span class="form-control">是否是密码访问应用程序</span>
                     </div>
 
                     <div class="input-group mb-3">

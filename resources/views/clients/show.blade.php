@@ -28,14 +28,14 @@
     </div>
 
     <div class="input-group mb-3">
-        <span class="input-group-text">客户端 ID</span>
-        <input aria-label="客户端 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>
+        <span class="input-group-text">应用程序 ID</span>
+        <input aria-label="应用程序 ID" type="text" class="form-control" value="{{ $client->id }}" readonly>
     </div>
 
     @if (!empty($client->secret))
         <div class="input-group mb-3">
             <div class="input-group-text">
-                {{ __('客户端密钥') }} &nbsp;<input aria-label="客户端密钥" type="checkbox"
+                {{ __('应用程序密钥') }} &nbsp;<input aria-label="应用程序密钥" type="checkbox"
                                                     id="secret-check-box"
                                                     data-secret="{{ $client->secret }}">
             </div>
@@ -53,7 +53,7 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text">名称</span>
-            <input aria-label="名称" type="text" class="form-control" name="name" placeholder="客户端名称"
+            <input aria-label="名称" type="text" class="form-control" name="name" placeholder="应用程序名称"
                    value="{{ $client->name }}">
         </div>
 
@@ -81,16 +81,16 @@
             <div class="input-group mb-3">
                 <div class="input-group-text">
                     <input class="form-check-input" type="checkbox" value="1" name="reset_client_secret"
-                           id="reset_client_secret" aria-label="重设客户端密钥">
+                           id="reset_client_secret" aria-label="重设应用程序密钥">
                 </div>
-                <span class="form-control">重设客户端密钥（危险！你的客户端密钥将会被立即重置！）</span>
+                <span class="form-control">重设应用程序密钥（危险！你的应用程序密钥将会被立即重置！）</span>
             </div>
 {{--            <div class="input-group mb-3">--}}
 {{--                <div class="input-group-text">--}}
 {{--                    <input class="form-check-input" type="checkbox" value="0" name="change_to_pkce"--}}
 {{--                           id="change_to_pkce" aria-label="切换为 PKCE">--}}
 {{--                </div>--}}
-{{--                <span class="form-control">切换为 PKCE 客户端（危险！原应用程序可能会立即停止工作）</span>--}}
+{{--                <span class="form-control">切换为 PKCE 应用程序（危险！原应用程序可能会立即停止工作）</span>--}}
 {{--            </div>--}}
 {{--        @else--}}
 {{--            <div class="input-group mb-3">--}}
@@ -98,36 +98,36 @@
 {{--                    <input class="form-check-input" type="checkbox" value="0" name="change_to_pkce"--}}
 {{--                           id="change_to_pkce" aria-label="切换为 PKCE">--}}
 {{--                </div>--}}
-{{--                <span class="form-control">切换为授权码客户端（危险！原应用程序可能会立即停止工作）</span>--}}
+{{--                <span class="form-control">切换为授权码应用程序（危险！原应用程序可能会立即停止工作）</span>--}}
 {{--            </div>--}}
         @endif
 
-        {{--    令牌访问客户端    --}}
+        {{--    令牌访问应用程序    --}}
         {{--        <div class="input-group mb-3">--}}
         {{--            <div class="input-group-text">--}}
         {{--                <input class="form-check-input" type="checkbox" value="1"--}}
         {{--                       @if($client->personal_access_client) checked @endif name="personal_access_client"--}}
-        {{--                       id="personal_access_client" aria-label="是否是个人令牌访问客户端">--}}
+        {{--                       id="personal_access_client" aria-label="是否是个人令牌访问应用程序">--}}
         {{--            </div>--}}
-        {{--            <span class="form-control">是否是个人令牌访问客户端</span>--}}
+        {{--            <span class="form-control">是否是个人令牌访问应用程序</span>--}}
         {{--        </div>--}}
 
         {{--        <div class="input-group mb-3">--}}
         {{--            <div class="input-group-text">--}}
         {{--                <input class="form-check-input" type="checkbox" value="1"--}}
         {{--                       @if($client->password_client) checked @endif name="password_client"--}}
-        {{--                       id="password_client" aria-label="是否是密码访问客户端">--}}
+        {{--                       id="password_client" aria-label="是否是密码访问应用程序">--}}
         {{--            </div>--}}
-        {{--            <span class="form-control">是否是密码访问客户端</span>--}}
+        {{--            <span class="form-control">是否是密码访问应用程序</span>--}}
         {{--        </div>--}}
 
         {{--        <div class="input-group mb-3">--}}
         {{--            <div class="input-group-text">--}}
         {{--                <input class="form-check-input" type="checkbox" value="1"--}}
         {{--                       @if($client->personal_access_client) checked @endif name="personal_access_client"--}}
-        {{--                       id="personal_access_client" aria-label="是否是个人令牌访问客户端">--}}
+        {{--                       id="personal_access_client" aria-label="是否是个人令牌访问应用程序">--}}
         {{--            </div>--}}
-        {{--            <span class="form-control">是否是个人令牌访问客户端</span>--}}
+        {{--            <span class="form-control">是否是个人令牌访问应用程序</span>--}}
         {{--        </div>--}}
 
         <button type="submit" class="btn btn-primary mt-3">
