@@ -37,7 +37,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        $u = (new User)->createOrRestore([
+        // 检测用户是否被删除
+        if (User::whereEmail($data['email'])->onlyTrashed()->exists()) {
+            // 还原
+            $u = User::whereEmail($data['email'])->onlyTrashed()->first();
+            $u->restore();
+
+            $u->name = $data['name'] ?? "User";
+            $u->password = Hash::make($data['password']);
+
+            $u->sendEmailVerificationNotification();
+
+            return $u;
+        }
+
+        $u = (new User)->create([
             'name' => $data['name'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
