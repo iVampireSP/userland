@@ -28,7 +28,7 @@
                 @csrf
                 <div class="form-floating mb-2">
                     <input type="text" class="form-control" placeholder="邮箱 / 手机号" aria-label="邮箱 / 手机号" id="account"
-                        name="account" required maxlength="25" value="{{ old('account') }}">
+                        name="account" required maxlength="120" value="{{ old('account') }}">
                     <label>邮箱 / 手机号</label>
                 </div>
 
