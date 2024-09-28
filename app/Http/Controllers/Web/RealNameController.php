@@ -6,8 +6,6 @@ use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
 use App\Support\IDCardSupport;
 use App\Support\RealNameSupport;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -34,8 +32,8 @@ class RealNameController extends Controller
 
         $id_card = $request->input('id_card');
 
-        $realNameSupport = new RealNameSupport();
-        $idCardSupport = new IDCardSupport();
+        $realNameSupport = new RealNameSupport;
+        $idCardSupport = new IDCardSupport;
         $validate = $idCardSupport->isValid($id_card);
 
         if (! $validate) {
@@ -68,7 +66,7 @@ class RealNameController extends Controller
         return view('real_name.create');
     }
 
-    public function pay(Request $request): \Illuminate\Contracts\View\View|Factory|\Illuminate\Foundation\Application|JsonResponse|RedirectResponse|Application
+    public function pay(Request $request): JsonResponse|RedirectResponse|View
     {
         if ($request->ajax()) {
             $out_trade_no = Cache::get('real_name:user:'.$request->user()->id.':pay');
@@ -144,7 +142,7 @@ class RealNameController extends Controller
             'clientip' => $request->ip(),
         ];
 
-        $public_real_name = new \App\Http\Controllers\Public\RealNameController();
+        $public_real_name = new \App\Http\Controllers\Public\RealNameController;
 
         $sign = $public_real_name->getSign($params);
 
@@ -204,7 +202,7 @@ class RealNameController extends Controller
                 return back()->with('error', '图片格式错误，请重新尝试。');
             }
 
-            $realNameSupport = new RealNameSupport();
+            $realNameSupport = new RealNameSupport;
             $user = $request->user();
             try {
                 $result = $realNameSupport->create($user, $image_b64);
