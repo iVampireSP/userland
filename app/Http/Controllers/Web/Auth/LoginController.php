@@ -30,8 +30,8 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->sms = new SMSSupport();
-        $this->multiUser = new MultiUserSupport();
+        $this->sms = new SMSSupport;
+        $this->multiUser = new MultiUserSupport;
     }
 
     public function passwordLogin(Request $request)
@@ -69,7 +69,7 @@ class LoginController extends Controller
 
         $image_b64 = $request->input('image_b64');
 
-        $faceSupport = new FaceSupport();
+        $faceSupport = new FaceSupport;
         try {
             $faceSupport->check($image_b64);
             $embedding = $faceSupport->test_image($image_b64);

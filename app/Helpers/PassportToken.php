@@ -2,15 +2,12 @@
 
 namespace App\Helpers;
 
-
 use App\Models\User;
 use App\Support\AccessTokenResponse;
 use App\Support\IdTokenResponse;
-use DateTime;
 use DateTimeImmutable;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Events\Dispatcher;
-use Laravel\Passport\Bridge\AccessToken;
 use Laravel\Passport\Bridge\AccessTokenRepository;
 use Laravel\Passport\Bridge\Client;
 use Laravel\Passport\Bridge\RefreshTokenRepository;
@@ -30,11 +27,10 @@ class PassportToken
     /**
      * Generate a new unique identifier.
      *
-     * @param int $length
+     * @param  int  $length
+     * @return string
      *
      * @throws OAuthServerException
-     *
-     * @return string
      */
     public function generateUniqueIdentifier($length = 40)
     {
@@ -57,7 +53,7 @@ class PassportToken
         $maxGenerationAttempts = 10;
         $refreshTokenRepository = app(RefreshTokenRepository::class);
 
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
 
         $refreshToken = $refreshTokenRepository->getNewRefreshToken();
         $accessToken->setExpiryDateTime($now->add(Passport::refreshTokensExpireIn()));
@@ -83,17 +79,17 @@ class PassportToken
 
     public function createPassportTokenByUser(User $user, \App\Models\Client $client, $scopes = []): array
     {
-        $idToken = new IdTokenResponse();
+        $idToken = new IdTokenResponse;
 
         $scopeEntities = [];
         $tokenCan = config('openid.passport.tokens_can');
 
         // TODO: 如果 scope 不在 tokensCan，则报错
-//        foreach ($scopes as $scope) {
-//            if (! in_array($scope, $tokenCan)) {
-//                abort(400, 'Scope not allowed');
-//            }
-//        }
+        //        foreach ($scopes as $scope) {
+        //            if (! in_array($scope, $tokenCan)) {
+        //                abort(400, 'Scope not allowed');
+        //            }
+        //        }
 
         foreach ($scopes as $scope) {
             $scopeEntities[] = new Scope($scope);
@@ -103,7 +99,7 @@ class PassportToken
             $client->name, $client->redirect, $client->secret != null, $client->provider);
         $accessToken = new AccessTokenResponse($user->id, $scopeEntities, $client);
 
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
 
         try {
             $accessToken->setIdentifier($this->generateUniqueIdentifier());
@@ -112,7 +108,7 @@ class PassportToken
         }
         $accessToken->setExpiryDateTime($now->add(Passport::tokensExpireIn()));
 
-        $accessTokenRepository = new AccessTokenRepository(new TokenRepository(), new Dispatcher());
+        $accessTokenRepository = new AccessTokenRepository(new TokenRepository, new Dispatcher);
         try {
             $accessTokenRepository->persistNewAccessToken($accessToken);
         } catch (UniqueTokenIdentifierConstraintViolationException $e) {
@@ -125,9 +121,9 @@ class PassportToken
         }
 
         $idTokenBuilder = $idToken->getExtraParams($accessToken);
-//        dd($idTokenBuilder);
+        //        dd($idTokenBuilder);
 
-        $r =  [
+        $r = [
             'access_token' => $accessToken->toString(),
             'refresh_token' => $refreshToken,
         ];
@@ -139,7 +135,7 @@ class PassportToken
 
     protected function sendBearerTokenResponse($accessToken, $refreshToken): MessageInterface|ResponseInterface
     {
-        $response = new BearerTokenResponse();
+        $response = new BearerTokenResponse;
         $response->setAccessToken($accessToken);
         $response->setRefreshToken($refreshToken);
 
@@ -152,10 +148,7 @@ class PassportToken
     }
 
     /**
-     * @param User $user
-     * @param $clientId
-     * @param bool $output default = true
-     * @return array | BearerTokenResponse
+     * @param  bool  $output  default = true
      */
     protected function getBearerTokenByUser(User $user, $clientId, bool $output = true): array|BearerTokenResponse
     {

@@ -29,7 +29,7 @@ class MilvusLoad extends Command
      */
     public function handle(): int
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
 
         $milvusSupport->loadCollection(config('milvus.collection'));
 

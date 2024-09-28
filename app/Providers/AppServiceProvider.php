@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $this->useStoragePassportKeys();
         }
 
-        Route::mixin(new RemovableRoutesMixin());
+        Route::mixin(new RemovableRoutesMixin);
         Route::removeGet('/oauth/authorize');
 
         Paginator::useBootstrapFive();

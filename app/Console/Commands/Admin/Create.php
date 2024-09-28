@@ -48,7 +48,7 @@ class Create extends Command
 
         $device_id = $yubico->getDeviceID();
 
-        $admin = new Admin();
+        $admin = new Admin;
 
         if ($admin->isRegisteredByModel($device_id)) {
             $this->error('该设备已经注册过管理员 '.$admin->findByDeviceID($device_id)->name.'。');

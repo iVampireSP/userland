@@ -27,7 +27,7 @@ class RealNameController extends Controller
     {
         Log::debug('实名认证回调', $request->all());
 
-        $result = (new RealNameSupport())->verify($request->all());
+        $result = (new RealNameSupport)->verify($request->all());
 
         if (! $result) {
             Log::warning('实名认证失败', $request->all());

@@ -48,7 +48,7 @@ class Face extends Model
             return false;
         }
 
-        $image = new ImageSupport();
+        $image = new ImageSupport;
 
         try {
             $file = $image->convertToJpeg($file);
@@ -98,7 +98,7 @@ class Face extends Model
 
     public function setEmbedding(array $embedding, bool $delete_on_fail = false): bool
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
 
         $r = $this->deleteEmbedding();
         if (! $r) {
@@ -133,7 +133,7 @@ class Face extends Model
 
     public function deleteEmbedding(): bool
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
         try {
             $milvusSupport->delete('face_id == '.$this->id);
         } catch (ConnectionException $e) {

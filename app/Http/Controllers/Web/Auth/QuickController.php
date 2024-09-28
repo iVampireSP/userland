@@ -14,7 +14,7 @@ class QuickController extends Controller
         protected MultiUserSupport $multiUser,
         protected User $user
     ) {
-        $this->multiUser = new MultiUserSupport();
+        $this->multiUser = new MultiUserSupport;
     }
 
     public function quickLogin(Request $request, string $token)

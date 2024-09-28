@@ -39,7 +39,7 @@ class JwkProvider extends PassportServiceProvider
             scopeRepository: app(ScopeRepository::class),
             privateKey: $cryptKey,
             encryptionKey: $encryptionKey,
-            responseType: new IdTokenResponse()
+            responseType: new IdTokenResponse
         );
     }
 }

@@ -17,7 +17,7 @@ trait HasYubicoOTP
             throw new Exception('该设备已被其他用户绑定');
         }
 
-        $y = new YubicoOTP();
+        $y = new YubicoOTP;
 
         $y->create([
             'device_id' => $device_id,

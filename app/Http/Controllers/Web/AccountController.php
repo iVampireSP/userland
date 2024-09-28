@@ -30,7 +30,7 @@ class AccountController extends Controller
 
     public function __construct()
     {
-        $this->multiUser = new MultiUserSupport();
+        $this->multiUser = new MultiUserSupport;
     }
 
     public function index(Request $request): View|RedirectResponse|JsonResponse

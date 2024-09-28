@@ -29,8 +29,8 @@ class FaceVector extends Command
      */
     public function handle(): void
     {
-        $milvusSupport = new MilvusSupport();
-        $faceSupport = new FaceSupport();
+        $milvusSupport = new MilvusSupport;
+        $faceSupport = new FaceSupport;
 
         $user_id = $this->option('user-id');
 

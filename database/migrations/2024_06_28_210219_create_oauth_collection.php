@@ -9,7 +9,7 @@ return new class extends Migration
 
     public function __construct()
     {
-        $this->milvusSupport = new MilvusSupport();
+        $this->milvusSupport = new MilvusSupport;
     }
 
     /**

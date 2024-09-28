@@ -173,7 +173,7 @@ class User extends Authenticatable
     {
         $code = rand(1000, 9999);
 
-        $sms = new SMSSupport();
+        $sms = new SMSSupport;
 
         $sms->setPhone($this->phone);
         $sms->setTemplateId(config('settings.supports.sms.templates.verify_code'));

@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $users = new User();
+        $users = new User;
 
         if ($request->filled('id')) {
             $users = $users->where('id', $request->input('id'));

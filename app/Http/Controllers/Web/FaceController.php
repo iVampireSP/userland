@@ -44,7 +44,7 @@ class FaceController extends Controller
 
         $image_b64 = $request->input('image_b64');
 
-        $faceSupport = new FaceSupport();
+        $faceSupport = new FaceSupport;
         try {
             $faceSupport->check($image_b64);
             $embedding = $faceSupport->test_image($image_b64);
@@ -87,7 +87,7 @@ class FaceController extends Controller
             return redirect()->route('faces.index')->with('error', '没有找到人脸信息。');
         }
 
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
         try {
             $milvusSupport->delete('face_id == '.$face->id);
         } catch (ConnectionException $e) {
@@ -122,7 +122,7 @@ class FaceController extends Controller
 
         $image_b64 = $request->input('image_b64');
 
-        $faceSupport = new FaceSupport();
+        $faceSupport = new FaceSupport;
         try {
             $faceSupport->check($image_b64);
             $embedding = $faceSupport->test_image($image_b64);

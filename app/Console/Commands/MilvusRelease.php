@@ -29,7 +29,7 @@ class MilvusRelease extends Command
      */
     public function handle(): int
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
 
         $result = $milvusSupport->releaseCollection(config('milvus.collection'));
 

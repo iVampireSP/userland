@@ -20,8 +20,8 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->faceSupport = new FaceSupport();
-        $this->milvusSupport = new MilvusSupport();
+        $this->faceSupport = new FaceSupport;
+        $this->milvusSupport = new MilvusSupport;
     }
 
     // 创建 Face 注册
@@ -70,7 +70,7 @@ class AuthController extends Controller
         $face->putFile($image_b64);
 
         // 存入 Milvus
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
 
         try {
             $milvusSupport->insert([

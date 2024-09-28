@@ -2,15 +2,14 @@
 
 use App\Support\MilvusSupport;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     private MilvusSupport $milvusSupport;
 
     public function __construct()
     {
-        $this->milvusSupport = new MilvusSupport();
+        $this->milvusSupport = new MilvusSupport;
     }
 
     /**
@@ -23,7 +22,7 @@ return new class extends Migration {
             throw new Exception($resp['message']);
         }
 
-        $resp = $this->milvusSupport->post("indexes/drop", [
+        $resp = $this->milvusSupport->post('indexes/drop', [
             'collectionName' => config('milvus.collection'),
             'indexName' => 'face_id_idx',
         ]);
@@ -42,17 +41,16 @@ return new class extends Migration {
             }
 
             // 如果 $resp['data'] 里面没有 face_id_idx，说明已经释放成功
-            if (!in_array('face_id_idx', array_column($resp['data'], 'index_name'))) {
+            if (! in_array('face_id_idx', array_column($resp['data'], 'index_name'))) {
                 break;
             }
             sleep(5);
         }
 
-
         $resp = $this->milvusSupport->post('indexes/create', [
             'collectionName' => config('milvus.collection'),
             'indexParams' => [
-                (object)[
+                (object) [
                     'fieldName' => 'face_id',
                     'indexName' => 'face_id_idx',
                     'metricType' => '',
@@ -74,7 +72,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        $resp = $this->milvusSupport->post("indexes/drop", [
+        $resp = $this->milvusSupport->post('indexes/drop', [
             'collectionName' => config('milvus.collection'),
             'indexName' => 'face_id_idx',
         ]);

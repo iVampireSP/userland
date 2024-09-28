@@ -36,7 +36,7 @@ class ClientController extends Controller
             //            'password_client' => 'boolean',
         ]);
 
-        $clients = new ClientRepository();
+        $clients = new ClientRepository;
 
         $client = $clients->create(
             userId: $request->user()->getAuthIdentifier(),

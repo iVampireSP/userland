@@ -43,7 +43,7 @@ class SendUserNotificationsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $notificationController = new NotificationController();
+        $notificationController = new NotificationController;
 
         $users = $notificationController->query($this->requests);
 

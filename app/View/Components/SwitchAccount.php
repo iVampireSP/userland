@@ -26,7 +26,7 @@ class SwitchAccount extends Component
      */
     public function __construct(string $type = self::TYPE_CONTAINER)
     {
-        $this->multiUser = new MultiUserSupport();
+        $this->multiUser = new MultiUserSupport;
         $this->multiUserCount = $this->multiUser->count();
         $this->type = $type;
     }

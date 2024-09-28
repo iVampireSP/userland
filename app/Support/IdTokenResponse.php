@@ -5,7 +5,6 @@ namespace App\Support;
 use App\Models\User;
 use DateInterval;
 use DateTimeImmutable;
-use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -30,7 +29,7 @@ class IdTokenResponse extends BearerTokenResponse
     // 不推荐使用 Id Token 来进行 API 的访问鉴权。
     public function getBuilder(AccessTokenEntityInterface $accessToken): Builder
     {
-        $dateTimeImmutableObject = new DateTimeImmutable();
+        $dateTimeImmutableObject = new DateTimeImmutable;
 
         $user = User::findOrFail($accessToken->getUserIdentifier());
 

@@ -57,7 +57,7 @@ class FaceSupport
     public function test_image(string $image_b64): array
     {
         try {
-            $image_b64 = (new ImageSupport())->convertToJpeg($image_b64);
+            $image_b64 = (new ImageSupport)->convertToJpeg($image_b64);
         } catch (ValueError $e) {
             Log::error($e->getMessage());
             throw new CommonException('无法解析图片，是否已经损坏？');
@@ -88,7 +88,7 @@ class FaceSupport
      */
     public function search(array $embedding): Collection
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
         try {
             $results = $milvusSupport->search($embedding);
         } catch (ConnectionException $e) {

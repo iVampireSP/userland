@@ -85,7 +85,7 @@ class WeChatController extends Controller
 
         $token = $message['Content'];
 
-        $user = new User();
+        $user = new User;
         $r = $user->getLoginToken(
             token: $token,
             prefix: 'wechat:bind'

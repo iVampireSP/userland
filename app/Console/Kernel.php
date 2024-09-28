@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('passport:purge')->hourly();
 
         // 解除到时间的应用封禁
-        $schedule->job(new UnbanUserJob())->onOneServer()->hourly()->name('解除到时间的应用封禁');
+        $schedule->job(new UnbanUserJob)->onOneServer()->hourly()->name('解除到时间的应用封禁');
 
     }
 

@@ -43,7 +43,7 @@ class RegisterController extends Controller
             $u = User::whereEmail($data['email'])->onlyTrashed()->first();
             $u->restore();
 
-            $u->name = $data['name'] ?? "User";
+            $u->name = $data['name'] ?? 'User';
             $u->password = Hash::make($data['password']);
 
             $u->sendEmailVerificationNotification();
@@ -59,6 +59,7 @@ class RegisterController extends Controller
 
         // 发送注册确认邮件
         $u->sendEmailVerificationNotification();
+
         return $u;
     }
 

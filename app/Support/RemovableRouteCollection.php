@@ -15,7 +15,7 @@ class RemovableRouteCollection extends RouteCollection
      */
     public static function cloneFrom(RouteCollection $base)
     {
-        $clone = new static();
+        $clone = new static;
 
         $clone->routes = $base->routes;
         $clone->allRoutes = $base->allRoutes;

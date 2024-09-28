@@ -24,11 +24,12 @@ class MilvusIndex extends Command
 
     /**
      * Execute the console command.
+     *
      * @throws Exception
      */
     public function handle()
     {
-        $milvusSupport = new MilvusSupport();
+        $milvusSupport = new MilvusSupport;
 
         while (true) {
             // 清理屏幕
@@ -52,18 +53,17 @@ class MilvusIndex extends Command
                     throw new Exception($info['message']);
                 }
 
-
                 $keys = [];
                 $data = [];
                 foreach ($info['data'] as $d) {
-                   foreach ($d as $k => $v) {
-                       // 检查
-                       if (!in_array($k, $keys)) {
-                           $keys[] = $k;
-                       }
+                    foreach ($d as $k => $v) {
+                        // 检查
+                        if (! in_array($k, $keys)) {
+                            $keys[] = $k;
+                        }
 
-                       $data[$k] = $v;
-                   }
+                        $data[$k] = $v;
+                    }
                 }
 
                 $this->table($keys, [$data]);
@@ -71,7 +71,6 @@ class MilvusIndex extends Command
             }
             sleep(3);
         }
-
 
     }
 }

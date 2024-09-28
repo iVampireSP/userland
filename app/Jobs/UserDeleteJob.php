@@ -54,7 +54,7 @@ class UserDeleteJob implements ShouldQueue
         });
 
         if ($this->user->email) {
-            Mail::to($this->user->email)->send(new UserDeleted());
+            Mail::to($this->user->email)->send(new UserDeleted);
         }
 
         $r = $this->user->delete(true);
