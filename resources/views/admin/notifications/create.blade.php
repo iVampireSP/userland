@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <p>这两个搜搜条件只能二选一。</p>
+            <p>这两个搜索条件只能二选一。</p>
 
             <button type="submit" class="btn btn-primary mt-1">筛选并确定条件</button>
         </form>
