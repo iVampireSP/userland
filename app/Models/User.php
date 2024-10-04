@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
+use LucasDotVin\Soulbscription\Models\Concerns\HasSubscriptions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, UserClaimsTrait;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, UserClaimsTrait, HasSubscriptions;
 
     public array $publics = [
         'id',
@@ -262,5 +263,20 @@ class User extends Authenticatable
         }
 
         return self::find($user_id);
+    }
+
+    public function findForPassport(string $username): self
+    {
+        if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            return $this->where('email', $username)->first();
+        }
+
+        if (filter_var($username, FILTER_VALIDATE_INT)) {
+            // 根据 id 或 手机号
+            return $this->where('id', $username)->orWhere('phone', $username)->first();
+        }
+
+        // 默认 ID
+        return $this->where('id', $username)->first();
     }
 }
