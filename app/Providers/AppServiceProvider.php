@@ -55,7 +55,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         Passport::useClientModel(Client::class);
-        Passport::enableImplicitGrant();
+//        Passport::enableImplicitGrant();
+        Passport::enablePasswordGrant();
 
         $this->registerObservers();
         $this->registerScopes();
