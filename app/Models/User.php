@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Helpers\UserClaimsTrait;
-use App\Support\SMSSupport;
+use App\Helpers\Auth\UserClaimsTrait;
+use App\Support\SMS\SMSSupport;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;

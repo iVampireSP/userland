@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\MilvusSupport;
+use App\Support\Milvus\MilvusSupport;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration

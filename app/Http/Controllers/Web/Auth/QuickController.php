@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\Support\MultiUserSupport;
+use App\Support\Auth\MultiUserSupport;
 use Illuminate\Http\Request;
 
 class QuickController extends Controller

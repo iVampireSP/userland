@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
-use App\Support\IDCardSupport;
-use App\Support\RealNameSupport;
+use App\Support\Auth\IDCardSupport;
+use App\Support\Auth\RealNameSupport;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

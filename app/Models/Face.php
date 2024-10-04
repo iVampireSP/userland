@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Exceptions\CommonException;
-use App\Support\ImageSupport;
-use App\Support\MilvusSupport;
+use App\Support\Image\ImageSupport;
+use App\Support\Milvus\MilvusSupport;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

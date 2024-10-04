@@ -8,7 +8,7 @@ use App\Jobs\UserDeleteJob;
 use App\Mail\EmailChange;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\Support\MultiUserSupport;
+use App\Support\Auth\MultiUserSupport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

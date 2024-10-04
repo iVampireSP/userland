@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Face;
 
 use App\Exceptions\CommonException;
 use App\Models\Face;
+use App\Support\Image\ImageSupport;
+use App\Support\Milvus\MilvusSupport;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;

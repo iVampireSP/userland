@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\OAuth;
 
 use App\Models\User;
 use DateTimeImmutable;

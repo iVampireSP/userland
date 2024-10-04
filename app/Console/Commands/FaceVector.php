@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Exceptions\CommonException;
 use App\Models\Face;
-use App\Support\FaceSupport;
-use App\Support\MilvusSupport;
+use App\Support\Face\FaceSupport;
+use App\Support\Milvus\MilvusSupport;
 use Illuminate\Console\Command;
 
 class FaceVector extends Command

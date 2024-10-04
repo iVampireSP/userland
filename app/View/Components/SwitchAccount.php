@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Support\MultiUserSupport;
+use App\Support\Auth\MultiUserSupport;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

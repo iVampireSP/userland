@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helpers\Lock;
 
 use Closure;
 use Illuminate\Support\Facades\Cache;

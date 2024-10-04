@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helpers\OAuth;
 
 use App\Models\User;
-use App\Support\AccessTokenResponse;
-use App\Support\IdTokenResponse;
+use App\Support\OAuth\AccessTokenResponse;
+use App\Support\OAuth\IdTokenResponse;
 use DateTimeImmutable;
+use Error;
+use Exception;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Events\Dispatcher;
 use Laravel\Passport\Bridge\AccessTokenRepository;
@@ -21,33 +23,34 @@ use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationExcep
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
+use TypeError;
 
 class PassportToken
 {
     /**
      * Generate a new unique identifier.
      *
-     * @param  int  $length
-     * @return string
      *
      * @throws OAuthServerException
      */
-    public function generateUniqueIdentifier($length = 40)
+    public function generateUniqueIdentifier(int $length = 40): string
     {
         try {
             return bin2hex(random_bytes($length));
             // @codeCoverageIgnoreStart
-        } catch (\TypeError $e) {
+        } catch (TypeError|Error) {
             throw OAuthServerException::serverError('An unexpected error has occurred');
-        } catch (\Error $e) {
-            throw OAuthServerException::serverError('An unexpected error has occurred');
-        } catch (\Exception $e) {
+        } catch (Exception) {
             // If you get this message, the CSPRNG failed hard.
             throw OAuthServerException::serverError('Could not generate a random string');
         }
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @throws UniqueTokenIdentifierConstraintViolationException
+     * @throws Exception
+     */
     public function issueRefreshToken(AccessTokenEntityInterface $accessToken)
     {
         $maxGenerationAttempts = 10;
@@ -62,7 +65,7 @@ class PassportToken
         while ($maxGenerationAttempts-- > 0) {
             try {
                 $refreshToken->setIdentifier($this->generateUniqueIdentifier());
-            } catch (OAuthServerException $e) {
+            } catch (OAuthServerException) {
                 abort(500, 'Could not generate a unique access token identifier.');
             }
             try {
@@ -75,6 +78,8 @@ class PassportToken
                 }
             }
         }
+
+        throw new Exception('Could not generate a unique refresh token identifier.');
     }
 
     public function createPassportTokenByUser(User $user, \App\Models\Client $client, $scopes = []): array
@@ -82,7 +87,7 @@ class PassportToken
         $idToken = new IdTokenResponse;
 
         $scopeEntities = [];
-        $tokenCan = config('openid.passport.tokens_can');
+        //        $tokenCan = config('openid.passport.tokens_can');
 
         // TODO: 如果 scope 不在 tokensCan，则报错
         //        foreach ($scopes as $scope) {

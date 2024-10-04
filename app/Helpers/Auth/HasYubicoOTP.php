@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helpers\Auth;
 
 use App\Models\YubicoOTP;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Image;
 
 use App\Exceptions\CommonException;
 use Illuminate\Support\Facades\Log;

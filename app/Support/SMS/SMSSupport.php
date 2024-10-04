@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\SMS;
 
 use App\Contracts\SMS;
 use App\Exceptions\SMS\SMSFailedException;

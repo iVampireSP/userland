@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Milvus;
 
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;

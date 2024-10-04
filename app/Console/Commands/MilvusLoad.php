@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Support\MilvusSupport;
+use App\Support\Milvus\MilvusSupport;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
 

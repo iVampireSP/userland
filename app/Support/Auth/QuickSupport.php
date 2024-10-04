@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Auth;
 
 use Illuminate\Support\Facades\Cache;
 
 class QuickSupport
 {
-    public function create_face_register(string $image_b64)
+    public function createFaceRegister(string $image_b64)
     {
         // ttl 1 天
         $ttl = 60 * 60 * 24;
@@ -16,7 +16,7 @@ class QuickSupport
         ], $ttl);
     }
 
-    public function get_face_register()
+    public function getFaceRegister()
     {
         return Cache::get('quick:face_register');
     }

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
 use App\Models\Face;
-use App\Support\FaceSupport;
-use App\Support\MilvusSupport;
+use App\Support\Face\FaceSupport;
+use App\Support\Milvus\MilvusSupport;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 

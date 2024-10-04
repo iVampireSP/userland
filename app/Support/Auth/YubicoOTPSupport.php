@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Auth;
 
 use App\Contracts\YubicoOTP;
 use DateTime;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\UserDeleteJob;
 use App\Models\User;
-use App\Support\MultiUserSupport;
+use App\Support\Auth\MultiUserSupport;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

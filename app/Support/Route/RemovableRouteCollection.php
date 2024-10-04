@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Route;
 
 use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;

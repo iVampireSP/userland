@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Route;
 
 use Closure;
 use Illuminate\Routing\Router;

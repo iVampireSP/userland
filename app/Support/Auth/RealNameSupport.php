@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Auth;
 
 use App\Exceptions\CommonException;
 use App\Models\User;

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Support\MilvusSupport;
+use App\Support\Milvus\MilvusSupport;
 use Exception;
 use Illuminate\Console\Command;
 

@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
-use App\Support\IdCardSupport;
+use App\Support\Auth\IdCardSupport;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 

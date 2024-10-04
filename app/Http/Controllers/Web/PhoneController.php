@@ -7,7 +7,7 @@ use App\Exceptions\SMS\SMSFailedException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\Support\SMSSupport;
+use App\Support\SMS\SMSSupport;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

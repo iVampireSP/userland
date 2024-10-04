@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Support\IdTokenResponse;
+use App\Support\OAuth\IdTokenResponse;
 use Illuminate\Encryption\Encrypter;
 use Laravel\Passport\Bridge\AccessTokenRepository;
 use Laravel\Passport\Bridge\ClientRepository;
