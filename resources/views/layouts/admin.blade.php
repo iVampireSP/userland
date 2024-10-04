@@ -48,11 +48,22 @@
                             <a class="nav-link" href="{{ route('admin.notifications.create') }}">通知</a>
                         </li>
 
+{{--                        dropdown --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                订阅
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.plans.index') }}">计划</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.features.index') }}">功能</a></li>
+                            </ul>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.admins.index') }}">管理员</a>
                         </li>
-
-
                     </ul>
                 @endauth
 
@@ -114,6 +125,14 @@
     <div class="mt-5"></div>
 
 </div>
+
+<script>
+    const app = document.getElementById('app');
+    app.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function () {
+        app.style.display = '';
+    });
+</script>
 </body>
 
 </html>

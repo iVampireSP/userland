@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +26,11 @@ Route::resource('user/{user}/bans', BanController::class);
 Route::resource('clients', ClientController::class);
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
+
+Route::resource('features', FeatureController::class);
+Route::post('/features/{feature}/restore', [FeatureController::class, 'restore'])->name('features.restore');
+
+Route::resource('plans', PlanController::class);
+Route::post('/plans/{plan}/restore', [PlanController::class, 'restore'])->name('plans.restore');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
