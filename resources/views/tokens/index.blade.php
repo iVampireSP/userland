@@ -19,34 +19,42 @@
 
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>名称</th>
-                <th>作用域</th>
-                <th>创建时间</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>名称</th>
+            <th>作用域</th>
+            <th>客户端</th>
+            <th>到期时间</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach ($tokens as $token)
-                <tr>
-                    <td>{{ $token->name }}</td>
-                    <td>
-                        @foreach ($token->scopes as $scope)
-                            {{ $scope }}
-                        @endforeach
-
-
-                    </td>
-                    <td>{{ $token->created_at }}</td>
-                    <td>
-                        <form method="post" action="{{ route('tokens.destroy', $token->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">吊销</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+        @foreach ($tokens as $token)
+            <tr>
+                <td>{{ $token->name }}</td>
+                <td>
+                    @foreach ($token->scopes as $scope)
+                        {{ $scope }}
+                    @endforeach
+                </td>
+                <td>
+                    @if ($token->client)
+                        {{ $token->client->name }}
+                    @else
+                        <span class="text-danger">未知</span>
+                    @endif
+                </td>
+                <td>{{ $token->expires_at }}</td>
+                <td>{{ $token->created_at }}</td>
+                <td>
+                    <form method="post" action="{{ route('tokens.destroy', $token->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">吊销</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
 
 
         </tbody>

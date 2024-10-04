@@ -15,7 +15,7 @@ class TokenController extends Controller
 {
     public function index(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        $tokens = auth('web')->user()->tokens()->paginate(10);
+        $tokens = auth('web')->user()->tokens()->with('client')->paginate(100);
 
         return view('tokens.index', compact('tokens'));
     }
