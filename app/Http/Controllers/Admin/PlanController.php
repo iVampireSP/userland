@@ -10,12 +10,13 @@ use LucasDotVin\Soulbscription\Models\Plan;
 class PlanController extends Controller
 {
     use HasPeriodicity;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $plans = new Plan();
+        $plans = new Plan;
 
         if ($request->has('trashed')) {
             $plans = $plans->onlyTrashed();
@@ -49,9 +50,7 @@ class PlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Plan $plan)
-    {
-    }
+    public function show(Plan $plan) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -116,5 +115,4 @@ class PlanController extends Controller
 
         return redirect()->route('admin.plans.index')->with('success', '已恢复删除。');
     }
-
 }

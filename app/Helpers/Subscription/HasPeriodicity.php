@@ -2,8 +2,6 @@
 
 namespace App\Helpers\Subscription;
 
-use Illuminate\Http\Request;
-
 trait HasPeriodicity
 {
     private function matchType(string $type): string

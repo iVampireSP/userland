@@ -16,7 +16,7 @@ class FeatureController extends Controller
      */
     public function index(Request $request)
     {
-        $features = new Feature();
+        $features = new Feature;
 
         if ($request->has('trashed')) {
             $features = $features->onlyTrashed();
@@ -110,7 +110,6 @@ class FeatureController extends Controller
             'periodicity' => 'nullable|integer|min:0',
             'periodicity_type' => 'required|in:none,day,week,month,year',
         ]);
-
 
         $f = [
             'consumable' => $request->boolean('consumable'),

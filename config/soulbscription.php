@@ -5,7 +5,7 @@ return [
         'cancel_migrations_autoloading' => false,
     ],
 
-    'feature_tickets' =>true,
+    'feature_tickets' => true,
 
     'models' => [
 

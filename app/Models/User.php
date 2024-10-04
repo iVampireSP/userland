@@ -21,7 +21,7 @@ use LucasDotVin\Soulbscription\Models\Concerns\HasSubscriptions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, UserClaimsTrait, HasSubscriptions;
+    use HasApiTokens, HasFactory, HasSubscriptions, Notifiable, SoftDeletes, UserClaimsTrait;
 
     public array $publics = [
         'id',
