@@ -34,7 +34,7 @@
             <thead>
             <th>ID</th>
             <th>用户名</th>
-            <th>邮箱</th>
+            <th>通信方式</th>
             <th>注册时间</th>
             <th>操作</th>
             </thead>
@@ -53,8 +53,14 @@
                         </a>
                     </td>
                     <td>
-                        {{ $user->email }} @if(!$user->hasVerifiedEmail())
-                            <small class="text-muted">没有验证</small>
+                        {{ $user->email }}
+                        @if(!$user->isEmailVerified())
+                            <small class="text-muted">没有验证邮箱</small>
+                        @endif
+                        <br/>
+                        {{$user->phone}}
+                        @if(!$user->isPhoneVerified())
+                            <small class="text-muted">没有验证手机号</small>
                         @endif
                     </td>
                     <td>

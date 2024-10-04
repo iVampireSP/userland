@@ -24,9 +24,18 @@
 
     <span>注册时间: {{ $user->created_at }}</span> <br/>
 
-    <span>邮箱: {{ $user->email }} @if(!$user->hasVerifiedEmail())
+    <span>邮箱: {{ $user->email }}
+        @if(!$user->isEmailVerified())
             <small class="text-muted">没有验证</small>
-        @endif</span> <br/>
+        @endif
+    </span>
+    <br/>
+    <span>手机号: {{ $user->phone }}
+        @if(!$user->isPhoneVerified())
+            <small class="text-muted">没有验证</small>
+        @endif
+    </span>
+    <br />
 
 
     @if ($user->birthday_at)
@@ -55,7 +64,8 @@
         {{-- 原因 --}}
         <div class="form-group">
             <label for="banned_reason">封禁原因</label>
-            <input type="text" class="form-control" id="banned_reason" name="banned_reason" autocomplete="off" placeholder="封禁原因"
+            <input type="text" class="form-control" id="banned_reason" name="banned_reason" autocomplete="off"
+                   placeholder="封禁原因"
                    value="{{ $user->banned_reason }}">
         </div>
 
