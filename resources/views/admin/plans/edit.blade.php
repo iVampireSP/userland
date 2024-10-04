@@ -5,7 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h2>编辑方案</h2>
-                <a href="{{route('admin.plans.index')}}">返回</a>
+                <a href="{{ route('admin.plans.index' )}}">返回</a>
+                <a href="{{ route('admin.plans.features', $plan) }}">绑定功能</a>
 
                 <form action="{{ route('admin.plans.update', $plan) }}" method="post" class="mt-3">
                     @csrf
@@ -20,23 +21,23 @@
                     <div class="form-floating mb-3">
                         <select class="form-select" aria-label="计费周期" name="periodicity_type">
                             <option
-                                    @selected(old('periodicity_type', $plan->periodicity_type) == 'year') value="year">
+                                @selected(old('periodicity_type', $plan->periodicity_type) == 'year') value="year">
                                 年
                             </option>
                             <option
-                                    @selected(old('periodicity_type', $plan->periodicity_type) == 'month') value="month">
+                                @selected(old('periodicity_type', $plan->periodicity_type) == 'month') value="month">
                                 月
                             </option>
                             <option
-                                    @selected(old('periodicity_type', $plan->periodicity_type) == 'week')  value="week">
+                                @selected(old('periodicity_type', $plan->periodicity_type) == 'week')  value="week">
                                 周
                             </option>
                             <option
-                                    @selected(old('periodicity_type', $plan->periodicity_type) == 'day')  value="day">
+                                @selected(old('periodicity_type', $plan->periodicity_type) == 'day')  value="day">
                                 日
                             </option>
                             <option
-                                    @selected(old('periodicity_type', $plan->periodicity_type) == 'none')  value="none">
+                                @selected(old('periodicity_type', $plan->periodicity_type) == 'none')  value="none">
                                 无
                             </option>
 
@@ -61,7 +62,7 @@
 
                 </form>
 
-                <hr />
+                <hr/>
 
                 <form action="{{route('admin.plans.destroy', $plan)}}" method="post">
                     @csrf

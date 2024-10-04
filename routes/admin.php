@@ -32,5 +32,7 @@ Route::post('/features/{feature}/restore', [FeatureController::class, 'restore']
 
 Route::resource('plans', PlanController::class);
 Route::post('/plans/{plan}/restore', [PlanController::class, 'restore'])->name('plans.restore');
+Route::get('/plans/{plan}/features', [PlanController::class, 'features'])->name('plans.features');
+Route::post('/plans/{plan}/features/{feature}', [PlanController::class, 'toggleFeature'])->name('plans.toggleFeature');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\Subscription\HasPeriodicity;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use LucasDotVin\Soulbscription\Models\Feature;
 use LucasDotVin\Soulbscription\Models\Plan;
 
 class PlanController extends Controller
@@ -114,5 +115,32 @@ class PlanController extends Controller
         Plan::withTrashed()->where('id', $plan_id)->restore();
 
         return redirect()->route('admin.plans.index')->with('success', '已恢复删除。');
+    }
+
+    public function features(Plan $plan)
+    {
+        $plan->load('features');
+        $features = Feature::all();
+
+        return view('admin.plans.features', compact('plan', 'features'));
+    }
+
+    public function toggleFeature(Plan $plan, Feature $feature)
+    {
+        // bind if not exists
+//        $plan->features()->attach($feature);
+
+        $attached = false;
+
+        $exists = $plan->features()->where('feature_id', $feature->id)->exists();
+        if (!$exists) {
+            $plan->features()->attach($feature);
+            $attached = true;
+        } else {
+            $plan->features()->detach($feature);
+        }
+
+//        return response()->json(['attached' => $attached]);
+        return redirect()->back();
     }
 }
