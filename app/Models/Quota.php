@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -17,5 +16,4 @@ class Quota extends Model
     {
         return $this->belongsToMany(User::class, UserQuota::class)->withPivot('amount', 'max_amount');
     }
-
 }

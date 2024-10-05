@@ -66,7 +66,7 @@ class QuotaController extends Controller
     public function update(Request $request, Quota $quota)
     {
         $request->validate([
-            'unit' => 'required|string|unique:quotas,unit,' . $quota->id . '|max:255',
+            'unit' => 'required|string|unique:quotas,unit,'.$quota->id.'|max:255',
             'description' => 'required|string|max:255',
         ]);
         $quota->update([
