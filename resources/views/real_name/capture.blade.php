@@ -1,21 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-center">图像采集</h1>
+    <h1 class="text-center">人证比对</h1>
 
     <div class="row flex align-content-center w-100 align-items-center justify-content-center">
         <video id="face-capture" playsinline muted autoplay class="w-75 d-none"></video>
-      <div class="text-center">
-          <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开。</p>
-          <p id="alert-failed" class="text-danger d-none">无法验证您的身份，您可以重新采集。</p>
-          <p id="alert-capture-failed" class="text-danger d-none">验证失败，您可以刷新页面或重启浏览器。</p>
-      </div>
+        <div class="text-center">
+            <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开。</p>
+            <p id="alert-failed" class="text-danger d-none">无法验证您的身份，您可以重新采集。</p>
+            <p id="alert-capture-failed" class="text-danger d-none">验证失败，您可以刷新页面或重启浏览器。</p>
+        </div>
 
         <div class="mt-3 text-center">
             <button class="btn btn-primary" id="start-record">采集</button>
             <p class="text-info mt-3">在点击采集后，可能需要一段时间加载。</p>
 
         </div>
+
+        <small>
+            我们会使用机器学习技术来验证是否本人进行操作。
+        </small>
     </div>
 
     <form action="{{ route('real_name.capture') }}" id="validate-form" method="post">
@@ -86,6 +90,5 @@
 
         });
     </script>
-
 
 @endsection

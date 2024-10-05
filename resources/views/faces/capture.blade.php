@@ -6,22 +6,20 @@
     <div class="row flex align-content-center w-100 align-items-center justify-content-center">
         <video id="face-capture" playsinline muted autoplay class="w-75 d-none"></video>
         <div class="text-center">
-            <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开。</p>
-            <p id="alert-failed" class="text-danger d-none">无法验证您的身份，您可以重新采集。</p>
-            <p id="alert-capture-failed" class="text-danger d-none">验证失败，您可以刷新页面或重启浏览器。</p>
+            <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开</p>
+            <p id="alert-failed" class="text-danger d-none">无法验证您的身份，您可以重新采集</p>
+            <p id="alert-capture-failed" class="text-danger d-none">验证失败，您可以刷新页面或重启浏览器</p>
         </div>
 
         <div class="mt-3 text-center">
             <button class="btn btn-primary" id="start-record">采集</button>
-            <p class="text-info mt-3">在点击采集后，可能需要一段时间加载。</p>
+            <p class="text-info mt-3">在点击采集后，可能需要一段时间加载</p>
 
         </div>
     </div>
 
     <small>
-        在您进行人脸图像采集时，我们会通过机器学习来识别您的人脸特征，并通过人脸识别技术来识别您。在您成功录入后，我们会保存您在录入成功后的一张图像，此图像将会被我们长期保存，以用于更新模型时重新提取特征。
-        您在人脸识别页面点击“删除”时，我们将删除您录入的图像以及人脸特征。如果您不需要采集人脸，请 <a href="/">离开此页面</a>。
-
+        在您进行人脸图像采集时，我们会利用机器学习技术来识别您的面部特征，并通过人脸识别技术进行身份确认。成功录入后，我们会保存您的一张图像，以便在更新模型时重新提取特征。如果您希望删除录入的图像和人脸特征，只需在识别页面点击“删除”即可。如果您不想进行人脸采集，<a href="/">离开此页面</a>。
     </small>
 
 
