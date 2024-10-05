@@ -35,7 +35,7 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'guard' => 'required|string|max:255',
+            'guard' => 'nullable|string|max:255',
         ]);
 
         // reject if exists
@@ -46,23 +46,18 @@ class PermissionController extends Controller
         }
 
         $guard = $request->input('guard');
-        if ($guard == 'global') {
-            $guard = null;
+        if ($guard == '') {
+            $guard = '';
         } else {
             if (! in_array($guard, array_keys(config('auth.guards')))) {
                 return redirect()->back()->withErrors(['guard' => '无效的 guard']);
             }
         }
 
-        $field = [
+        Permission::create([
             'name' => $request->input('name'),
-        ];
-
-        if ($field) {
-            $field['guard_name'] = $guard;
-        }
-
-        Permission::create($field);
+            'guard_name' => $guard,
+        ]);
 
         return redirect()->route('admin.permissions.index')->with('success', '权限创建成功');
     }
@@ -92,7 +87,7 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'guard' => 'required|string|max:255',
+            'guard' => 'nullable|string|max:255',
         ]);
 
         if ($permission->name != $request->input('name')) {
@@ -104,23 +99,18 @@ class PermissionController extends Controller
         }
 
         $guard = $request->input('guard');
-        if ($guard == 'global') {
-            $guard = null;
+        if ($guard == '') {
+            $guard = '';
         } else {
             if (! in_array($guard, array_keys(config('auth.guards')))) {
                 return redirect()->back()->withErrors(['guard' => '无效的 guard']);
             }
         }
 
-        $update_field = [
+        $permission->update([
             'name' => $request->input('name'),
-        ];
-
-        if ($guard) {
-            $update_field['guard_name'] = $guard;
-        }
-
-        $permission->update($update_field);
+            'guard_name' => $guard,
+        ]);
 
         return redirect()->route('admin.permissions.index')->with('success', '权限编辑成功');
     }

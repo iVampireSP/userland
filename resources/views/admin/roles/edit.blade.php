@@ -8,7 +8,7 @@
                 <a href="{{route('admin.roles.index')}}">返回</a>
                 <a href="{{route('admin.roles.permissions', $role)}}">绑定权限</a>
 
-                <form action="{{ route('admin.permissions.update', $role) }}" method="post" class="mt-3">
+                <form action="{{ route('admin.roles.update', $role) }}" method="post" class="mt-3">
                     @csrf
                     @method('PATCH')
                     <div class="form-floating mb-3">
@@ -19,7 +19,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select" aria-label="作用域" name="guard">
-                            {{--                            <option @selected($role->guard_name == "global") value="global">全局</option>--}}
+                            <option @selected(old('guard') == "") value="">默认</option>
 
                             @foreach($guards as $g)
                                 <option @selected($role->guard_name == $g) value="{{$g}}">{{$g}}</option>

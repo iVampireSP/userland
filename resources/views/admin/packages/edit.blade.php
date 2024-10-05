@@ -7,7 +7,8 @@
                 <h2>编辑 {{ $package->name }}</h2>
                 <a href="{{route('admin.packages.index')}}">返回</a>
                 <a href="{{route('admin.packages.quotas.index', $package)}}">配额</a>
-                {{--                <a href="{{route('admin.packages.permissions', $package)}}">绑定权限</a>--}}
+                <a href="{{route('admin.packages.roles', $package)}}">角色</a>
+                <a href="{{route('admin.packages.permissions', $package)}}">权限</a>
 
                 <form action="{{ route('admin.packages.update', $package) }}" method="post" class="mt-3">
                     @csrf
@@ -72,7 +73,8 @@
                                 <label for="enable_year" class="form-check-label">按年付款</label>
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" name="enable_forever" id="enable_forever" class="form-check-input"
+                                <input type="checkbox" name="enable_forever" id="enable_forever"
+                                       class="form-check-input"
                                        value="1" {{ $package->enable_forever ? 'checked' : '' }}>
                                 <label for="enable_forever" class="form-check-label">永久有效</label>
                             </div>

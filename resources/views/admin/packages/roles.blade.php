@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', "套餐权限")
+@section('title', "套餐角色")
 
 @section('content')
-    <h2>套餐包含的权限</h2>
+    <h2>套餐包含的角色</h2>
     <p></p>
 
     <div class="mb-3">
         <a href="{{route('admin.packages.edit', $package)}}">返回</a>
-        <a href="{{route('admin.packages.roles', $package)}}">角色</a>
+        <a href="{{route('admin.packages.permissions', $package)}}">权限</a>
         <a href="{{route('admin.roles.index')}}">导航至角色</a>
         <a href="{{route('admin.permissions.index')}}">导航至权限</a>
     </div>
@@ -22,19 +22,19 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($permissions as $permission)
+        @foreach($roles as $role)
             <tr>
                 <td>
-                    {{ $permission->name }}
+                    {{ $role->name }}
                 </td>
                 <td>
-                    {{ $permission->guard_name }}
+                    {{ $role->guard_name }}
                 </td>
                 <td>
-                    <form action="{{ route('admin.packages.permissions.toggle', [$package, $permission]) }}"
+                    <form action="{{ route('admin.packages.roles.toggle', [$package, $role]) }}"
                           method="post">
                         @csrf
-                        @if ($package->permissions->contains($permission))
+                        @if ($package->roles->contains($role))
                             <button type="submit" class="btn btn-sm btn-danger">取消绑定</button>
                         @else
                             <button type="submit" class="btn btn-sm btn-primary">绑定</button>
@@ -46,6 +46,6 @@
         </tbody>
     </table>
 
-    {{ $permissions->links() }}
+    {{ $roles->links() }}
 
 @endsection

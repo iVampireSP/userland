@@ -36,7 +36,7 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'guard' => 'required|string|max:255',
+            'guard' => 'nullable|string|max:255',
         ]);
 
         $exists = Role::where('name', $request->input('name'))
@@ -46,23 +46,18 @@ class RoleController extends Controller
         }
 
         $guard = $request->input('guard');
-        if ($guard == 'global') {
-            $guard = null;
+        if ($guard == '') {
+            $guard = '';
         } else {
             if (! in_array($guard, array_keys(config('auth.guards')))) {
                 return redirect()->back()->withErrors(['guard' => '无效的 guard']);
             }
         }
 
-        $field = [
+        Role::create([
             'name' => $request->input('name'),
-        ];
-
-        if ($field) {
-            $field['guard_name'] = $guard;
-        }
-
-        Role::create($field);
+            'guard_name' => $guard,
+        ]);
 
         return redirect()->route('admin.roles.index')->with('success', '权限创建成功');
     }
@@ -92,7 +87,7 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'guard' => 'required|string|max:255',
+            'guard' => 'nullable|string|max:255',
         ]);
 
         if ($role->name != $request->input('name')) {
@@ -104,23 +99,18 @@ class RoleController extends Controller
         }
 
         $guard = $request->input('guard');
-        if ($guard == 'global') {
-            $guard = null;
+        if ($guard == '') {
+            $guard = '';
         } else {
             if (! in_array($guard, array_keys(config('auth.guards')))) {
                 return redirect()->back()->withErrors(['guard' => '无效的 guard']);
             }
         }
 
-        $update_field = [
+        $role->update([
             'name' => $request->input('name'),
-        ];
-
-        if ($guard) {
-            $update_field['guard_name'] = $guard;
-        }
-
-        $role->update($update_field);
+            'guard_name' => $guard,
+        ]);
 
         return redirect()->route('admin.roles.index')->with('success', '权限编辑成功');
     }

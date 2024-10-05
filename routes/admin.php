@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PackageCategoryController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PackagePermissionController;
 use App\Http\Controllers\Admin\PackageQuotaController;
 use App\Http\Controllers\Admin\PackageUpgradeController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -52,5 +53,11 @@ Route::resource('package_categories', PackageCategoryController::class);
 Route::resource('packages', PackageController::class);
 Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
 Route::resource('packages.upgrades', PackageUpgradeController::class);
+
+Route::get('/packages/{package}/roles', [PackagePermissionController::class, 'roles'])->name('packages.roles');
+Route::post('/packages/{package}/roles/{role}', [PackagePermissionController::class, 'toggleRole'])->name('packages.roles.toggle');
+Route::get('/packages/{package}/permissions', [PackagePermissionController::class, 'permissions'])->name('packages.permissions');
+Route::post('/packages/{package}/permissions/{permission}', [PackagePermissionController::class, 'togglePermission'])->name('packages.permissions.toggle');
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

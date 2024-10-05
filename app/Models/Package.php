@@ -40,6 +40,9 @@ class Package extends Model
         'max_active_count',
     ];
 
+    protected array $guard_name = ['web', 'api'];
+
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(PackageCategory::class, 'category_id');

@@ -17,7 +17,7 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select" aria-label="作用域" name="guard">
-{{--                            <option @selected(old('guard') == "global") value="global">全局</option>--}}
+                            <option @selected(old('guard') == "") value="">默认</option>
 
                             @foreach($guards as $g)
                                 <option @selected(old('guard') == $g) value="{{$g}}">{{$g}}</option>
