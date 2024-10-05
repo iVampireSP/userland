@@ -11,6 +11,12 @@
         <a href="{{route('admin.permissions.index')}}">导航至权限</a>
     </div>
 
+    @if ($role->guard_name)
+        <div class="alert alert-info">
+            当前作用域为：{{ $role->guard_name }}，你只能绑定当前作用域下的权限。
+        </div>
+    @endif
+
     <table class="table table-striped">
         <thead>
         <tr>
