@@ -18,6 +18,7 @@
             <th>描述</th>
             <th>单位</th>
             <th>最大值</th>
+            <th>重置规则</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -34,18 +35,37 @@
                     {{ $quota->max_amount }}
                 </td>
                 <td>
-                    <form action="{{ route('admin.packages.quotas.destroy', [$package, $quota]) }}"
+                   <span>
+                       @switch($quota->reset_rule)
+                           @case('none')
+                               不重置
+                               @break
+                           @case('day')
+                               每天
+                               @break
+                           @case('week')
+                               每周
+                               @break
+                           @case('month')
+                               每月
+                               @break
+                           @case('half_year')
+                               每半年
+                               @break
+                           @case('year')
+                               每年
+                               @break
+
+                       @endswitch
+                        </span>
+                </td>
+                <td>
+                    <form action="{{ route('admin.packages.quotas.destroy', [$package, $quota->quota]) }}"
                           method="post">
                         @csrf
-                        @method('PATCH')
+                        @method('DELETE')
 
-                        @if ($package->quotas->contains($quota))
-                            <button type="submit" class="btn btn-sm btn-danger">取消绑定</button>
-                        @else
-                            <input type="text" name="max_amount" class="form-control form-control-sm"
-                                   placeholder="最大值">
-                            <button type="submit" class="btn btn-sm btn-primary">绑定</button>
-                        @endif
+                        <button type="submit" class="btn btn-sm btn-danger">取消绑定</button>
                     </form>
                 </td>
             </tr>
@@ -77,6 +97,14 @@
                           method="post">
                         @csrf
                         @method('PATCH')
+                        <select class="form-select form-select-sm" aria-label="重置规则" name="reset_rule">
+                            <option @selected($quota->reset_rule == 'none') value="none">不重置</option>
+                            <option @selected($quota->reset_rule == 'day') value="day">每日重置</option>
+                            <option @selected($quota->reset_rule == 'week') value="week">每周重置</option>
+                            <option @selected($quota->reset_rule == 'month') value="month">每月重置</option>
+                            <option @selected($quota->reset_rule == 'half_year') value="half_year">每半年重置</option>
+                            <option @selected($quota->reset_rule == 'year') value="year">每年重置</option>
+                        </select>
 
                         <input type="text" name="max_amount" class="form-control form-control-sm" placeholder="最大值">
                         <button type="submit" class="btn btn-sm btn-primary">绑定</button>

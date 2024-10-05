@@ -12,6 +12,7 @@ class PackageQuota extends Model
         'quota_id',
         'package_id',
         'max_amount',
+        'reset_rule'
     ];
 
     public function quota(): BelongsTo

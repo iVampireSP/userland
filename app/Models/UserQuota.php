@@ -15,6 +15,7 @@ class UserQuota extends Model
         'enabled',
         'amount',
         'max_amount',
+        'last_reset_at',
     ];
 
     protected $casts = [

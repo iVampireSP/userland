@@ -30,12 +30,14 @@ class PackageQuotaController extends Controller
         } else {
             $request->validate([
                 'max_amount' => 'required|integer|min:1',
+                'reset_rule' => 'required|in:none,day,week,month,half_year,year'
             ]);
 
             $package->quotas()->create([
                 'quota_id' => $quota->id,
                 'package_id' => $package->id,
-                'max_amount' => $request->input('max_amount')
+                'max_amount' => $request->input('max_amount'),
+                'reset_rule' => $request->input('reset_rule')
             ]);
 
         }
@@ -46,6 +48,7 @@ class PackageQuotaController extends Controller
     public function destroy(Package $package, Quota $quota)
     {
         $package->quotas()->where('quota_id', $quota->id)->delete();
+
         return back();
     }
 
