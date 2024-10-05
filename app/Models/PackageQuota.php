@@ -2,24 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserQuota extends Model
+class PackageQuota extends Model
 {
     protected $fillable = [
-        'user_id',
         'quota_id',
         'package_id',
-        'is_exhausted',
-        'enabled',
-        'amount',
         'max_amount',
-    ];
-
-    protected $casts = [
-        'amount' => 'integer',
-        'max_amount' => 'integer',
     ];
 
     public function quota(): BelongsTo

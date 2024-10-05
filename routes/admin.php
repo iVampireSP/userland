@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PackageCategoryController;
+use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PackageQuotaController;
+use App\Http\Controllers\Admin\PackageUpgradeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\QuotaController;
@@ -44,5 +48,9 @@ Route::post('/roles/{role}/permissions/{permission}', [RoleController::class, 't
 
 Route::resource('permissions', PermissionController::class);
 Route::resource('quotas', QuotaController::class);
+Route::resource('package_categories', PackageCategoryController::class);
+Route::resource('packages', PackageController::class);
+Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
+Route::resource('packages.upgrades', PackageUpgradeController::class);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
