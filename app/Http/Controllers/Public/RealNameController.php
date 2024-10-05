@@ -4,13 +4,8 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\User\UserNotification;
-use App\Support\Auth\RealNameSupport;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
 
 class RealNameController extends Controller
 {

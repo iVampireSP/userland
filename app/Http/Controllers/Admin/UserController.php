@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use LucasDotVin\Soulbscription\Models\Plan;
 
 class UserController extends Controller
 {
@@ -144,5 +145,28 @@ class UserController extends Controller
         ]);
 
         return back()->with('success', '已更新用户状态。');
+    }
+
+    public function subscriptions(User $user): View
+    {
+        $user->load('subscription');
+        //        $user->subscription->load('plan');
+        //        $user->subscription->load('plan.features');
+
+        return view('admin.users.subscriptions', compact('user'));
+    }
+
+    public function addSubscription(User $user, Plan $plan): RedirectResponse
+    {
+        $user->subscribeTo($plan);
+
+        return back()->with('success', '已添加订阅。');
+    }
+
+    public function removeSubscription(User $user): RedirectResponse
+    {
+        $user->subscription()->delete();
+
+        return back()->with('success', '已删除订阅。');
     }
 }

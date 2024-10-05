@@ -69,7 +69,45 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger mt-3">删除</button>
                 </form>
+
+
+                <hr/>
+
+                <h3>功能</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>额度增量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($plan->features as $f)
+                        <tr>
+                            <td>
+                                {{ $f->name }}
+                            </td>
+
+                            <td>
+                                {{ $f->pivot->charges }}
+                            </td>
+
+                            <td>
+                                <form action="{{ route('admin.plans.toggleFeature', [$plan, $f]) }}"
+                                      method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger">取消绑定</button>
+                                </form>
+                            </td>
+
+
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
 @endsection

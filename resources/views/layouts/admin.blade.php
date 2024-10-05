@@ -48,7 +48,19 @@
                             <a class="nav-link" href="{{ route('admin.notifications.create') }}">通知</a>
                         </li>
 
-{{--                        dropdown --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                权限
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}">角色</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">权限</a></li>
+                            </ul>
+                        </li>
+
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">

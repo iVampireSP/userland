@@ -58,6 +58,8 @@ class PlanController extends Controller
      */
     public function edit(Plan $plan)
     {
+        $plan->load('features');
+
         return view('admin.plans.edit', compact('plan'));
     }
 
@@ -122,25 +124,45 @@ class PlanController extends Controller
         $plan->load('features');
         $features = Feature::all();
 
+        //        $plan->features->each(function ($feature) use ($features) {
+        //            $feature->charges = $feature->pivot->charges;
+        //        });
+
+        // update pivot
+        //        $plan->features()->syncWithoutDetaching([
+        //            $request->input('feature_id') => [
+        //                'charges' => $request->input('charges'),
+        //            ],
+        //        ]);
+
         return view('admin.plans.features', compact('plan', 'features'));
     }
 
-    public function toggleFeature(Plan $plan, Feature $feature)
+    public function toggleFeature(Request $request, Plan $plan, Feature $feature)
     {
         // bind if not exists
-//        $plan->features()->attach($feature);
+        //        $plan->features()->attach($feature);
 
-        $attached = false;
+        //        $attached = false;
 
         $exists = $plan->features()->where('feature_id', $feature->id)->exists();
-        if (!$exists) {
-            $plan->features()->attach($feature);
-            $attached = true;
+        if (! $exists) {
+            $charges = $request->input('charges');
+            $extra = [];
+
+            if ($charges) {
+                $extra = [
+                    'charges' => $charges,
+                ];
+            }
+
+            $plan->features()->attach($feature, $extra);
+            //            $attached = true;
         } else {
             $plan->features()->detach($feature);
         }
 
-//        return response()->json(['attached' => $attached]);
+        //        return response()->json(['attached' => $attached]);
         return redirect()->back();
     }
 }

@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +36,11 @@ Route::resource('plans', PlanController::class);
 Route::post('/plans/{plan}/restore', [PlanController::class, 'restore'])->name('plans.restore');
 Route::get('/plans/{plan}/features', [PlanController::class, 'features'])->name('plans.features');
 Route::post('/plans/{plan}/features/{feature}', [PlanController::class, 'toggleFeature'])->name('plans.toggleFeature');
+
+Route::resource('roles', RoleController::class);
+Route::get('/roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
+Route::post('/roles/{role}/permissions/{permission}', [RoleController::class, 'togglePermission'])->name('roles.permissions.toggle');
+
+Route::resource('permissions', PermissionController::class);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

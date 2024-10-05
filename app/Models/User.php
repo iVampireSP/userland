@@ -18,10 +18,17 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use LucasDotVin\Soulbscription\Models\Concerns\HasSubscriptions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasSubscriptions, Notifiable, SoftDeletes, UserClaimsTrait;
+    use HasApiTokens,
+        HasFactory,
+        HasRoles,
+        HasSubscriptions,
+        Notifiable,
+        SoftDeletes,
+        UserClaimsTrait;
 
     public array $publics = [
         'id',
@@ -69,6 +76,8 @@ class User extends Authenticatable
         'banned_at' => 'datetime',
         'birthday_at' => 'date:Y-m-d',
     ];
+
+    protected array $guard_name = ['web', 'api'];
 
     public function isAdult(): bool
     {
