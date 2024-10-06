@@ -51,9 +51,14 @@
                         <a href="{{ route('admin.users.edit', $user) }}" title="显示和编辑 {{ $user->name }} 的资料">
                             {{ $user->name }}
                         </a>
+                        @if($user->banned_at)
+                            <br/>
+                            <small class="text-danger">全局封禁</small>
+                        @endif
                     </td>
                     <td>
                         {{ $user->email }}
+
                         @if(!$user->isEmailVerified())
                             <small class="text-muted">没有验证邮箱</small>
                         @endif
