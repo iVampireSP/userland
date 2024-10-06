@@ -32,7 +32,11 @@
                     {{ $quota->quota->unit }}
                 </td>
                 <td>
-                    {{ $quota->max_amount }}
+                    @if ($quota->max_amount == 0)
+                        不限制
+                    @else
+                        {{ $quota->max_amount }}
+                    @endif
                 </td>
                 <td>
                    <span>
@@ -106,7 +110,7 @@
                             <option @selected($quota->reset_rule == 'year') value="year">每年重置</option>
                         </select>
 
-                        <input type="text" name="max_amount" class="form-control form-control-sm" placeholder="最大值">
+                        <input type="text" name="max_amount" class="form-control form-control-sm" placeholder="最大值（0 为不限制）">
                         <button type="submit" class="btn btn-sm btn-primary">绑定</button>
                     </form>
                 </td>
