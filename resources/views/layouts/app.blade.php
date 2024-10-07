@@ -60,6 +60,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('bans.index') }}">封禁列表</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('roles.index') }}">角色</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('permissions.index') }}">权限</a>
+                        </li>
                     @endauth
                 </ul>
 

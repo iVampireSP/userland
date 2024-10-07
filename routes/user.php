@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\FaceController;
+use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PhoneController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
@@ -83,9 +84,10 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::delete('wechat', [WeChatController::class, 'unbind'])->name('wechat.unbind');
         /* End 微信绑定 */
 
-        /* Start 套餐包 */
-
-        /* End 套餐包 */
+        /* Start 权限 */
+        Route::get('permissions', [PermissionController::class, 'permissions'])->name('permissions.index');
+        Route::get('roles', [PermissionController::class, 'roles'])->name('roles.index');
+        /* End 权限 */
 
         // Route::get('auth_request/{token}', [AccountController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AccountController::class, 'accept_authrequest'])->name('auth_request.accept');
