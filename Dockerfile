@@ -1,4 +1,4 @@
-# Build  docker build -t leafdev.top/ecosystem/oauth:v0-1-9-fix-13 . && docker push leafdev.top/ecosystem/oauth:v0-1-9-fix-13
+# Build  docker build -t leafdev.top/ecosystem/oauth:v0.2.0 . && docker push leafdev.top/ecosystem/oauth:v0.2.0
 
 FROM leafdev.top/leaf/docker-php-image:8.3
 
