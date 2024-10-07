@@ -32,7 +32,6 @@ trait UserClaimsTrait
             $data['phone'] = $this->phone;
         }
 
-
         // roles
         $roles = $this->roles()->get()->pluck('name')->toArray();
         $permissions = $this->permissions()->get()->pluck('name')->toArray();

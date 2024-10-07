@@ -22,6 +22,4 @@ class PermissionController extends Controller
 
         return view('user.permissions', compact('permissions', 'user'));
     }
-
-
 }

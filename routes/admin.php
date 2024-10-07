@@ -36,8 +36,6 @@ Route::post('/users/{user}/roles/{role}', [UserPermissionController::class, 'tog
 Route::get('/users/{user}/permissions', [UserPermissionController::class, 'permissions'])->name('users.permissions');
 Route::post('/users/{user}/permissions/{permission}', [UserPermissionController::class, 'togglePermission'])->name('users.permissions.toggle');
 
-
-
 Route::resource('clients', ClientController::class);
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
