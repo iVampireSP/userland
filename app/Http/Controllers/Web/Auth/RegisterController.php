@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Auth;
 
 use App\Helpers\Auth\RegistersUsers;
 use App\Http\Controllers\Controller;
+use App\Models\EmailBlacklist;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,24 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    // 获取邮箱的域名
+                    $domain = substr(strrchr($value, "@"), 1);
+
+                    // 检查域名是否在黑名单中
+                    $isBlacklisted = EmailBlacklist::where('domain', $domain)->exists();
+
+                    if ($isBlacklisted) {
+                        $fail('此邮箱域名已被禁止');
+                    }
+                },
+            ],
             'password' => ['required', 'string', 'min:8'],
         ]);
     }

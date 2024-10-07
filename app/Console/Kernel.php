@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
         // 解除到时间的应用封禁
         $schedule->job(new UnbanUserJob)->onOneServer()->hourly()->name('解除到时间的应用封禁');
 
+        // 更新邮箱域名黑名单
+        $schedule->command('email:blacklist-seed')->onOneServer()->daily()->name('更新邮箱域名黑名单');
     }
 
     /**
