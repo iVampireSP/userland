@@ -14,9 +14,7 @@ Route::get('/.well-known/jwks', JwksController::class)
 
 Route::get('/', [AccountController::class, 'index'])->middleware(['auth:web', 'banned'])->name('index');
 
-
 Route::get('scopes', [TokenController::class, 'display_scopes'])->name('tokens.scopes');
 
 Route::view('tos', 'tos')->name('tos');
 Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
-

@@ -25,8 +25,8 @@ return new class extends Migration
 
             $table->string('currency')->default('CNY');
 
-//            $table->enum('period', ['forever', 'day', 'week', 'month', 'year'])->index()->default('month');
-//            $table->integer('period_count')->default(1);
+            //            $table->enum('period', ['forever', 'day', 'week', 'month', 'year'])->index()->default('month');
+            //            $table->integer('period_count')->default(1);
 
             // enabled periods
             $table->boolean('enable_day')->default(false);
@@ -42,9 +42,7 @@ return new class extends Migration
             $table->decimal('price_year')->default(0);
             $table->decimal('price_forever')->default(0);
 
-
             $table->boolean('hidden')->index()->default(false);
-
 
             // 下架
             $table->boolean('sold_out')->default(false);

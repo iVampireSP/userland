@@ -33,12 +33,12 @@ class PackageCategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:package_categories,slug'
+            'slug' => 'required|string|max:255|unique:package_categories,slug',
         ]);
 
         PackageCategory::create([
             'name' => $request->name,
-            'slug' => $request->slug
+            'slug' => $request->slug,
         ]);
 
         return redirect()->route('admin.package_categories.index');
@@ -67,12 +67,12 @@ class PackageCategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:package_categories,slug,'.$packageCategory->id
+            'slug' => 'required|string|max:255|unique:package_categories,slug,'.$packageCategory->id,
         ]);
 
         $packageCategory->update([
             'name' => $request->input('name'),
-            'slug' => $request->input('slug')
+            'slug' => $request->input('slug'),
         ]);
 
         return redirect()->route('admin.package_categories.index');
@@ -89,6 +89,7 @@ class PackageCategoryController extends Controller
         }
 
         $packageCategory->delete();
+
         return redirect()->route('admin.package_categories.index');
     }
 }

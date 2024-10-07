@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +12,7 @@ class UserPackage extends Model
         'user_id',
         'package_id',
         'status',
-        'expired_at'
+        'expired_at',
     ];
 
     public function package(): BelongsTo

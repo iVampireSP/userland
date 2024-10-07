@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,7 +11,7 @@ class PackageQuota extends Model
         'quota_id',
         'package_id',
         'max_amount',
-        'reset_rule'
+        'reset_rule',
     ];
 
     public function quota(): BelongsTo

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
-use App\Models\PackageQuota;
 use App\Models\Quota;
 use Illuminate\Http\Request;
 
@@ -17,6 +16,7 @@ class PackageQuotaController extends Controller
     {
         $package->load('quotas.quota');
         $quotas = Quota::paginate(100);
+
         return view('admin.packages.quotas', compact('package', 'quotas'));
     }
 
@@ -26,18 +26,18 @@ class PackageQuotaController extends Controller
     public function update(Request $request, Package $package, Quota $quota)
     {
         if ($package->quotas()->where('quota_id', $quota->id)->exists()) {
-            return back()->withErrors("此计量单位已经绑定过了。");
+            return back()->withErrors('此计量单位已经绑定过了。');
         } else {
             $request->validate([
                 'max_amount' => 'required|integer|min:0',
-                'reset_rule' => 'required|in:none,day,week,month,half_year,year'
+                'reset_rule' => 'required|in:none,day,week,month,half_year,year',
             ]);
 
             $package->quotas()->create([
                 'quota_id' => $quota->id,
                 'package_id' => $package->id,
                 'max_amount' => $request->input('max_amount', 0),
-                'reset_rule' => $request->input('reset_rule')
+                'reset_rule' => $request->input('reset_rule'),
             ]);
 
         }
@@ -51,5 +51,4 @@ class PackageQuotaController extends Controller
 
         return back();
     }
-
 }

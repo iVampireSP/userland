@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 use App\Models\PackageCategory;
-use App\Models\Quota;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
@@ -54,7 +53,6 @@ class PackageController extends Controller
             'max_active_count' => 0,
         ]);
 
-
         return redirect()->route('admin.packages.index');
     }
 
@@ -85,25 +83,24 @@ class PackageController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'content' => 'required|string|max:255',
-            'name' => 'required|string|max:255|unique:packages,name,' . $package->id,
+            'name' => 'required|string|max:255|unique:packages,name,'.$package->id,
             'category_id' => 'required|integer|exists:package_categories,id',
             'max_active_count' => 'nullable|integer',
 
-//            'enabled_day' => 'required|boolean',
-//            'enabled_week' => 'required|boolean',
-//            'enabled_month' => 'required|boolean',
-//            'enabled_year' => 'required|boolean',
-//
-//            'price_day' => 'nullable|numeric',
-//            'price_week' => 'nullable|numeric',
-//            'price_month' => 'nullable|numeric',
-//            'price_year' => 'nullable|numeric',
-//            'price_forever' => 'nullable|numeric',
+            //            'enabled_day' => 'required|boolean',
+            //            'enabled_week' => 'required|boolean',
+            //            'enabled_month' => 'required|boolean',
+            //            'enabled_year' => 'required|boolean',
+            //
+            //            'price_day' => 'nullable|numeric',
+            //            'price_week' => 'nullable|numeric',
+            //            'price_month' => 'nullable|numeric',
+            //            'price_year' => 'nullable|numeric',
+            //            'price_forever' => 'nullable|numeric',
 
         ]);
 
         // hidden is checkbox
-
 
         $package->update([
             'title' => $request->input('title'),
@@ -141,7 +138,6 @@ class PackageController extends Controller
         }
     }
 
-//
-
+    //
 
 }

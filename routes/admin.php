@@ -59,5 +59,4 @@ Route::post('/packages/{package}/roles/{role}', [PackagePermissionController::cl
 Route::get('/packages/{package}/permissions', [PackagePermissionController::class, 'permissions'])->name('packages.permissions');
 Route::post('/packages/{package}/permissions/{permission}', [PackagePermissionController::class, 'togglePermission'])->name('packages.permissions.toggle');
 
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

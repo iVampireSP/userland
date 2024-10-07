@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\EmailBlacklist;
-use DB;
+use Illuminate\Console\Command;
 
 class SeedEmailBlacklist extends Command
 {
@@ -24,8 +23,6 @@ class SeedEmailBlacklist extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle(): int
     {

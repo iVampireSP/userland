@@ -37,7 +37,6 @@ return new class extends Migration
             // 需要升级到的 package_id
             $table->foreignId('upgrade_to_package_id')->nullable()->constrained('packages')->nullOnDelete();
 
-
             // 过期时间
             $table->timestamp('expired_at')->nullable()->index();
 

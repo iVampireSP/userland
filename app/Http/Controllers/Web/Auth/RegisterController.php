@@ -36,7 +36,7 @@ class RegisterController extends Controller
                 'unique:users',
                 function ($attribute, $value, $fail) {
                     // 获取邮箱的域名
-                    $domain = substr(strrchr($value, "@"), 1);
+                    $domain = substr(strrchr($value, '@'), 1);
 
                     // 检查域名是否在黑名单中
                     $isBlacklisted = EmailBlacklist::where('domain', $domain)->exists();

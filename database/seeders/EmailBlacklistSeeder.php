@@ -32,7 +32,7 @@ class EmailBlacklistSeeder extends Seeder
                 // Clean up any extra spaces or empty lines
                 $domain = trim($domain);
 
-                if (!empty($domain) && !EmailBlacklist::where('domain', $domain)->exists()) {
+                if (! empty($domain) && ! EmailBlacklist::where('domain', $domain)->exists()) {
                     // Insert the domain into the EmailBlacklist table if it's not already present
                     EmailBlacklist::create(['domain' => $domain]);
                 }
@@ -50,7 +50,7 @@ class EmailBlacklistSeeder extends Seeder
             // Clean the domain and check if it already exists in the database
             $domain = trim($domain);
 
-            if (!empty($domain) && !EmailBlacklist::where('domain', $domain)->exists()) {
+            if (! empty($domain) && ! EmailBlacklist::where('domain', $domain)->exists()) {
                 // Insert the domain if it's not already present in the database
                 EmailBlacklist::create(['domain' => $domain]);
             }

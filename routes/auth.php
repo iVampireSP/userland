@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Web\Auth\ForgotPasswordController;
