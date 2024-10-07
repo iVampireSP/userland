@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\QuotaController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserPermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::withoutMiddleware(['auth:web', 'auth:admin',  'admin.validateReferer'])->group(function () {
@@ -30,6 +31,12 @@ Route::resource('admins', AdminController::class)->except('show');
 Route::resource('users', UserController::class);
 
 Route::resource('user/{user}/bans', BanController::class);
+Route::get('/users/{user}/roles', [UserPermissionController::class, 'roles'])->name('users.roles');
+Route::post('/users/{user}/roles/{role}', [UserPermissionController::class, 'toggleRole'])->name('users.roles.toggle');
+Route::get('/users/{user}/permissions', [UserPermissionController::class, 'permissions'])->name('users.permissions');
+Route::post('/users/{user}/permissions/{permission}', [UserPermissionController::class, 'togglePermission'])->name('users.permissions.toggle');
+
+
 
 Route::resource('clients', ClientController::class);
 

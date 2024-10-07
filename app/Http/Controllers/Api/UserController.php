@@ -36,6 +36,7 @@ class UserController extends Controller
 
         $data = $user->getClaims($scopes);
 
+
         return $this->success($data);
     }
 

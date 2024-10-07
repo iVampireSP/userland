@@ -118,11 +118,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy($role)
     {
-        $role->delete();
+        Role::whereId($role)->delete();
 
-        return redirect()->route('admin.roles.index')->with('success', '权限删除成功');
+        return redirect()->route('admin.roles.index')->with('success', '角色删除成功');
     }
 
     public function permissions(Role $role)
