@@ -1,11 +1,7 @@
-/*!
- * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)
- * Copyright 2011-2023 The Bootstrap Authors
- * Licensed under the Creative Commons Attribution 3.0 Unported License.
- */
-
 (() => {
     'use strict'
+
+    let switched = false;
 
     const storedTheme = localStorage.getItem('theme')
 
@@ -18,11 +14,22 @@
     }
 
     const setTheme = function (theme) {
-        if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark')
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', theme)
+        if (switched && document.startViewTransition) {
+            document.startViewTransition(() => {
+                document.documentElement.setAttribute('data-bs-theme', theme)
+            });
         }
+
+        if (!switched) {
+            if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-bs-theme', theme)
+            }
+        }
+
+        switched = true
+
     }
 
     setTheme(getPreferredTheme())
@@ -44,4 +51,13 @@
                 })
             })
     })
+
+    window.toggleDarkMode = () => {
+        // 如果 data-bs-theme 是 dark，则改成 light，否则改成 dark
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    }
+
 })()
+

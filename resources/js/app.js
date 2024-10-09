@@ -3,3 +3,4 @@ import './faceapi';
 import './csrf-token';
 import './recaptcha';
 // import '../sass/bootstrap-dark.css';
+import '../sass/color.scss'
