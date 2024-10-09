@@ -48,3 +48,16 @@ if (! is_dir($storage.'/framework')) {
 if (! is_dir($storage.'/logs')) {
     mkdir($storage.'/logs');
 }
+
+
+// 有无 vendor 目录
+$vendor = '/app/vendor';
+
+if (! is_dir($vendor)) {
+    mkdir($vendor);
+}
+// 有无 /app/bootstrap/cache
+$bootstrap = '/app/bootstrap/cache';
+if (! is_dir($bootstrap)) {
+    mkdir($bootstrap);
+}
