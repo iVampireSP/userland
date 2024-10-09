@@ -5,3 +5,4 @@
 /bootstrap/cache
 /tests
 .env
+/manifest.yaml
