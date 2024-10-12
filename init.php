@@ -49,7 +49,6 @@ if (! is_dir($storage.'/logs')) {
     mkdir($storage.'/logs');
 }
 
-
 // 有无 vendor 目录
 $vendor = '/app/vendor';
 

@@ -127,33 +127,37 @@
 
                 <hr/>
 
-                @if($client->tenant_id)
-                    <div class="mt-3">
-                        <h3>禁用租户</h3>
-                        <p>禁用租户后，不会影响现有的订阅。</p>
-                    </div>
-                    <form class="d-inline" method="post" action="{{ route('admin.clients.tenant.disable', $client->id) }}"
-                          onsubmit="return confirm('确定禁用租户吗?')">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit" class="btn btn-danger mt-3">
-                            禁用租户
-                        </button>
+                @if ($client->secret)
+                    @if($client->tenant_id)
+                        <div class="mt-3">
+                            <h3>禁用租户</h3>
+                            <p>禁用租户后，不会影响现有的订阅。</p>
+                        </div>
+                        <form class="d-inline" method="post"
+                              action="{{ route('admin.clients.tenant.disable', $client->id) }}"
+                              onsubmit="return confirm('确定禁用租户吗?')">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-danger mt-3">
+                                禁用租户
+                            </button>
 
-                    </form>
-                @else
-                    <div class="mt-3">
-                        <h3>启用租户</h3>
-                        <p>为该客户端启用订阅和计费功能</p>
-                    </div>
-                    <form class="d-inline" method="post" action="{{ route('admin.clients.tenant.enable', $client->id) }}"
-                          onsubmit="return confirm('确定启用?')">
-                        @csrf
-                        <button type="submit" class="btn btn-primary mt-3">
-                            启用租户
-                        </button>
+                        </form>
+                    @else
+                        <div class="mt-3">
+                            <h3>启用租户</h3>
+                            <p>为该客户端启用订阅和计费功能</p>
+                        </div>
+                        <form class="d-inline" method="post"
+                              action="{{ route('admin.clients.tenant.enable', $client->id) }}"
+                              onsubmit="return confirm('确定启用?')">
+                            @csrf
+                            <button type="submit" class="btn btn-primary mt-3">
+                                启用租户
+                            </button>
 
-                    </form>
+                        </form>
+                    @endif
                 @endif
 
                 <div class="mt-3">

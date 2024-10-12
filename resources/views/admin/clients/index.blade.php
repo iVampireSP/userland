@@ -48,7 +48,13 @@
                 </td>
                 <td>
                     @if ($client->user_id)
-                        <a href="{{ route('admin.users.edit', $client->user_id) }}">{{ $client->user->name }}</a>
+                        @if ($client->user)
+                            <a href="{{ route('admin.users.edit', $client->user_id) }}">
+                                {{ $client->user->name }}
+                            </a>
+                        @else
+                            <span class="text-danger">用户不存在</span>
+                        @endif
                     @endif
                 </td>
                 <td>

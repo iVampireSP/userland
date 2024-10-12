@@ -199,6 +199,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\WeChatProvider::class,
         App\Providers\JwkProvider::class,
+        App\Providers\KillBillProvider::class,
     ],
 
     /*

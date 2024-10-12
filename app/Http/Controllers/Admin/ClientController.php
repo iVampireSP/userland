@@ -40,7 +40,7 @@ class ClientController extends Controller
         $clients = new ClientRepository;
 
         $client = $clients->create(
-            userId: $request->user()->getAuthIdentifier(),
+            userId: null,
             name: $request->input('name'),
             redirect: $request->input('redirect'),
             personalAccess: $request->boolean('personal_access_client'),
