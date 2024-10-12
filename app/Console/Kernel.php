@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\CancelOrderJob;
+use App\Jobs\CancelUserPackageJob;
 use App\Jobs\UnbanUserJob;
 use App\Jobs\User\DeleteStatus;
 use App\Jobs\User\DeleteUnverifiedUserJob;
@@ -29,6 +31,13 @@ class Kernel extends ConsoleKernel
 
         // 更新邮箱域名黑名单
         $schedule->command('email:blacklist-seed')->onOneServer()->daily()->name('更新邮箱域名黑名单');
+
+        // 关闭超时订单
+        $schedule->job(new CancelOrderJob)->hourly()->onOneServer()->name('关闭超时订单');
+
+        // 取消到期的套餐包
+        $schedule->job(new CancelUserPackageJob)->hourly()->onOneServer()->name('取消到期的套餐包');
+
     }
 
     /**

@@ -34,7 +34,7 @@ trait UserClaimsTrait
 
         // roles
         $roles = $this->roles()->get()->pluck('name')->toArray();
-        $permissions = $this->permissions()->get()->pluck('name')->toArray();
+        $permissions = $this->getAllPermissions()->pluck('name')->toArray();
 
         $data['roles'] = $roles;
         $data['permissions'] = $permissions;

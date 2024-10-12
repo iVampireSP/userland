@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -25,8 +24,7 @@ class SetupNewPackageJob implements ShouldQueue
      */
     public function __construct(
         protected int $order_id,
-    )
-    {
+    ) {
         //
     }
 
@@ -40,7 +38,7 @@ class SetupNewPackageJob implements ShouldQueue
         $this->package = Package::find($order->package_id);
 
         // must be not null
-        if (!$order || !$user) {
+        if (! $order || ! $user) {
             return;
         }
 
@@ -52,9 +50,8 @@ class SetupNewPackageJob implements ShouldQueue
 
         echo $days_to_add;
 
-
         // 如果用户没有开通这个 package，则添加
-        if (!$user_package) {
+        if (! $user_package) {
 
             $fields = [
                 'package_id' => $this->package->id,
@@ -66,6 +63,7 @@ class SetupNewPackageJob implements ShouldQueue
 
             $this->user->packages()->create($fields);
 
+            GrantPackagePermissionsToUserJob::dispatch($this->user->id, $this->package->id);
         }
 
         // 检测是否是 active
@@ -86,6 +84,8 @@ class SetupNewPackageJob implements ShouldQueue
             if ($days_to_add) {
                 $fields['expired_at'] = now()->addDays($days_to_add);
             }
+
+            GrantPackagePermissionsToUserJob::dispatch($this->user->id, $this->package->id);
 
             $user_package->update($fields);
         }

@@ -24,8 +24,8 @@
                 <td>
                     @if ($up->status == 'active')
                         激活
-                    @elseif ($up->status == 'expired')
-                        已过期
+                    @elseif ($up->status == 'cancelled')
+                        已取消
                     @endif
                     ，到期时间：{{ $up->expired_at }}
 

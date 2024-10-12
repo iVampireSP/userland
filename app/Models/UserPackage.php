@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\RevokeUserPackagePermissionsJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -37,5 +38,13 @@ class UserPackage extends Model
     public function quotas(): HasMany
     {
         return $this->hasMany(UserQuota::class);
+    }
+
+    public function cancel(): void
+    {
+        $this->update(['status' => 'cancelled']);
+
+        dispatch(new RevokeUserPackagePermissionsJob($this->user_id, $this->package_id));
+
     }
 }
