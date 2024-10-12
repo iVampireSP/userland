@@ -37,6 +37,8 @@ Route::get('/users/{user}/permissions', [UserPermissionController::class, 'permi
 Route::post('/users/{user}/permissions/{permission}', [UserPermissionController::class, 'togglePermission'])->name('users.permissions.toggle');
 
 Route::resource('clients', ClientController::class);
+Route::post('clients/{client}/tenant', [ClientController::class, 'enableTenant'])->name('clients.tenant.enable');
+Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTenant'])->name('clients.tenant.disable');
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
 

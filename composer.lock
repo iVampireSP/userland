@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8539566a5d8db1aa03a3d0ab71d6d0a4",
+    "content-hash": "5cf6dced8eaf1f62dd6fbd937c866f72",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1615,6 +1615,65 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "killbill/killbill-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/killbill/killbill-client-php.git",
+                "reference": "55572073ac8f7b5bba7e4d0bfa97222a27a13b9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/killbill/killbill-client-php/zipball/55572073ac8f7b5bba7e4d0bfa97222a27a13b9e",
+                "reference": "55572073ac8f7b5bba7e4d0bfa97222a27a13b9e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^7.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "escapestudios/symfony2-coding-standard": "^3.0",
+                "ext-dom": "*",
+                "friendsofphp/php-cs-fixer": "^2.15 || ^3.0",
+                "phpunit/phpunit": "^9.4",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Killbill\\Client\\": "src/",
+                    "Killbill\\Client\\Swagger\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Official PHP client to the Killbill HTTP API",
+            "keywords": [
+                "api",
+                "killbill",
+                "php",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/killbill/killbill-client-php/issues",
+                "source": "https://github.com/killbill/killbill-client-php/tree/master"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/killbill",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-11T10:34:41+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -13321,7 +13380,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -96,9 +96,25 @@ class AppServiceProvider extends ServiceProvider
             'extra' => $user->email,
             'avatar' => $user->avatar(),
         ]);
-        Gate::forUser(auth('admin')->user())->define('viewPulse', function (Admin $admin) {
-            return true;
-        });
+
+//        Gate::define('viewPulse', function (User $user) {
+//            // if admin guard is loggined
+//            $admin = auth('admin')->user();
+//            return $admin != null;
+//        });
+
+//        Gate::forUser(auth('admin'))->define('viewPulse', function (Admin $admin) {
+//            dd($admin);
+//            return true;
+//        });
+
+        // 只要登录了就行
+//        Gate::forUser(auth()->user());
+//        Gate::forUser(auth('admin')->user());
+
+//        Gate::forUser(auth('admin')->user())->define('viewPulse', function (Admin $admin) {
+//            return true;
+//        });
     }
 
     private function forceHttps(): void
