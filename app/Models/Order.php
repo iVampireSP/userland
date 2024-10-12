@@ -90,32 +90,32 @@ class Order extends Model
 
     }
 
-//    public function calculateExpiredAt(?Carbon $startFrom, $quantity = 1): ?float
-//    {
-//        // 如果 forever，则返回 null
-//        if ($this->billing_cycle === 'forever') {
-//            return null;
-//        }
-//
-//        // 根据计费周期计算天数
-//        $days = match ($this->billing_cycle) {
-//            'day' => $quantity,
-//            'week' => $quantity * 7,
-//            'month' => $quantity * 30,
-//            'year' => $quantity * 365,
-//            default => 365,
-//        };
-//
-//        if (! $startFrom) {
-//            return $days;
-//        }
-//
-//        // 计算新的到期时间
-//        $newExpiryDate = $startFrom->copy()->addDays($days);
-//
-//        // 计算相隔的天数
-//        return abs($newExpiryDate->diffInDays($startFrom));
-//    }
+    //    public function calculateExpiredAt(?Carbon $startFrom, $quantity = 1): ?float
+    //    {
+    //        // 如果 forever，则返回 null
+    //        if ($this->billing_cycle === 'forever') {
+    //            return null;
+    //        }
+    //
+    //        // 根据计费周期计算天数
+    //        $days = match ($this->billing_cycle) {
+    //            'day' => $quantity,
+    //            'week' => $quantity * 7,
+    //            'month' => $quantity * 30,
+    //            'year' => $quantity * 365,
+    //            default => 365,
+    //        };
+    //
+    //        if (! $startFrom) {
+    //            return $days;
+    //        }
+    //
+    //        // 计算新的到期时间
+    //        $newExpiryDate = $startFrom->copy()->addDays($days);
+    //
+    //        // 计算相隔的天数
+    //        return abs($newExpiryDate->diffInDays($startFrom));
+    //    }
 
     public function cancel(): bool
     {

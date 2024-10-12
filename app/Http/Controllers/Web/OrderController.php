@@ -83,14 +83,14 @@ class OrderController extends Controller
             }
 
             // 检测是否启用相应的计费周期
-            $billing_cycle_enabled = $package->{'enable_' . $request->input('billing_cycle')};
-            if (!$billing_cycle_enabled) {
+            $billing_cycle_enabled = $package->{'enable_'.$request->input('billing_cycle')};
+            if (! $billing_cycle_enabled) {
                 return back()->withErrors(['billing_cycle' => '该套餐未启用该计费周期']);
             }
 
             // 检测价格是否存在
-            $price = $package->{'price_' . $request->input('billing_cycle')};
-            if (!$price) {
+            $price = $package->{'price_'.$request->input('billing_cycle')};
+            if (! $price) {
                 return back()->withErrors(['price' => '价格不存在']);
             }
 

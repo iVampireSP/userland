@@ -49,8 +49,7 @@ class PackageController extends Controller
         if ($userPackage->user_id !== $request->user()->id) {
             abort(403);
         }
+
         return view('packages.renew', compact('userPackage'));
     }
-
-
 }
