@@ -39,11 +39,6 @@
                         </select>
                     </div>
 
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" name="enable_quota" id="enable_quota"  class="form-check-input" @checked(old('enable_quota', true)) >
-                        <label for="enable_quota" class="form-check-label">启用配额</label>
-                    </div>
-
                     <button type="submit" class="btn btn-primary mt-3">新建</button>
                 </form>
 

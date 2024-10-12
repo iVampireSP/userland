@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <h2>编辑 {{ $package->name }}</h2>
                 <a href="{{route('admin.packages.index')}}">返回</a>
-                <a href="{{route('admin.packages.quotas.index', $package)}}">配额</a>
                 <a href="{{route('admin.packages.roles', $package)}}">角色</a>
                 <a href="{{route('admin.packages.permissions', $package)}}">权限</a>
 

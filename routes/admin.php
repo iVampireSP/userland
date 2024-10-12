@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
-use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PackageCategoryController;
 use App\Http\Controllers\Admin\PackageController;
@@ -12,9 +11,9 @@ use App\Http\Controllers\Admin\PackagePermissionController;
 use App\Http\Controllers\Admin\PackageQuotaController;
 use App\Http\Controllers\Admin\PackageUpgradeController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\QuotaController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UnitPriceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserPermissionController;
 use Illuminate\Support\Facades\Route;
@@ -42,23 +41,16 @@ Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTena
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
 
-Route::resource('features', FeatureController::class);
-Route::post('/features/{feature}/restore', [FeatureController::class, 'restore'])->name('features.restore');
-
-Route::resource('plans', PlanController::class);
-Route::post('/plans/{plan}/restore', [PlanController::class, 'restore'])->name('plans.restore');
-Route::get('/plans/{plan}/features', [PlanController::class, 'features'])->name('plans.features');
-Route::post('/plans/{plan}/features/{feature}', [PlanController::class, 'toggleFeature'])->name('plans.toggleFeature');
-
 Route::resource('roles', RoleController::class);
 Route::get('/roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
 Route::post('/roles/{role}/permissions/{permission}', [RoleController::class, 'togglePermission'])->name('roles.permissions.toggle');
 
 Route::resource('permissions', PermissionController::class);
-Route::resource('quotas', QuotaController::class);
+//Route::resource('quotas', QuotaController::class);
+Route::resource('unit_prices', UnitPriceController::class);
 Route::resource('package_categories', PackageCategoryController::class);
 Route::resource('packages', PackageController::class);
-Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
+//Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
 Route::resource('packages.upgrades', PackageUpgradeController::class);
 
 Route::get('/packages/{package}/roles', [PackagePermissionController::class, 'roles'])->name('packages.roles');

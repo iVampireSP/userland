@@ -50,7 +50,6 @@ class PackageController extends Controller
             'category_id' => $request->input('category_id'),
             'enable_quota' => $request->has('enable_quota'),
             'hidden' => true,
-            'max_active_count' => 0,
         ]);
 
         return redirect()->route('admin.packages.index');
@@ -85,19 +84,6 @@ class PackageController extends Controller
             'content' => 'required|string|max:255',
             'name' => 'required|string|max:255|unique:packages,name,'.$package->id,
             'category_id' => 'required|integer|exists:package_categories,id',
-            'max_active_count' => 'nullable|integer',
-
-            //            'enabled_day' => 'required|boolean',
-            //            'enabled_week' => 'required|boolean',
-            //            'enabled_month' => 'required|boolean',
-            //            'enabled_year' => 'required|boolean',
-            //
-            //            'price_day' => 'nullable|numeric',
-            //            'price_week' => 'nullable|numeric',
-            //            'price_month' => 'nullable|numeric',
-            //            'price_year' => 'nullable|numeric',
-            //            'price_forever' => 'nullable|numeric',
-
         ]);
 
         // hidden is checkbox
@@ -113,7 +99,6 @@ class PackageController extends Controller
             'enable_month' => $request->has('enable_month'),
             'enable_year' => $request->has('enable_year'),
             'enable_forever' => $request->has('enable_forever'),
-            'enable_quota' => $request->has('enable_quota'),
 
             'price_day' => $request->input('price_day', 0),
             'price_week' => $request->input('price_week', 0),
@@ -122,7 +107,6 @@ class PackageController extends Controller
             'price_forever' => $request->input('price_forever', 0),
 
             'hidden' => $request->has('hidden'),
-            'max_active_count' => $request->input('max_active_count', 0),
         ]);
 
         return back();

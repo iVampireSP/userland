@@ -4,7 +4,7 @@
 
 @section('content')
     <h2>配额</h2>
-    <p>配额可以限制用户的单个资源使用</p>
+    <p>配额可以根据用户</p>
 
     <div class="mb-3">
         <a href="{{route('admin.quotas.create')}}">新建</a>

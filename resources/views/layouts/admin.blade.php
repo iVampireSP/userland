@@ -48,18 +48,20 @@
                             <a class="nav-link" href="{{ route('admin.notifications.create') }}">通知</a>
                         </li>
 
-{{--                        <li class="nav-item dropdown">--}}
-{{--                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"--}}
-{{--                               aria-expanded="false">--}}
-{{--                                商店--}}
-{{--                            </a>--}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                商店
+                            </a>
 
-{{--                            <ul class="dropdown-menu">--}}
-{{--                                <li><a class="dropdown-item" href="{{ route('admin.package_categories.index') }}">分类</a></li>--}}
-{{--                                <li><a class="dropdown-item" href="{{ route('admin.packages.index') }}">套餐</a></li>--}}
-{{--                                <li><a class="dropdown-item" href="{{ route('admin.quotas.index') }}">配额</a></li>--}}
-{{--                            </ul>--}}
-{{--                        </li>--}}
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"
+                                       href="{{ route('admin.package_categories.index') }}">分类</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.packages.index') }}">套餐</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.unit_prices.index') }}">计价单位</a></li>
+                                {{--                                <li><a class="dropdown-item" href="{{ route('admin.quotas.index') }}">配额</a></li>--}}
+                            </ul>
+                        </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -74,17 +76,17 @@
                         </li>
 
 
-{{--                        <li class="nav-item dropdown">--}}
-{{--                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"--}}
-{{--                               aria-expanded="false">--}}
-{{--                                订阅--}}
-{{--                            </a>--}}
+                        {{--                        <li class="nav-item dropdown">--}}
+                        {{--                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"--}}
+                        {{--                               aria-expanded="false">--}}
+                        {{--                                订阅--}}
+                        {{--                            </a>--}}
 
-{{--                            <ul class="dropdown-menu">--}}
-{{--                                <li><a class="dropdown-item" href="{{ route('admin.plans.index') }}">计划</a></li>--}}
-{{--                                <li><a class="dropdown-item" href="{{ route('admin.features.index') }}">功能</a></li>--}}
-{{--                            </ul>--}}
-{{--                        </li>--}}
+                        {{--                            <ul class="dropdown-menu">--}}
+                        {{--                                <li><a class="dropdown-item" href="{{ route('admin.plans.index') }}">计划</a></li>--}}
+                        {{--                                <li><a class="dropdown-item" href="{{ route('admin.features.index') }}">功能</a></li>--}}
+                        {{--                            </ul>--}}
+                        {{--                        </li>--}}
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.admins.index') }}">管理员</a>

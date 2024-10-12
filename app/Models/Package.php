@@ -35,8 +35,8 @@ class Package extends Model
         'sold_out',
 
         'hidden',
-        'enable_quota',
-        'max_active_count',
+//        'enable_quota',
+//        'max_active_count',
     ];
 
     protected array $guard_name = ['web', 'api'];
@@ -46,10 +46,10 @@ class Package extends Model
         return $this->belongsTo(PackageCategory::class, 'category_id');
     }
 
-    public function quotas(): HasMany
-    {
-        return $this->hasMany(PackageQuota::class);
-    }
+//    public function quotas(): HasMany
+//    {
+//        return $this->hasMany(PackageQuota::class);
+//    }
 
     public function upgrades(): HasMany
     {
