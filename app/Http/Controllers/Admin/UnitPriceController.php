@@ -46,7 +46,6 @@ class UnitPriceController extends Controller
         return redirect()->route('admin.unit_prices.index')->with('success', '计价单位创建成功');
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -61,7 +60,7 @@ class UnitPriceController extends Controller
     public function update(Request $request, UnitPrice $unitPrice)
     {
         $request->validate([
-            'unit' => 'required|string|unique:unit_prices,unit,' . $unitPrice->id . '|max:255',
+            'unit' => 'required|string|unique:unit_prices,unit,'.$unitPrice->id.'|max:255',
             'name' => 'required|string|max:255',
             'price_per_unit' => 'required|numeric',
         ]);

@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
-use LucasDotVin\Soulbscription\Models\Concerns\HasSubscriptions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -25,7 +24,6 @@ class User extends Authenticatable
     use HasApiTokens,
         HasFactory,
         HasRoles,
-        HasSubscriptions,
         Notifiable,
         SoftDeletes,
         UserClaimsTrait;
@@ -139,6 +137,30 @@ class User extends Authenticatable
     public function bans(): HasMany
     {
         return $this->hasMany(Ban::class, 'email', 'email');
+    }
+
+    public function packages(): HasMany
+    {
+        return $this->hasMany(UserPackage::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // has same category package
+    public function hasSameCategoryPackage(Package $package): bool
+    {
+        $package_category_id = $package->category_id;
+
+        // 检测用户当前是否有 $package
+        $user_package = $this->packages()->with('package')->where('package_id', $package->id)->first();
+        if ($user_package) {
+            return $package_category_id == $user_package->package->category_id;
+        }
+
+        return false;
     }
 
     // 给予实名认证权利

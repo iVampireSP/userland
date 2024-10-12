@@ -15,6 +15,15 @@ class UserPackage extends Model
         'expired_at',
     ];
 
+    protected $casts = [
+        'expired_at' => 'datetime',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);

@@ -71,12 +71,12 @@
                                        value="1" {{ $package->enable_year ? 'checked' : '' }}>
                                 <label for="enable_year" class="form-check-label">按年付款</label>
                             </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" name="enable_forever" id="enable_forever"
-                                       class="form-check-input"
-                                       value="1" {{ $package->enable_forever ? 'checked' : '' }}>
-                                <label for="enable_forever" class="form-check-label">永久有效</label>
-                            </div>
+{{--                            <div class="mb-3 form-check">--}}
+{{--                                <input type="checkbox" name="enable_forever" id="enable_forever"--}}
+{{--                                       class="form-check-input"--}}
+{{--                                       value="1" {{ $package->enable_forever ? 'checked' : '' }}>--}}
+{{--                                <label for="enable_forever" class="form-check-label">永久有效</label>--}}
+{{--                            </div>--}}
 
                             <h5>价格设置</h5>
                             <div class="mb-3">
@@ -99,11 +99,11 @@
                                 <input type="number" name="price_year" id="price_year" class="form-control" step="0.01"
                                        value="{{ $package->price_year }}" placeholder="可选">
                             </div>
-                            <div class="mb-3">
-                                <label for="price_forever" class="form-label">永久价格</label>
-                                <input type="number" name="price_forever" id="price_forever" class="form-control"
-                                       step="0.01" value="{{ $package->price_forever }}" placeholder="可选">
-                            </div>
+{{--                            <div class="mb-3">--}}
+{{--                                <label for="price_forever" class="form-label">永久价格</label>--}}
+{{--                                <input type="number" name="price_forever" id="price_forever" class="form-control"--}}
+{{--                                       step="0.01" value="{{ $package->price_forever }}" placeholder="可选">--}}
+{{--                            </div>--}}
                         </div>
                     </div>
 

@@ -4,6 +4,8 @@ use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\FaceController;
+use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\Web\PackageController;
 use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PhoneController;
 use App\Http\Controllers\Web\RealNameController;
@@ -88,6 +90,13 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::get('permissions', [PermissionController::class, 'permissions'])->name('permissions.index');
         Route::get('roles', [PermissionController::class, 'roles'])->name('roles.index');
         /* End 权限 */
+
+        /* Start 计费 */
+        Route::get('packages/list', [PackageController::class, 'list'])->name('packages.list');
+        Route::resource('packages', PackageController::class)->except('edit', 'destroy');
+        Route::resource('orders', OrderController::class)->only('index', 'store', 'show');
+        Route::get('packages/{userPackage}/renew', [PackageController::class, 'renewPage'])->name('packages.renew');
+        /* End 计费 */
 
         // Route::get('auth_request/{token}', [AccountController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AccountController::class, 'accept_authrequest'])->name('auth_request.accept');

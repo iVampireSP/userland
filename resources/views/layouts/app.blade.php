@@ -45,27 +45,52 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('index') }}">{{ auth('web')->user()->name }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('faces.index') }}">人脸识别</a>
+
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdownAuth" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                认证
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownAuth">
+                                <a class="dropdown-item" href="{{ route('faces.index') }}">人脸识别</a>
+                                <a class="dropdown-item" href="{{ route('tokens.index') }}">访问密钥</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tokens.index') }}">访问密钥</a>
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdownClient" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                OAuth 客户端
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownClient">
+                                <a class="dropdown-item" href="{{ route('clients.index') }}">客户端</a>
+                                <a class="dropdown-item" href="{{ route('tokens.scopes') }}">作用域</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('clients.index') }}">OAuth2 客户端</a>
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdownPermissions" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                权限
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPermissions">
+                                <a class="dropdown-item" href="{{ route('roles.index') }}">角色</a>
+                                <a class="dropdown-item" href="{{ route('permissions.index') }}">权限</a>
+                            </div>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tokens.scopes') }}">作用域</a>
+                            <a class="nav-link" href="{{ route('packages.index') }}">会员</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('bans.index') }}">封禁列表</a>
+                            <a class="nav-link" href="{{ route('orders.index') }}">订单</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('roles.index') }}">角色</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('permissions.index') }}">权限</a>
-                        </li>
+
                     @endauth
                 </ul>
 
@@ -135,6 +160,7 @@
                                         ?->isRealNamed())
                                     <a class="dropdown-item" href="{{ route('real_name.create') }}">实名认证</a>
                                 @endif
+                                <a class="dropdown-item" href="{{ route('bans.index') }}">封禁列表</a>
 
                                 <a class="dropdown-item" href="{{ route('tos') }}">服务条款</a>
                                 <a class="dropdown-item" href="{{ route('privacy_policy') }}">隐私政策</a>
