@@ -78,4 +78,37 @@ class BalanceController extends Controller
 
         return $this->noContent();
     }
+
+    public function can_bill_unit(Request $request): JsonResponse
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'unit' => 'required|string|max:255',
+        ]);
+
+        $unit = UnitPrice::whereUnit($request->input('unit'))->firstOrFail();
+        $user = User::find($request->input('user_id'));
+
+        $has = $user->hasBalance($unit->price_per_unit);
+
+        return $this->success([
+            'can_bill' => $has,
+        ]);
+    }
+
+    public function balance_enough(Request $request): JsonResponse
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required|numeric|min:0|max:10000',
+        ]);
+
+        $user = User::find($request->input('user_id'));
+
+        $has = $user->hasBalance($request->input('amount'));
+
+        return $this->success([
+            'can_bill' => $has,
+        ]);
+    }
 }
