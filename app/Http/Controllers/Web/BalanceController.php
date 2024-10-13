@@ -30,9 +30,13 @@ class BalanceController extends Controller
             'payment' => 'required|in:wxpay,alipay',
         ]);
 
+        // 小数位数不能超过 2 位
+        $amount = $request->input('amount');
+        $amount = number_format($amount, 2, '.', '');
+
         $balance = Balance::create([
             'user_id' => auth('web')->id(),
-            'amount' => $request->input('amount'),
+            'amount' => $amount,
             'payment' => $request->input('payment'),
         ]);
 
