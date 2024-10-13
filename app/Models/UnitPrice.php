@@ -24,6 +24,6 @@ class UnitPrice extends Model
 
     public function calculatePrice(string $amount): string
     {
-        return bcmul($amount, $this->price_per_unit, 2);
+        return bcmul($amount, $this->price_per_unit, 4);
     }
 }

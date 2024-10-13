@@ -369,15 +369,23 @@ class User extends Authenticatable
             $this->balance = bcadd($this->balance, $amount, 4);
             $this->save();
 
-            if (isset($options['add_balances_log']) && $options['add_balances_log'] === true) {
-                (new Balance)->create([
-                    'user_id' => $this->id,
-                    'amount' => $amount,
-                    'payment' => $payment,
-                    'description' => $description,
-                    'paid_at' => now(),
-                ]);
-            }
+            (new Balance)->create([
+                'user_id' => $this->id,
+                'amount' => $amount,
+                'payment' => $payment,
+                'description' => $description,
+                'paid_at' => now(),
+            ]);
+
+            // if (isset($options['add_balances_log']) && $options['add_balances_log'] === true) {
+            //     (new Balance)->create([
+            //         'user_id' => $this->id,
+            //         'amount' => $amount,
+            //         'payment' => $payment,
+            //         'description' => $description,
+            //         'paid_at' => now(),
+            //     ]);
+            // }
 
         });
     }
