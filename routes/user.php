@@ -61,9 +61,9 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::post('phone', [PhoneController::class, 'store'])->name('phone.store');
         Route::post('phone/verify', [PhoneController::class, 'verify'])->name('phone.verify');
         Route::get('phone/validate', [PhoneController::class, 'show_validate_form'])->name('phone.validate');
-        Route::post('phone/validate/send', [PhoneController::class, 'send_validate_code'])->name('phone.validate.send');
+        Route::post('phone/validate/send', [PhoneController::class, 'send_validate_code'])->middleware('throttle:3,1')->name('phone.validate.send');
         Route::post('phone/validate', [PhoneController::class, 'validate_code']);
-        Route::post('phone/resend', [PhoneController::class, 'resend'])->name('phone.resend');
+        Route::post('phone/resend', [PhoneController::class, 'resend'])->middleware('throttle:3,1')->name('phone.resend');
         Route::get('phone/edit', [PhoneController::class, 'edit'])->middleware('phone.confirm')->name('phone.edit');
         Route::delete('phone', [PhoneController::class, 'unbind'])->middleware('phone.confirm')->name('phone.unbind');
         /* End 手机号 */
