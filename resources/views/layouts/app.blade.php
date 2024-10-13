@@ -82,16 +82,21 @@
                                 <a class="dropdown-item" href="{{ route('permissions.index') }}">权限</a>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('balances.index') }}">余额</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('packages.index') }}">会员</a>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdownBilling" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                计费
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownBilling">
+                                <a class="dropdown-item" href="{{ route('balances.index') }}">余额</a>
+                                <a class="dropdown-item" href="{{ route('packages.index') }}">会员</a>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">订单</a>
+                                <a class="dropdown-item" href="{{ route('units.price') }}">计价单位</a>
+                            </div>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('orders.index') }}">订单</a>
-                        </li>
+
 
                     @endauth
                 </ul>
