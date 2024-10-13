@@ -56,16 +56,25 @@ class BalanceController extends Controller
             }
         }
 
-        // 本地环境直接通过
-        if (app()->environment('local')) {
-            $balance->update([
-                'paid_at' => now(),
-            ]);
+        // 目前正在测试阶段，直接通过
+        $balance->update([
+            'paid_at' => now(),
+        ]);
 
-            if ($request->ajax()) {
-                return $this->success($balance);
-            }
+        if ($request->ajax()) {
+            return $this->success($balance);
         }
+
+        // 本地环境直接通过
+        //        if (app()->environment('local')) {
+        //            $balance->update([
+        //                'paid_at' => now(),
+        //            ]);
+        //
+        //            if ($request->ajax()) {
+        //                return $this->success($balance);
+        //            }
+        //        }
 
         if ($balance->isOverdue()) {
             if (now()->diffInDays($balance->created_at) > 1) {
