@@ -13,6 +13,10 @@ class UnitPrice extends Model
         'price_per_unit',
     ];
 
+    protected $casts = [
+        'price_per_unit' => 'decimal:4',
+    ];
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
