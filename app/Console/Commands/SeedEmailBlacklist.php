@@ -39,7 +39,7 @@ class SeedEmailBlacklist extends Command
         }
 
         // Run the seeder to fill the email_blacklist table
-        $this->call('db:seed', ['--class' => 'EmailBlacklistSeeder']);
+        $this->call('db:seed', ['--class' => 'EmailBlacklistSeeder', '--force' => true]);
 
         $this->info('邮箱域名黑名单表插入数据成功');
 
