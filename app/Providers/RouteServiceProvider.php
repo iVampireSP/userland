@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\JsonRequest;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -37,7 +38,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware(['api', 'validate_application'])
-                ->prefix('application')
+                ->prefix('clients')
+                ->group(base_path('routes/client.php'));
+
+            Route::middleware([JsonRequest::class, 'auth:application'])
+                ->prefix('applications')
+                ->as('applications.')
                 ->group(base_path('routes/application.php'));
 
             Route::middleware('web')

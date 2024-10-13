@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Contracts\SMS;
 use App\Contracts\YubicoOTP;
 use App\Models\Admin;
+use App\Models\Balance;
 use App\Models\Client;
 use App\Models\User;
+use App\Observers\BalanceObserver;
 use App\Observers\UserObserver;
 use App\Support\Auth\YubicoOTPSupport;
 use App\Support\OAuth\AccessTokenResponse;
@@ -68,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
     private function registerObservers(): void
     {
         User::observe(UserObserver::class);
-        // Subscription::observe(SubscriptionObserve::class);
+        Balance::observe(BalanceObserver::class);
     }
 
     private function registerScopes(): void

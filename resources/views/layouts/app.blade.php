@@ -82,7 +82,9 @@
                                 <a class="dropdown-item" href="{{ route('permissions.index') }}">权限</a>
                             </div>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('balances.index') }}">余额</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('packages.index') }}">会员</a>
                         </li>

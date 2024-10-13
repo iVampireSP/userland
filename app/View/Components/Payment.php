@@ -17,10 +17,7 @@ class Payment extends Component
     {
         $this->payment = match ($this->payment) {
             'alipay' => '支付宝',
-            'wechat', 'wepay' => '微信支付',
-            'drops' => 'Drops',
-            'balance', 'balances' => '余额',
-            'module_balance', => '模块余额',
+            'wechat', 'wepay', 'wxpay' => '微信支付',
             'unfreeze' => '解冻',
             'freeze' => '冻结',
             'console' => '控制台',

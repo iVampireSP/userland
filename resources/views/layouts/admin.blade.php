@@ -43,7 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.clients.index') }}">OAuth 客户端</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.applications.index') }}">应用</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.notifications.create') }}">通知</a>
                         </li>

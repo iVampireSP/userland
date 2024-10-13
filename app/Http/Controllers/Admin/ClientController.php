@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Killbill\Client\Swagger\ApiException;
 use Laravel\Passport\ClientRepository;
 
 class ClientController extends Controller
@@ -106,22 +105,22 @@ class ClientController extends Controller
         return redirect()->route('admin.clients.show', compact('client'));
     }
 
-    /**
-     * @throws ApiException
-     */
-    public function enableTenant(Client $client): RedirectResponse
-    {
-        $client->enableTenant();
-
-        return redirect()->route('admin.clients.show', compact('client'));
-    }
-
-    public function disableTenant(Client $client): RedirectResponse
-    {
-        $client->disableTenant();
-
-        return redirect()->route('admin.clients.show', compact('client'));
-    }
+    //    /**
+    //     * @throws ApiException
+    //     */
+    //    public function enableTenant(Client $client): RedirectResponse
+    //    {
+    //        $client->enableTenant();
+    //
+    //        return redirect()->route('admin.clients.show', compact('client'));
+    //    }
+    //
+    //    public function disableTenant(Client $client): RedirectResponse
+    //    {
+    //        $client->disableTenant();
+    //
+    //        return redirect()->route('admin.clients.show', compact('client'));
+    //    }
 
     /**
      * Remove the specified resource from storage.

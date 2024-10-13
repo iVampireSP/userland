@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\User\BalanceNotEnoughException;
 use App\Helpers\Auth\UserClaimsTrait;
 use App\Support\SMS\SMSSupport;
 use Exception;
@@ -33,6 +34,7 @@ class User extends Authenticatable
         'uuid',
         'name',
         'email',
+        'balance',
         'real_name',
         'phone',
         'phone_verified_at',
@@ -73,6 +75,7 @@ class User extends Authenticatable
         'real_name_verified_at' => 'datetime',
         'banned_at' => 'datetime',
         'birthday_at' => 'date:Y-m-d',
+        'balance' => 'decimal:4',
     ];
 
     protected array $guard_name = ['web', 'api'];
@@ -309,5 +312,73 @@ class User extends Authenticatable
 
         // 默认 ID
         return $this->where('id', $username)->first();
+    }
+
+    public function hasBalance(string $amount = '0.01'): bool
+    {
+        return bccomp($this->balance, $amount, 4) >= 0;
+    }
+
+    /**
+     * 扣除费用
+     */
+    public function reduce(?string $amount = '0', string $description = '消费', bool $fail = false)
+    {
+        if ($amount === null || $amount === '') {
+            return $this->balance;
+        }
+
+        /**
+         * @throws BalanceNotEnoughException
+         */
+        return Cache::lock('user_balance_'.$this->id, 10)->block(10, function () use ($amount) {
+            $this->refresh();
+            //
+            //            if ($this->balance < $amount) {
+            ////                if ($fail) {
+            //                    // 发送邮件通知
+            ////                    $this->notify(new BalanceNotEnough());
+            //
+            ////                    throw new BalanceNotEnoughException();
+            ////                }
+            //            }
+
+            $this->balance = bcsub($this->balance, $amount, 4);
+            $this->save();
+
+            // 如果用户的余额小于 5 元，则发送邮件提醒（一天只发送一次，使用缓存）
+            //            if (! $this->hasBalance(5) && ! Cache::has('user_balance_less_than_5_'.$this->id)) {
+            //                $this->notify(new LowBalance());
+            //                Cache::put('user_balance_less_than_5_'.$this->id, true, now()->addDay());
+            //            }
+
+        });
+    }
+
+    /**
+     * 增加余额
+     */
+    public function charge(?string $amount = '0', string $payment = 'console', string $description = '充值')
+    {
+        if ($amount === null || $amount === '') {
+            return $this->balance;
+        }
+
+        return Cache::lock('user_balance_'.$this->id, 10)->block(10, function () use ($amount, $description, $payment) {
+            $this->refresh();
+            $this->balance = bcadd($this->balance, $amount, 4);
+            $this->save();
+
+            if (isset($options['add_balances_log']) && $options['add_balances_log'] === true) {
+                (new Balance)->create([
+                    'user_id' => $this->id,
+                    'amount' => $amount,
+                    'payment' => $payment,
+                    'description' => $description,
+                    'paid_at' => now(),
+                ]);
+            }
+
+        });
     }
 }

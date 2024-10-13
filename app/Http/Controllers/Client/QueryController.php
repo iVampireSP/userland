@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Application;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ban;
@@ -11,11 +11,6 @@ use Illuminate\Support\Carbon;
 
 class QueryController extends Controller
 {
-    public function user(User $user): JsonResponse
-    {
-        return $this->success($user);
-    }
-
     public function allBans(Request $request): JsonResponse
     {
         $request->validate([

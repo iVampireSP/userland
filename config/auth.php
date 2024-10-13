@@ -40,15 +40,23 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+
         'jwt' => [
+            'driver' => 'token',
+            'provider' => 'applications',
+        ],
+
+        'application' => [
             'driver' => 'token',
             'provider' => 'applications',
         ],
@@ -80,6 +88,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'applications' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Application::class,
         ],
     ],
 

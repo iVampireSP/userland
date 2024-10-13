@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\Application\AuthController;
-use App\Http\Controllers\Application\QueryController;
+use App\Http\Controllers\Application\BalanceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('user/{user}', [QueryController::class, 'user']);
+Route::get('user/{user}', [AuthController::class, 'user']);
 Route::post('quick/face-register', [AuthController::class, 'createFaceRegister']);
-Route::get('user/{user}/bans', [QueryController::class, 'bans']);
-Route::post('user/{user}/ban', [QueryController::class, 'ban']);
-Route::delete('user/{user}/ban/{ban}', [QueryController::class, 'unban']);
-Route::post('emailBan', [QueryController::class, 'emailBan']);
-Route::get('emailBans', [QueryController::class, 'emailBans']);
-Route::get('allBans', [QueryController::class, 'allBans']);
+
+Route::post('balances/reduce', [BalanceController::class, 'reduce']);
+Route::post('balances/add', [BalanceController::class, 'add']);
+Route::post('balances/unit_reduce', [BalanceController::class, 'unit_reduce']);
+Route::post('balances/unit_add', [BalanceController::class, 'unit_add']);

@@ -10,6 +10,7 @@ use App\Support\Face\FaceSupport;
 use App\Support\Milvus\MilvusSupport;
 use Exception;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -22,6 +23,11 @@ class AuthController extends Controller
     {
         $this->faceSupport = new FaceSupport;
         $this->milvusSupport = new MilvusSupport;
+    }
+
+    public function user(User $user): JsonResponse
+    {
+        return $this->success($user);
     }
 
     // 创建 Face 注册

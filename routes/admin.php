@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BanController;
 use App\Http\Controllers\Admin\ClientController;
@@ -8,10 +9,8 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PackageCategoryController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PackagePermissionController;
-use App\Http\Controllers\Admin\PackageQuotaController;
 use App\Http\Controllers\Admin\PackageUpgradeController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\QuotaController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UnitPriceController;
 use App\Http\Controllers\Admin\UserController;
@@ -36,8 +35,8 @@ Route::get('/users/{user}/permissions', [UserPermissionController::class, 'permi
 Route::post('/users/{user}/permissions/{permission}', [UserPermissionController::class, 'togglePermission'])->name('users.permissions.toggle');
 
 Route::resource('clients', ClientController::class);
-Route::post('clients/{client}/tenant', [ClientController::class, 'enableTenant'])->name('clients.tenant.enable');
-Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTenant'])->name('clients.tenant.disable');
+//Route::post('clients/{client}/tenant', [ClientController::class, 'enableTenant'])->name('clients.tenant.enable');
+//Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTenant'])->name('clients.tenant.disable');
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
 
@@ -57,5 +56,7 @@ Route::get('/packages/{package}/roles', [PackagePermissionController::class, 'ro
 Route::post('/packages/{package}/roles/{role}', [PackagePermissionController::class, 'toggleRole'])->name('packages.roles.toggle');
 Route::get('/packages/{package}/permissions', [PackagePermissionController::class, 'permissions'])->name('packages.permissions');
 Route::post('/packages/{package}/permissions/{permission}', [PackagePermissionController::class, 'togglePermission'])->name('packages.permissions.toggle');
+
+Route::resource('applications', ApplicationController::class);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

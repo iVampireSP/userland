@@ -31,14 +31,20 @@
             <small class="text-muted">没有验证</small>
         @endif
     </span>
+
     <br/>
+
     <span>手机号: {{ $user->phone }}
         @if(!$user->isPhoneVerified())
             <small class="text-muted">没有验证</small>
         @endif
     </span>
+
     <br />
 
+    <span>余额: {{ $user->balance }}</span>
+
+    <br />
 
     @if ($user->birthday_at)
         <p>

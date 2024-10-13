@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AccountController;
+use App\Http\Controllers\Web\BalanceController;
 use App\Http\Controllers\Web\BanController;
 use App\Http\Controllers\Web\ClientController;
 use App\Http\Controllers\Web\FaceController;
@@ -97,6 +98,11 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::resource('orders', OrderController::class)->only('index', 'store', 'show');
         Route::get('packages/{userPackage}/renew', [PackageController::class, 'renewPage'])->name('packages.renew');
         /* End 计费 */
+
+        /* Start 财务 */
+        Route::resource('balances', BalanceController::class)->only('index', 'store');
+        Route::get('/balances/{balance:order_id}', [BalanceController::class, 'show'])->withoutMiddleware('auth')->name('balances.show');
+        /* End 财务 */
 
         // Route::get('auth_request/{token}', [AccountController::class, 'show_authrequest'])->name('auth_request.show');
         // Route::post('auth_request', [AccountController::class, 'accept_authrequest'])->name('auth_request.accept');
