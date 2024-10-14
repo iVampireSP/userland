@@ -34,6 +34,16 @@ class BalanceController extends Controller
         $amount = $request->input('amount');
         $amount = number_format($amount, 2, '.', '');
 
+        // 计算用户的余额和充值的余额是否超过最大允许的余额
+        $max = config('billing.balance.max');
+        $balance = $request->user()->balance;
+        $added = bcadd($balance, $amount);
+
+        // cmp
+        if (bccomp($added, $max) > 0) {
+            return back()->with('error', '充值余额超过 '.$max.'。');
+        }
+
         $balance = Balance::create([
             'user_id' => auth('web')->id(),
             'amount' => $amount,
