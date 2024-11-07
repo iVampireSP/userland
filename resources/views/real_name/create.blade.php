@@ -10,7 +10,7 @@
 </x-alert-success>
 @else
 <x-alert-warning>
-    认证提供方会向我方收取一定费用，我们需要收取 {{config('settings.supports.real_name.price')}} 元的费用来实人认证。
+    认证提供方会向我方收取一定费用，我们需要收取 {{ config('settings.supports.real_name.price') }} 元的费用来实人认证。
     <br />
     人脸识别需要使用摄像头，我们建议您使用手机浏览器进行实人认证。
 </x-alert-warning>
@@ -23,11 +23,11 @@
 <form action="{{ route('real_name.pay') }}" method="post">
     @csrf
 
-    <input type="radio" name="type" id="wechat" value="wxpay" checked>
-    <label for="wechat"> <i class="bi bi-wechat"></i> 微信支付</label>
+    <input class="form-check-input" type="radio" name="type" id="wechat" value="wxpay" checked>
+    <label class="form-check-label" for="wechat"> <i class="bi bi-wechat"></i> 微信支付</label>
 
-    <input type="radio" name="type" id="alipay" value="alipay">
-    <label for="alipay"> <i class="bi bi-alipay"></i> 支付宝</label>
+    <input class="form-check-input" type="radio" name="type" id="alipay" value="alipay">
+    <label class="form-check-label" for="alipay"> <i class="bi bi-alipay"></i> 支付宝</label>
 
     <br />
     <button type="submit" class="btn btn-primary mt-3">支付 {{config('settings.supports.real_name.price')}} 元</button>

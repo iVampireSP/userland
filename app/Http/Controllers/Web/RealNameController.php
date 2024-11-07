@@ -61,8 +61,15 @@ class RealNameController extends Controller
         return redirect()->route('real_name.capture');
     }
 
-    public function create(): View
+    public function create(Request $request): View|RedirectResponse
     {
+        if (config('settings.supports.real_name.price') == 0) {
+            if ($request->user()->hasRealName()) {
+                return redirect()->route('real_name.capture');
+            }
+            $request->user()->giveRealName();
+            return redirect()->route('real_name.capture');
+        }
         return view('real_name.create');
     }
 
