@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>邮箱注册 {{ config('app.display_name') }}</h2>
+    <h2>注册</h2>
 
     <form action="{{ route('register') }}" method="POST" class="recaptcha-form">
         @csrf
