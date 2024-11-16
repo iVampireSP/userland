@@ -10,8 +10,8 @@
 
     <title>@yield('title', config('app.display_name'))</title>
 
-    {{--    <link rel="icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
-    {{--    <link rel="apple-touch-icon" href="{{ asset('/images/lae-fav.png') }}" />--}}
+    <link rel="icon" href="{{ asset('/images/fav-1.ico') }}"/>
+    <link rel="apple-touch-icon" href="{{ asset('/images/fav-1.ico') }}"/>
 
     <!-- Fonts -->
     {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
@@ -30,7 +30,10 @@
     <nav class="navbar navbar-expand-lg bd-navbar sticky-top bg-body" id="nav">
         <div class="container">
             <a class="navbar-brand" href="{{ route('index') }}">
-                @yield('subtitle', config('app.display_name'))
+                <div class="d-flex">
+                    <img src="{{ asset('/images/fav-1.ico') }}" alt="Logo" width="24"/>
+                    @yield('subtitle', config('app.display_name'))
+                </div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -95,8 +98,6 @@
                                 <a class="dropdown-item" href="{{ route('units.price') }}">计价单位</a>
                             </div>
                         </li>
-
-
 
                     @endauth
                 </ul>
