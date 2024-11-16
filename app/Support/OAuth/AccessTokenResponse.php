@@ -25,6 +25,7 @@ class AccessTokenResponse extends AccessToken
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
             ->issuedAt(new DateTimeImmutable)
+            ->issuedBy(url('/'))
             ->canOnlyBeUsedAfter(new DateTimeImmutable)
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo($user->id)
