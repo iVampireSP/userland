@@ -64,12 +64,13 @@ class RealNameController extends Controller
     public function create(Request $request): View|RedirectResponse
     {
         if (config('settings.supports.real_name.price') == 0) {
-            if ($request->user()->hasRealName()) {
-                return redirect()->route('real_name.capture');
+            if (! $request->user()->hasRealName()) {
+                $request->user()->giveRealName();
             }
-            $request->user()->giveRealName();
-            return redirect()->route('real_name.capture');
+
+            return view('real_name.create');
         }
+
         return view('real_name.create');
     }
 
@@ -188,8 +189,17 @@ class RealNameController extends Controller
 
     public function capture(Request $request)
     {
-        if (! $request->user()->hasRealName()) {
+        $user = $request->user();
+
+        if (! $user->hasRealName()) {
             return back()->with('error', '您需要购买实名认证的资格。');
+        }
+
+        // 保存
+        $info = $user->getTempIdCard();
+
+        if (empty($info['name'])) {
+            return back()->with('error', '没有找到需要实名认证的信息。');
         }
 
         if ($request->post()) {
@@ -210,7 +220,6 @@ class RealNameController extends Controller
             }
 
             $realNameSupport = new RealNameSupport;
-            $user = $request->user();
             try {
                 $result = $realNameSupport->create($user, $image_b64);
             } catch (CommonException $e) {
@@ -220,8 +229,6 @@ class RealNameController extends Controller
             }
 
             if ($result) {
-                // 保存
-                $info = $user->getTempIdCard();
 
                 // 由于不是 fillable，所以需要手动更新
                 $user->real_name = $info['name'];
