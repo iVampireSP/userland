@@ -30,10 +30,10 @@ spec:
             - /usr/bin/start.sh
             - init
             - web
-            - --host=0.0.0.0
-            - --port=8000
-            - --workers=1
-            - --server=roadrunner
+#            - --host=0.0.0.0
+#            - --port=8000
+#            - --workers=1
+#            - --server=roadrunner
           envFrom:
             - configMapRef:
                 name: oauth-env

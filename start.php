@@ -1,32 +1,157 @@
 <?php
 
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
+global $mimeTypes, $kernel;
+
+$mimeTypes = [
+    'html' => 'text/html',
+    'htm' => 'text/html',
+    'shtml' => 'text/html',
+    'css' => 'text/css',
+    'xml' => 'text/xml',
+    'gif' => 'image/gif',
+    'jpeg' => 'image/jpeg',
+    'jpg' => 'image/jpeg',
+    'js' => 'application/javascript',
+    'atom' => 'application/atom+xml',
+    'rss' => 'application/rss+xml',
+    'mml' => 'text/mathml',
+    'txt' => 'text/plain',
+    'jad' => 'text/vnd.sun.j2me.app-descriptor',
+    'wml' => 'text/vnd.wap.wml',
+    'htc' => 'text/x-component',
+    'avif' => 'image/avif',
+    'png' => 'image/png',
+    'svg' => 'image/svg+xml',
+    'tif' => 'image/tiff',
+    'tiff' => 'image/tiff',
+    'wbmp' => 'image/vnd.wap.wbmp',
+    'webp' => 'image/webp',
+    'ico' => 'image/x-icon',
+    'jng' => 'image/x-jng',
+    'bmp' => 'image/x-ms-bmp',
+    'woff' => 'font/woff',
+    'woff2' => 'font/woff2',
+    'jar' => 'application/java-archive',
+    'war' => 'application/java-archive',
+    'ear' => 'application/java-archive',
+    'json' => 'application/json',
+    'hqx' => 'application/mac-binhex40',
+    'doc' => 'application/msword',
+    'pdf' => 'application/pdf',
+    'ps' => 'application/postscript',
+    'eps' => 'application/postscript',
+    'ai' => 'application/postscript',
+    'rtf' => 'application/rtf',
+    'm3u8' => 'application/vnd.apple.mpegurl',
+    'kml' => 'application/vnd.google-earth.kml+xml',
+    'kmz' => 'application/vnd.google-earth.kmz',
+    'xls' => 'application/vnd.ms-excel',
+    'eot' => 'application/vnd.ms-fontobject',
+    'ppt' => 'application/vnd.ms-powerpoint',
+    'odg' => 'application/vnd.oasis.opendocument.graphics',
+    'odp' => 'application/vnd.oasis.opendocument.presentation',
+    'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+    'odt' => 'application/vnd.oasis.opendocument.text',
+    'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'wmlc' => 'application/vnd.wap.wmlc',
+    'wasm' => 'application/wasm',
+    '7z' => 'application/x-7z-compressed',
+    'cco' => 'application/x-cocoa',
+    'jardiff' => 'application/x-java-archive-diff',
+    'jnlp' => 'application/x-java-jnlp-file',
+    'run' => 'application/x-makeself',
+    'pl' => 'application/x-perl',
+    'pm' => 'application/x-perl',
+    'prc' => 'application/x-pilot',
+    'pdb' => 'application/x-pilot',
+    'rar' => 'application/x-rar-compressed',
+    'rpm' => 'application/x-redhat-package-manager',
+    'sea' => 'application/x-sea',
+    'swf' => 'application/x-shockwave-flash',
+    'sit' => 'application/x-stuffit',
+    'tcl' => 'application/x-tcl',
+    'tk' => 'application/x-tcl',
+    'der' => 'application/x-x509-ca-cert',
+    'pem' => 'application/x-x509-ca-cert',
+    'crt' => 'application/x-x509-ca-cert',
+    'xpi' => 'application/x-xpinstall',
+    'xhtml' => 'application/xhtml+xml',
+    'xspf' => 'application/xspf+xml',
+    'zip' => 'application/zip',
+    'bin' => 'application/octet-stream',
+    'exe' => 'application/octet-stream',
+    'dll' => 'application/octet-stream',
+    'deb' => 'application/octet-stream',
+    'dmg' => 'application/octet-stream',
+    'iso' => 'application/octet-stream',
+    'img' => 'application/octet-stream',
+    'msi' => 'application/octet-stream',
+    'midi' => 'audio/midi',
+    'kar' => 'audio/midi',
+    'mp3' => 'audio/mpeg',
+    'ogg' => 'audio/ogg',
+    'm4a' => 'audio/x-m4a',
+    'ra' => 'audio/x-realaudio',
+    '3gpp' => 'video/3gpp',
+    '3gp' => 'video/3gpp',
+    'ts' => 'video/mp2t',
+    'mp4' => 'video/mp4',
+    'mpeg' => 'video/mpeg',
+    'mpg' => 'video/mpeg',
+    'mov' => 'video/quicktime',
+    'webm' => 'video/webm',
+    'flv' => 'video/x-flv',
+    'm4v' => 'video/x-m4v',
+    'mng' => 'video/x-mng',
+    'asx' => 'video/x-ms-asf',
+    'asf' => 'video/x-ms-asf',
+    'wmv' => 'video/x-ms-wmv',
+    'avi' => 'video/x-msvideo',
+];
+
+const PUBLIC_DIR = "public/";
+
 
 define('LARAVEL_START', microtime(true));
 
 
-
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 
-$app = require_once __DIR__.'/bootstrap/app.php';
-
-global $kernel;
+$app = require_once __DIR__ . '/bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 
 function run()
 {
-    global $kernel;
+    global $kernel, $mimeTypes;
 
     ob_start();
+
+    $path = $_SERVER['REQUEST_URI'];
+    $parsedUrl = parse_url($path);
+    $path = $parsedUrl['path'];
+
+    // 忽略空目录或根路径
+    if ($path !== '/' && $path !== '') {
+        $filePath = realpath(PUBLIC_DIR . ltrim($path, '/'));
+
+        if ($filePath && str_starts_with($filePath, realpath(PUBLIC_DIR)) && !str_contains($filePath, '.php') && !is_dir($filePath) && file_exists($filePath)) {
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+            $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
+            header("Content-Type: $mimeType");
+            return ob_get_clean() . file_get_contents($filePath);
+        }
+    }
+
 
     $response = $kernel->handle(
         $request = Illuminate\Http\Request::capture()

@@ -26,16 +26,15 @@ RUN composer dump-autoload --optimize --no-dev --classmap-authoritative && \
     composer clear-cache
 
 # 安装 RoadRunner
-RUN ./vendor/bin/rr get-binary && art octane:install --server=roadrunner
-
-
+RUN #./vendor/bin/rr get-binary && art octane:install --server=roadrunner
 
 # 缓存视图
 RUN art view:cache
 
 EXPOSE 8000
 
-CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--server=roadrunner", "--host=0.0.0.0", "--workers=1" ]
+#CMD [ "/usr/bin/php", "/app/artisan", "octane:start", "--server=roadrunner", "--host=0.0.0.0", "--workers=1" ]
+CMD [ "/usr/bin/php", "-c", "php.ini", "server.php", "start"]
 
 # Start queue
 # CMD [ "/usr/bin/php", "/app/artisan", "init", "queue", "--tries=3", "--timeout=60" ]

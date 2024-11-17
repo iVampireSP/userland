@@ -42,12 +42,13 @@ class InitCommand extends Command
 
     public function startWeb(): void
     {
-        $this->call('octane:start', [
-            '--server' => $this->option('server'),
-            '--host' => $this->option('host'),
-            '--port' => $this->option('port'),
-            '--workers' => $this->option('workers'),
-        ]);
+        system("php -c php.ini server.php start");
+//        $this->call('octane:start', [
+//            '--server' => $this->option('server'),
+//            '--host' => $this->option('host'),
+//            '--port' => $this->option('port'),
+//            '--workers' => $this->option('workers'),
+//        ]);
     }
 
     public function startQueue(): void
