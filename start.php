@@ -111,24 +111,19 @@ $mimeTypes = [
     'avi' => 'video/x-msvideo',
 ];
 
-const PUBLIC_DIR = "public/";
-
+const PUBLIC_DIR = 'public/';
 
 define('LARAVEL_START', microtime(true));
 
-
-if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
+require __DIR__.'/vendor/autoload.php';
 
-require __DIR__ . '/vendor/autoload.php';
-
-
-$app = require_once __DIR__ . '/bootstrap/app.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-
 
 function run()
 {
@@ -142,16 +137,16 @@ function run()
 
     // 忽略空目录或根路径
     if ($path !== '/' && $path !== '') {
-        $filePath = realpath(PUBLIC_DIR . ltrim($path, '/'));
+        $filePath = realpath(PUBLIC_DIR.ltrim($path, '/'));
 
-        if ($filePath && str_starts_with($filePath, realpath(PUBLIC_DIR)) && !str_contains($filePath, '.php') && !is_dir($filePath) && file_exists($filePath)) {
+        if ($filePath && str_starts_with($filePath, realpath(PUBLIC_DIR)) && ! str_contains($filePath, '.php') && ! is_dir($filePath) && file_exists($filePath)) {
             $extension = pathinfo($filePath, PATHINFO_EXTENSION);
             $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
             header("Content-Type: $mimeType");
-            return ob_get_clean() . file_get_contents($filePath);
+
+            return ob_get_clean().file_get_contents($filePath);
         }
     }
-
 
     $response = $kernel->handle(
         $request = Illuminate\Http\Request::capture()

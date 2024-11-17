@@ -7,7 +7,7 @@ use Workerman\Worker;
 
 Adapterman::init();
 
-$worker = new Worker();
+$worker = new Worker;
 $http_worker = new Worker('http://0.0.0.0:8000'); // or 127.0.0.1:8080, or localhost:9000
 
 $http_worker->count = env('WORKERMAN_WORKERS_COUNT', cpu_count()); // or any positive integer
