@@ -9,6 +9,7 @@ return [
         'tokens_can' => [
             'openid' => '启用 OpenID 支持（将会获取 id_token）',
             'profile' => '获取基本信息',
+            'token' => '创建 ID Token',
             'email' => '获取电子邮件地址',
             'phone' => '获取手机号',
             'address' => '获取通信地址（未实现）',

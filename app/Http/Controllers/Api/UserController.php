@@ -60,6 +60,11 @@ class UserController extends Controller
     public function token(Request $request)
     {
         $user = $request->user('api');
+
+        if (!$user->tokenCan('token')) {
+            return $this->forbidden('No permission for token scope.');
+        }
+
         $idToken = new IdTokenResponse;
 
         $dateTimeImmutableObject = new DateTimeImmutable;
