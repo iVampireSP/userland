@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('user', [UserController::class, 'user'])->name('openid.userinfo');
+Route::post('token', [UserController::class, 'token'])->name('user.token');
 
 // 获取，创建或更新状态
 Route::match(['get', 'post'], 'status', [UserController::class, 'status'])

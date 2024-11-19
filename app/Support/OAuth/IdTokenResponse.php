@@ -15,8 +15,6 @@ class IdTokenResponse extends BearerTokenResponse
 {
     protected Configuration $config;
 
-    protected array $scopes;
-
     public function __construct()
     {
         $this->config = Configuration::forSymmetricSigner(
@@ -33,25 +31,43 @@ class IdTokenResponse extends BearerTokenResponse
 
         $user = User::findOrFail($accessToken->getUserIdentifier());
 
+        $token_scopes = $accessToken->getScopes();
+
+        $scopes = [];
+
+        foreach ($token_scopes as $scope) {
+            $scopes[] = $scope->getIdentifier();
+        }
+
+        return $this->issueForUser($dateTimeImmutableObject, $user, $scopes);
+    }
+
+    public function issueForUser(DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
+    {
         $r = $this->config
             ->builder()
-            ->permittedFor($accessToken->getClient()->getIdentifier())
+            ->permittedFor($user->id)
             // id token 里面不应该有 jti, 否则他可以访问账户系统
             // ->identifiedBy($accessToken->getIdentifier()) // jti
             ->issuedBy(url('/'))
-            ->issuedAt($dateTimeImmutableObject)
-            ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
+            ->issuedAt($dateTimeImmutable)
+            ->expiresAt($dateTimeImmutable->add(new DateInterval('PT1H')))
             ->relatedTo($user->id)
-            ->withClaim('scopes', $this->getScopes($accessToken))
+            ->withClaim('scopes', $scopes)
             ->withHeader('kid', config('openid.kid'))
             ->withHeader('typ', 'id_token');
 
-        $claims = $user->getClaims($this->scopes);
+        $claims = $user->getClaims($scopes);
         foreach ($claims as $key => $value) {
             $r = $r->withClaim($key, $value);
         }
 
         return $r;
+    }
+
+    public function getConfig(): Configuration
+    {
+        return $this->config;
     }
 
     public function getExtraParams(AccessTokenEntityInterface $accessToken): array
@@ -73,20 +89,14 @@ class IdTokenResponse extends BearerTokenResponse
 
     protected function getScopes(AccessTokenEntityInterface $accessToken): array
     {
-        if (empty($this->scopes)) {
-            $token_scopes = $accessToken->getScopes();
+        $token_scopes = $accessToken->getScopes();
 
-            $scopes = [];
+        $scopes = [];
 
-            foreach ($token_scopes as $scope) {
-                $scopes[] = $scope->getIdentifier();
-            }
-
-            $this->scopes = $scopes;
-
-            return $scopes;
+        foreach ($token_scopes as $scope) {
+            $scopes[] = $scope->getIdentifier();
         }
 
-        return $this->scopes;
+        return $scopes;
     }
 }

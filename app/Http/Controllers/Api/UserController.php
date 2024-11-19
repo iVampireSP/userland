@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\UserStatus;
+use App\Support\OAuth\IdTokenResponse;
+use DateTimeImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -24,19 +27,10 @@ class UserController extends Controller
     {
         $user = $request->user('api');
 
-        $all_scopes = config('openid.passport.tokens_can');
+        $scopes = $this->getScopes($user);
+        $claims = $this->getScopeClaims($user, $scopes);
 
-        $scopes = [];
-
-        foreach ($all_scopes as $scope_name => $scope_description) {
-            if ($user->tokenCan($scope_name)) {
-                $scopes[] = $scope_name;
-            }
-        }
-
-        $data = $user->getClaims($scopes);
-
-        return $this->success($data);
+        return $this->success($claims);
     }
 
     public function status(Request $request)
@@ -61,5 +55,45 @@ class UserController extends Controller
         ]);
 
         return $this->success($status);
+    }
+
+    public function token(Request $request)
+    {
+        $user = $request->user('api');
+        $idToken = new IdTokenResponse;
+
+        $dateTimeImmutableObject = new DateTimeImmutable;
+
+        $scopes = $this->getScopes($user);
+
+        $token = $idToken->issueForUser($dateTimeImmutableObject, $request->user(), $scopes);
+        $config = $idToken->getConfig();
+
+        $idTokenString = $token->getToken($config->signer(), $config->signingKey())->toString();
+
+        return $this->success([
+            'token' => $idTokenString,
+        ]);
+    }
+
+    private function getScopes(User $user): array
+    {
+        $all_scopes = config('openid.passport.tokens_can');
+
+        $scopes = [];
+
+        foreach ($all_scopes as $scope_name => $scope_description) {
+            if ($user->tokenCan($scope_name)) {
+                $scopes[] = $scope_name;
+            }
+        }
+
+        return $scopes;
+    }
+
+    private function getScopeClaims(User $user, array $scopes): array
+    {
+
+        return $user->getClaims($scopes);
     }
 }
