@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b48261ebfe35fd9801da50716534e98",
+    "content-hash": "389823169187d2af336d1b5dd6af37af",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1622,66 +1622,6 @@
             "time": "2023-12-03T19:50:20+00:00"
         },
         {
-            "name": "joanhey/adapterman",
-            "version": "0.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/joanhey/AdapterMan.git",
-                "reference": "0628d42a579ff214abd1114193a09d1f52ae5eb2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/joanhey/AdapterMan/zipball/0628d42a579ff214abd1114193a09d1f52ae5eb2",
-                "reference": "0628d42a579ff214abd1114193a09d1f52ae5eb2",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8",
-                "workerman/workerman": "^4.1"
-            },
-            "suggest": {
-                "ext-event": "For better performance. "
-            },
-            "bin": [
-                "adapterman"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Adapterman\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joanhey",
-                    "email": "joanhey@kumbiaphp.com",
-                    "homepage": "https://kumbiaphp.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Use any framework and application with Workerman.",
-            "keywords": [
-                "event",
-                "php",
-                "workerman"
-            ],
-            "support": {
-                "issues": "https://github.com/joanhey/adapterman/issues",
-                "source": "https://github.com/joanhey/adapterman"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/joanhey",
-                    "type": "github"
-                }
-            ],
-            "time": "2023-04-16T00:05:23+00:00"
-        },
-        {
             "name": "laminas/laminas-diactoros",
             "version": "3.4.0",
             "source": {
@@ -2479,16 +2419,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "5.4.0",
+            "version": "5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "aac4fd512681fd5cb4b77d2105ab7ec700c72051"
+                "reference": "ea1ce71cbf9741e445a5914e2f67cdbb484ff712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/aac4fd512681fd5cb4b77d2105ab7ec700c72051",
-                "reference": "aac4fd512681fd5cb4b77d2105ab7ec700c72051",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/ea1ce71cbf9741e445a5914e2f67cdbb484ff712",
+                "reference": "ea1ce71cbf9741e445a5914e2f67cdbb484ff712",
                 "shasum": ""
             },
             "require": {
@@ -2536,7 +2476,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lcobucci/jwt/issues",
-                "source": "https://github.com/lcobucci/jwt/tree/5.4.0"
+                "source": "https://github.com/lcobucci/jwt/tree/5.4.2"
             },
             "funding": [
                 {
@@ -2548,7 +2488,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-10-08T22:06:45+00:00"
+            "time": "2024-11-07T12:54:35+00:00"
         },
         {
             "name": "league/commonmark",
@@ -9594,69 +9534,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "workerman/workerman",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/walkor/workerman.git",
-                "reference": "df513f3fd274811ebb8358d05d7cec19ee8bd3e1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/walkor/workerman/zipball/df513f3fd274811ebb8358d05d7cec19ee8bd3e1",
-                "reference": "df513f3fd274811ebb8358d05d7cec19ee8bd3e1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0"
-            },
-            "suggest": {
-                "ext-event": "For better performance. "
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Workerman\\": "./"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "walkor",
-                    "email": "walkor@workerman.net",
-                    "homepage": "http://www.workerman.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
-            "homepage": "http://www.workerman.net",
-            "keywords": [
-                "asynchronous",
-                "event-loop"
-            ],
-            "support": {
-                "email": "walkor@workerman.net",
-                "forum": "http://wenda.workerman.net/",
-                "issues": "https://github.com/walkor/workerman/issues",
-                "source": "https://github.com/walkor/workerman",
-                "wiki": "http://doc.workerman.net/"
-            },
-            "funding": [
-                {
-                    "url": "https://opencollective.com/workerman",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/walkor",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2024-11-07T08:31:33+00:00"
         }
     ],
     "packages-dev": [
@@ -13553,7 +13430,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -13565,6 +13442,6 @@
         "ext-openssl": "*",
         "ext-pdo": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
