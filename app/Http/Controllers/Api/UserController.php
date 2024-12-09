@@ -71,7 +71,7 @@ class UserController extends Controller
 
         $scopes = $this->getScopes($user);
 
-        $token = $idToken->issueForUser($dateTimeImmutableObject, $request->user(), $scopes);
+        $token = $idToken->issueForUser("", $dateTimeImmutableObject, $request->user(), $scopes);
         $config = $idToken->getConfig();
 
         $idTokenString = $token->getToken($config->signer(), $config->signingKey())->toString();

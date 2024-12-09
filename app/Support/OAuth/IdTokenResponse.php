@@ -39,14 +39,18 @@ class IdTokenResponse extends BearerTokenResponse
             $scopes[] = $scope->getIdentifier();
         }
 
-        return $this->issueForUser($dateTimeImmutableObject, $user, $scopes);
+        $client_id = $accessToken->getClient()->getIdentifier();
+
+        return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes);
     }
 
-    public function issueForUser(DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
+    public function issueForUser(string $oauth_client_id , DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
     {
         $r = $this->config
             ->builder()
-            ->permittedFor($user->id)
+//            ->permittedFor($user->id)
+            ->permittedFor($oauth_client_id)
+
             // id token 里面不应该有 jti, 否则他可以访问账户系统
             // ->identifiedBy($accessToken->getIdentifier()) // jti
             ->issuedBy(url('/'))
