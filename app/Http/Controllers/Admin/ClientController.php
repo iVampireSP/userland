@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 
 class ClientController extends Controller
@@ -88,19 +89,24 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
             'password_client' => 'boolean',
-            'personal_access_client' => 'boolean',
             'trusted' => 'nullable|boolean',
             'description' => 'nullable|string',
+            'reset_client_secret' => 'boolean',
         ]);
 
         $client->update([
             'name' => $request->input('name'),
             'redirect' => $request->input('redirect'),
             'password_client' => $request->boolean('password_client'),
-            'personal_access_client' => $request->boolean('personal_access_client'),
             'trusted' => $request->boolean('trusted'),
             'description' => $request->input('description'),
         ]);
+
+        if ($request->boolean('reset_client_secret')) {
+            $client->update([
+                'secret' => Str::random(40),
+            ]);
+        }
 
         return redirect()->route('admin.clients.show', compact('client'));
     }

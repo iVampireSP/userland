@@ -80,14 +80,14 @@
 
 
                     {{--    密码访问应用程序    --}}
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            <input class="form-check-input" type="checkbox" value="1"
-                                   @if($client->personal_access_client) checked @endif name="personal_access_client"
-                                   id="personal_access_client" aria-label="是否是个人访问应用程序">
-                        </div>
-                        <span class="form-control">是否是个人访问应用程序</span>
-                    </div>
+{{--                    <div class="input-group mb-3">--}}
+{{--                        <div class="input-group-text">--}}
+{{--                            <input class="form-check-input" type="checkbox" value="1"--}}
+{{--                                   @if($client->personal_access_client) checked @endif name="personal_access_client"--}}
+{{--                                   id="personal_access_client" aria-label="是否是个人访问应用程序">--}}
+{{--                        </div>--}}
+{{--                        <span class="form-control">是否是个人访问应用程序</span>--}}
+{{--                    </div>--}}
 
                     <div class="input-group mb-3">
                         <div class="input-group-text">
@@ -96,6 +96,14 @@
                                    id="password_client" aria-label="是否是密码访问应用程序">
                         </div>
                         <span class="form-control">是否是密码访问应用程序</span>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            <input class="form-check-input" type="checkbox" value="1" name="reset_client_secret"
+                                   id="reset_client_secret" aria-label="重设应用程序密钥">
+                        </div>
+                        <span class="form-control">重设应用程序密钥（危险！你的应用程序密钥将会被立即重置！）</span>
                     </div>
 
                     <div class="input-group mb-3">
@@ -159,6 +167,8 @@
 {{--                        </form>--}}
 {{--                    @endif--}}
 {{--                @endif--}}
+
+
 
                 <div class="mt-3">
                     <h3>授权路由</h3>

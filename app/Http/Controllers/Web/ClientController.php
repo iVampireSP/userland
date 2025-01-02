@@ -91,8 +91,6 @@ class ClientController extends Controller
             'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
             'description' => 'nullable|string',
             'reset_client_secret' => 'boolean',
-            'personal_access_client' => 'boolean',
-            //            'password_client' => 'boolean',
         ]);
 
         $client = auth('web')->user()->clients()->findOrFail($id);
@@ -100,7 +98,6 @@ class ClientController extends Controller
         $client->update([
             'name' => $request->input('name'),
             'redirect' => $request->input('redirect'),
-            'personal_access_client' => $request->boolean('personal_access_client'),
             'description' => $request->input('description'),
         ]);
 

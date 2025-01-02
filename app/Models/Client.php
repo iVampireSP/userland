@@ -8,7 +8,14 @@ use Laravel\Passport\Client as PassportClient;
 class Client extends PassportClient
 {
     protected $fillable = [
-        'tenant_id',
+//        'tenant_id',
+        'name',
+        'redirect',
+        'trusted',
+        'password_client',
+        'pkce_client',
+        'description',
+        'secret'
     ];
 
     /**
