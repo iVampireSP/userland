@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         $user = $request->user('api');
 
-        if (!$user->tokenCan('token')) {
+        if (! $user->tokenCan('token')) {
             return $this->forbidden('No permission for token scope.');
         }
 
@@ -71,7 +71,7 @@ class UserController extends Controller
 
         $scopes = $this->getScopes($user);
 
-        $token = $idToken->issueForUser("", $dateTimeImmutableObject, $request->user(), $scopes);
+        $token = $idToken->issueForUser('', $dateTimeImmutableObject, $request->user(), $scopes);
         $config = $idToken->getConfig();
 
         $idTokenString = $token->getToken($config->signer(), $config->signingKey())->toString();

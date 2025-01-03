@@ -335,12 +335,12 @@ class User extends Authenticatable
             $this->refresh();
             //
             //            if ($this->balance < $amount) {
-            ////                if ($fail) {
+            // //                if ($fail) {
             //                    // 发送邮件通知
-            ////                    $this->notify(new BalanceNotEnough());
+            // //                    $this->notify(new BalanceNotEnough());
             //
-            ////                    throw new BalanceNotEnoughException();
-            ////                }
+            // //                    throw new BalanceNotEnoughException();
+            // //                }
             //            }
 
             $this->balance = bcsub($this->balance, $amount, 4);

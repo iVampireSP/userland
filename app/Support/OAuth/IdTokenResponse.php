@@ -44,7 +44,7 @@ class IdTokenResponse extends BearerTokenResponse
         return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes);
     }
 
-    public function issueForUser(string $oauth_client_id , DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
+    public function issueForUser(string $oauth_client_id, DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
     {
         $r = $this->config
             ->builder()

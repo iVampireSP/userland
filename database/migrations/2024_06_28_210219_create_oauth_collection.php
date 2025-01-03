@@ -64,10 +64,10 @@ return new class extends Migration
                     'metricType' => 'COSINE',
                     'fieldName' => 'embedding',
                     'indexName' => 'embedding_idx',
-//                    'params' => [
-//                        'index_type' => 'AUTOINDEX',
-//                        'nlist' => '1024',
-//                    ],
+                    //                    'params' => [
+                    //                        'index_type' => 'AUTOINDEX',
+                    //                        'nlist' => '1024',
+                    //                    ],
                 ],
                 [
                     'fieldName' => 'face_id',

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Support\Auth;
 
 use App\Contracts\YubicoOTP;
@@ -90,7 +89,7 @@ class YubicoOTPSupport implements YubicoOTP
      */
     private function validateOTP(): void
     {
-        $nonce = substr(md5(microtime()), 0, 16) . Str::random();
+        $nonce = substr(md5(microtime()), 0, 16).Str::random();
         $query = [
             'id' => $this->client_id,
             'otp' => $this->otp,
@@ -99,7 +98,7 @@ class YubicoOTPSupport implements YubicoOTP
 
         ksort($query);
 
-        $url = $this->getVerificationUrl() . '?' . http_build_query($query) . '&h=' . urlencode($this->signPayload($query));
+        $url = $this->getVerificationUrl().'?'.http_build_query($query).'&h='.urlencode($this->signPayload($query));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -109,8 +108,8 @@ class YubicoOTPSupport implements YubicoOTP
 
         $response = curl_exec($ch);
 
-        if (!$response) {
-            throw new Exception('cURL Error: "' . curl_error($ch) . '" - Code: ' . curl_errno($ch));
+        if (! $response) {
+            throw new Exception('cURL Error: "'.curl_error($ch).'" - Code: '.curl_errno($ch));
         }
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
             throw new Exception('Non 200 response code received from Yubico verifiation server');
@@ -135,15 +134,15 @@ class YubicoOTPSupport implements YubicoOTP
 
         // 检查 status 是否在 $errors 中
         if (in_array($formattedResponse['status'], $this->errors)) {
-            Log::error('Invalid status response from Yubico, got ' . $formattedResponse['status']);
-            throw new Exception('Invalid status response from Yubico, got ' . $formattedResponse['status']);
+            Log::error('Invalid status response from Yubico, got '.$formattedResponse['status']);
+            throw new Exception('Invalid status response from Yubico, got '.$formattedResponse['status']);
         }
 
         // Check the nonce and OTP
-        if (!isset($formattedResponse['nonce'])) {
+        if (! isset($formattedResponse['nonce'])) {
             throw new Exception('Response does not contain a nonce');
         }
-        if (!isset($formattedResponse['otp'])) {
+        if (! isset($formattedResponse['otp'])) {
             throw new Exception('Response does not contain a OTP');
         }
         if ($query['nonce'] != $formattedResponse['nonce']) {
@@ -162,7 +161,7 @@ class YubicoOTPSupport implements YubicoOTP
         }
 
         // Verify the time
-        if (!isset($formattedResponse['t'])) {
+        if (! isset($formattedResponse['t'])) {
             throw new Exception('Response timestamp not set');
         }
         $currentTimestamp = time();
@@ -174,7 +173,7 @@ class YubicoOTPSupport implements YubicoOTP
             throw new Exception('Response timestamp is out of bounds (behind)');
         }
 
-        if (!isset($formattedResponse['status'])) {
+        if (! isset($formattedResponse['status'])) {
             throw new Exception('Response status not set');
         }
 

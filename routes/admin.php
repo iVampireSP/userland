@@ -35,8 +35,8 @@ Route::get('/users/{user}/permissions', [UserPermissionController::class, 'permi
 Route::post('/users/{user}/permissions/{permission}', [UserPermissionController::class, 'togglePermission'])->name('users.permissions.toggle');
 
 Route::resource('clients', ClientController::class);
-//Route::post('clients/{client}/tenant', [ClientController::class, 'enableTenant'])->name('clients.tenant.enable');
-//Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTenant'])->name('clients.tenant.disable');
+// Route::post('clients/{client}/tenant', [ClientController::class, 'enableTenant'])->name('clients.tenant.enable');
+// Route::delete('/clients/{client}/tenant', [ClientController::class, 'disableTenant'])->name('clients.tenant.disable');
 
 Route::resource('notifications', NotificationController::class)->only(['create', 'store']);
 
@@ -45,11 +45,11 @@ Route::get('/roles/{role}/permissions', [RoleController::class, 'permissions'])-
 Route::post('/roles/{role}/permissions/{permission}', [RoleController::class, 'togglePermission'])->name('roles.permissions.toggle');
 
 Route::resource('permissions', PermissionController::class);
-//Route::resource('quotas', QuotaController::class);
+// Route::resource('quotas', QuotaController::class);
 Route::resource('unit_prices', UnitPriceController::class);
 Route::resource('package_categories', PackageCategoryController::class);
 Route::resource('packages', PackageController::class);
-//Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
+// Route::resource('packages.quotas', PackageQuotaController::class)->only(['index', 'update', 'destroy']);
 Route::resource('packages.upgrades', PackageUpgradeController::class);
 
 Route::get('/packages/{package}/roles', [PackagePermissionController::class, 'roles'])->name('packages.roles');

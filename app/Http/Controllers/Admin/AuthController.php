@@ -39,7 +39,7 @@ class AuthController extends Controller
         $device_id = $otp->getDeviceID();
 
         $admin = (new Admin)->findByDeviceId($device_id);
-        if (!$admin) {
+        if (! $admin) {
             // return redirect()->route('admin.login')->with('error', '设备不存在。');
             return response()->json([
                 'status' => 'error',
@@ -48,7 +48,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (!$otp->verify()) {
+        if (! $otp->verify()) {
             // return redirect()->route('admin.login')->with('error', 'OTP 不正确。');
             return response()->json([
                 'status' => 'error',
