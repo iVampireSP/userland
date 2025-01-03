@@ -87,7 +87,7 @@
                             <!-- 添加底部版权信息 -->
                             <div class="text-center mt-4">
                                 <p class="text-muted small mb-0">
-                                    Powered by <a href="https://leaflow.cc" class="text-decoration-none">Leaflow</a> &
+                                    Powered by <a href="https://www.leaflow.cn" class="text-decoration-none">Leaflow</a> &
                                     <a href="https://www.yubico.com" class="text-decoration-none">Yubico OTP</a>
                                 </p>
                             </div>
