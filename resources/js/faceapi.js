@@ -2,18 +2,106 @@ import * as faceapi from "face-api.js";
 
 const imageType = "image/jpeg";
 
+// 检测光线变化的函数
+function checkLight(landmarks, expressions, video, lastFrameColors, colorCanvas) {
+    if (!video || !colorCanvas) {
+        console.error('checkLight: 缺少必要参数', { video: !!video, colorCanvas: !!colorCanvas });
+        return {
+            result: false,
+            colors: null
+        };
+    }
+
+    try {
+        // 分析视频帧的颜色变化
+        const colorCtx = colorCanvas.getContext('2d');
+
+        // 确保视频已经准备好
+        if (video.videoWidth === 0 || video.videoHeight === 0) {
+            console.log('视频尺寸未就绪');
+            return {
+                result: false,
+                colors: null
+            };
+        }
+
+        // 绘制视频帧到canvas
+        colorCtx.drawImage(video, 0, 0, colorCanvas.width, colorCanvas.height);
+        const imageData = colorCtx.getImageData(0, 0, colorCanvas.width, colorCanvas.height);
+        const currentColors = getAverageColors(imageData);
+
+        console.log('当前帧颜色:', currentColors);
+
+        if (lastFrameColors) {
+            const colorDiff = Math.abs(currentColors.r - lastFrameColors.r) +
+                            Math.abs(currentColors.g - lastFrameColors.g) +
+                            Math.abs(currentColors.b - lastFrameColors.b);
+
+            console.log('颜色变化检测:', {
+                currentColors,
+                lastFrameColors,
+                difference: colorDiff
+            });
+
+            return {
+                result: colorDiff > 50,  // 提高阈值，使检测更明显
+                colors: currentColors
+            };
+        }
+
+        return {
+            result: false,
+            colors: currentColors
+        };
+    } catch (error) {
+        console.error('颜色检测错误:', error);
+        return {
+            result: false,
+            colors: null
+        };
+    }
+}
+
+function getAverageColors(imageData) {
+    const data = imageData.data;
+    let r = 0, g = 0, b = 0;
+    const total = data.length / 4;
+
+    for (let i = 0; i < data.length; i += 4) {
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+    }
+
+    return {
+        r: Math.round(r / total),
+        g: Math.round(g / total),
+        b: Math.round(b / total)
+    };
+}
+
 // 定义动作列表
 const actions = [
-    // { name: 'blink', text: '请眨眨眼', check: checkBlink },
     { name: "nod", text: "请点头", check: checkNod },
     { name: "shake", text: "请左右摇头", check: checkShake },
-    { name: "mouth", text: "请张嘴", check: checkMouth },
+    { name: "mouth", text: "请张嘴", check: checkMouth }
+];
+
+// 定义炫光颜色序列
+const flashColors = [
+    { name: 'red', class: 'flash-red' },
+    { name: 'green', class: 'flash-green' },
+    { name: 'blue', class: 'flash-blue' },
+    { name: 'yellow', class: 'flash-yellow' },
+    { name: 'purple', class: 'flash-purple' }
 ];
 
 let lastLandmarks = null;
 let currentAction = null;
 let actionHistory = [];
 let actionStartTime = null;
+let originalBodyColor = null;
+let isFlashing = false;
 
 async function start(video, callback, clip) {
     Promise.all([
@@ -26,21 +114,55 @@ async function start(video, callback, clip) {
 }
 
 function startVideo(video, callback, clip) {
+    // 尝试获取最佳分辨率
+    const constraints = {
+        video: {
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            facingMode: "user"  // 使用前置摄像头
+        }
+    };
+
     navigator.mediaDevices
-        .getUserMedia({ video: {} })
+        .getUserMedia(constraints)
         .then((stream) => {
             video.srcObject = stream;
             console.log("摄像头已成功开启");
 
-            video.addEventListener("play", () => {
+            // 获取实际的视频轨道设置
+            const videoTrack = stream.getVideoTracks()[0];
+            const settings = videoTrack.getSettings();
+            console.log("摄像头实际设置:", settings);
+
+            const playHandler = () => {
                 handlePlayEvent(video, callback, clip);
-            });
+                video.removeEventListener("play", playHandler);  // 移除事件监听器，避免重复调用
+            };
+            video.addEventListener("play", playHandler);
         })
         .catch((err) => {
-            console.error("无法访问摄像头:", err);
-            alert(
-                "无法访问摄像头，请确保摄像头未被其他应用占用，并且页面有相应的权限!"
-            );
+            console.error("无法以最佳分辨率访问摄像头，尝试默认设置:", err);
+            // 如果失败，尝试使用默认设置
+            navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then((stream) => {
+                    video.srcObject = stream;
+                    console.log("摄像头已使用默认设置开启");
+
+                    const videoTrack = stream.getVideoTracks()[0];
+                    const settings = videoTrack.getSettings();
+                    console.log("摄像头默认设置:", settings);
+
+                    const playHandler = () => {
+                        handlePlayEvent(video, callback, clip);
+                        video.removeEventListener("play", playHandler);  // 移除事件监听器，避免重复调用
+                    };
+                    video.addEventListener("play", playHandler);
+                })
+                .catch((err) => {
+                    console.error("无法访问摄像头:", err);
+                    alert("无法访问摄像头，请确保摄像头未被其他应用占用，并且页面有相应的权限!");
+                });
         });
 }
 
@@ -68,12 +190,14 @@ function removeListeners(video) {
 }
 
 function handlePlayEvent(video, callback, clip) {
-    let stopped = false;
+    const detectFaceRef = { stopped: false };  // 创建一个引用对象来控制检测状态
     let canvas = null;
     let lastActionCheck = Date.now();
     let actionStartTime = Date.now();
-    let consecutiveDetections = 0; // 连续检测到动作的次数
-    actionHistory = []; // 重置动作历史
+    let consecutiveDetections = 0;
+    let lastBrightness = null;
+    let flashSuccessCount = 0;
+    actionHistory = [];
     currentAction = getRandomAction();
 
     // 更新动作提示
@@ -91,11 +215,7 @@ function handlePlayEvent(video, callback, clip) {
     videoContainer.appendChild(canvas);
 
     async function detectFace() {
-        console.log("开始检测");
-        if (stopped || !canvas) {
-            console.log("停止检测");
-            return;
-        }
+        if (detectFaceRef.stopped || !canvas) return;
 
         try {
             const detections = await faceapi
@@ -103,10 +223,7 @@ function handlePlayEvent(video, callback, clip) {
                 .withFaceLandmarks()
                 .withFaceExpressions();
 
-            console.log("检测到人脸:", detections);
-
             if (detections.length > 0) {
-                console.log("检测到人脸:", detections[0]);
                 const detection = detections[0];
                 const landmarks = detection.landmarks;
 
@@ -115,79 +232,90 @@ function handlePlayEvent(video, callback, clip) {
                     width: video.videoWidth,
                     height: video.videoHeight,
                 };
-                const resizedDetections = faceapi.resizeResults(
-                    detections,
-                    displaySize
-                );
-                canvas
-                    .getContext("2d")
-                    .clearRect(0, 0, canvas.width, canvas.height);
-                faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+                // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
 
-                // 检查当前动作
-                const actionResult = currentAction.check(
-                    landmarks,
-                    detection.expressions
-                );
-                console.log("当前动作检测结果:", {
-                    action: currentAction.name,
-                    result: actionResult,
-                    expressions: detection.expressions,
-                });
+                if (!isFlashing) {
+                    // 检查当前动作
+                    const actionResult = currentAction.check(landmarks, detection.expressions);
 
-                if (actionResult) {
-                    consecutiveDetections++;
-                    console.log("动作检测成功次数:", consecutiveDetections);
+                    if (actionResult) {
+                        consecutiveDetections++;
+                        console.log("动作检测成功次数:", consecutiveDetections);
 
-                    // 需要连续3次检测到才算真正完成动作
-                    if (consecutiveDetections >= 3) {
-                        console.log("动作完成:", currentAction.name);
-                        actionHistory.push(currentAction.name);
-                        consecutiveDetections = 0; // 重置计数器
+                        if (consecutiveDetections >= 3) {
+                            console.log("动作完成:", currentAction.name);
+                            actionHistory.push(currentAction.name);
+                            consecutiveDetections = 0;
 
-                        // 如果完成了所有动作
-                        if (actionHistory.length >= 2) {
-                            console.log("所有动作完成");
-                            stopped = true;
-                            let image = getImage(video);
-                            canvas.remove();
-                            stopVideo(video);
-
-                            if (clip) {
-                                clipFace(image, detections, function (src) {
-                                    if (callback) {
-                                        callback(src);
-                                    }
-                                });
-                            } else if (callback) {
-                                callback(image.src);
+                            if (actionHistory.length >= 3) {  // 完成所有动作
+                                console.log("所有动作完成，开始炫光检测");
+                                startFlashDetection(video, landmarks, detection, callback, clip, canvas, detectFaceRef);
+                            } else {
+                                currentAction = getRandomAction();
+                                actionStartTime = Date.now();
+                                console.log("切换到下一个动作:", currentAction.name);
+                                updateActionPrompt(currentAction.text);
                             }
-                        } else {
-                            // 获取下一个动作
-                            currentAction = getRandomAction();
-                            actionStartTime = Date.now();
-                            console.log(
-                                "切换到下一个动作:",
-                                currentAction.name
-                            );
-                            updateActionPrompt(currentAction.text);
                         }
+                    } else {
+                        consecutiveDetections = 0;
                     }
                 } else {
-                    consecutiveDetections = 0; // 重置连续检测计数
+                    // 在炫光模式下检测颜色变化
+                    const currentBrightness = calculateFaceBrightness(landmarks);
+
+                    if (lastBrightness !== null) {
+                        const brightnessDiff = Math.abs(currentBrightness - lastBrightness);
+                        console.log('亮度变化:', {
+                            current: currentBrightness,
+                            last: lastBrightness,
+                            difference: brightnessDiff
+                        });
+
+                        if (brightnessDiff > 10) {  // 检测到明显的亮度变化
+                            flashSuccessCount++;
+                            console.log('检测到亮度变化，成功次数:', flashSuccessCount);
+
+                            if (flashSuccessCount >= 3) {  // 需要检测到3次明显的亮度变化
+                                console.log('炫光检测完成');
+                                // 完成所有检测
+                                detectFaceRef.stopped = true;  // 使用引用对象来停止检测
+                                let image = getImage(video);
+                                canvas.remove();
+                                stopVideo(video);
+
+                                // 恢复原始背景色
+                                document.body.classList.remove(...flashColors.map(c => c.class));
+                                document.body.style.backgroundColor = originalBodyColor;
+
+                                if (clip) {
+                                    clipFace(image, detections, function(src) {
+                                        if (callback) {
+                                            callback(src);
+                                        }
+                                    });
+                                } else if (callback) {
+                                    callback(image.src);
+                                }
+                            }
+                        }
+                    }
+                    lastBrightness = currentBrightness;
                 }
 
                 lastLandmarks = landmarks;
             } else {
                 console.log("未检测到人脸");
-                consecutiveDetections = 0; // 重置连续检测计数
+                consecutiveDetections = 0;
             }
         } catch (error) {
             console.error("人脸检测错误:", error);
-            consecutiveDetections = 0; // 重置连续检测计数
+            consecutiveDetections = 0;
         }
 
-        if (!stopped) {
+        if (!detectFaceRef.stopped) {
             requestAnimationFrame(detectFace);
         }
     }
@@ -441,6 +569,62 @@ function clipFace(image, faces, callback) {
         // 转换为 base64
         // console.log()
     };
+}
+
+function startFlashDetection(video, landmarks, detection, callback, clip, canvas, detectFaceRef) {
+    isFlashing = true;
+    document.getElementById('light-prompt').classList.remove('d-none');
+    document.getElementById('action-prompt').classList.add('d-none');
+
+    // 保存原始背景色
+    originalBodyColor = document.body.style.backgroundColor;
+
+    // 开始颜色序列
+    let colorIndex = 0;
+    const flashInterval = setInterval(() => {
+        if (colorIndex >= flashColors.length) {
+            clearInterval(flashInterval);
+            document.body.style.backgroundColor = originalBodyColor;
+            isFlashing = false;
+
+            // 完成所有检测
+            console.log("炫光检测完成");
+            detectFaceRef.stopped = true;  // 使用传入的引用来停止检测
+            let image = getImage(video);
+            canvas.remove();
+            stopVideo(video);
+
+            if (clip) {
+                clipFace(image, detection, function (src) {
+                    if (callback) {
+                        callback(src);
+                    }
+                });
+            } else if (callback) {
+                callback(image.src);
+            }
+            return;
+        }
+
+        // 应用新颜色
+        document.body.classList.remove(...flashColors.map(c => c.class));
+        document.body.classList.add(flashColors[colorIndex].class);
+        console.log('切换炫光颜色:', flashColors[colorIndex].name);
+
+        colorIndex++;
+    }, 1000);  // 每秒切换一次颜色
+}
+
+function calculateFaceBrightness(landmarks) {
+    // 使用关键点的 y 值来估算人脸亮度
+    const points = landmarks.positions;
+    let totalY = 0;
+
+    points.forEach(point => {
+        totalY += point.y;
+    });
+
+    return totalY / points.length;
 }
 
 window.face_capture = {
