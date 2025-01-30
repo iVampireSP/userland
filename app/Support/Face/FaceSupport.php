@@ -67,6 +67,10 @@ class FaceSupport
         try {
             $represent = $this->represent($image_b64);
 
+            // if (!isset($represent['results'])) {
+            //     throw new CommonException('画面中没有人脸，换个角度试试。');
+            // }
+
             if (count($represent['results']) > 1) {
                 throw new CommonException('画面中有多个人脸，请换个地方尝试。');
             }
@@ -76,10 +80,9 @@ class FaceSupport
             }
 
             $embedding = $represent['results'][0]['embedding'];
-
         } catch (ConnectionException $e) {
             Log::error($e->getMessage());
-            throw new CommonException('验证活体时发生了错误。');
+            throw new CommonException('检测时发生了错误？');
         }
 
         return $embedding;

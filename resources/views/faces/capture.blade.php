@@ -37,6 +37,7 @@
         </div>
         <div class="text-center mt-3">
             <p id="action-prompt" class="text-primary mb-3 h4 fw-bold"></p>
+            <p id="verification-status" class="text-info mb-3 h5 d-none">正在进行身份验证...</p>
             <p id="light-prompt" class="text-warning mb-3 h5 d-none">请保持面部在摄像头中，注意观察屏幕变化</p>
             <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开</p>
             <p id="alert-failed" class="text-danger d-none">无法验证您的身份，您可以重新采集</p>
@@ -45,7 +46,7 @@
 
         <div class="mt-3 text-center">
             <button class="btn btn-primary" id="start-record">开始采集</button>
-            <p class="text-info mt-3">在点击采集后，需要完成动作验证和光线变化检测，这可能需要一段时间。请确保光线充足，面部清晰可见。</p>
+            <p class="text-info mt-3">在点击采集后，需要完成动作验证和光线变化检测。请确保光线充足，面部清晰可见，并按照提示完成相应动作。</p>
         </div>
     </div>
 
