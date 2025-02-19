@@ -43,9 +43,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.clients.index') }}">OAuth 客户端</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.applications.index') }}">应用</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                连接
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.applications.index') }}">应用</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.push_apps.index') }}">推送</a></li>
+                            </ul>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.notifications.create') }}">通知</a>
                         </li>

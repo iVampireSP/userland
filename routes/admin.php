@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PushAppController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\AuthController;
@@ -17,7 +18,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserPermissionController;
 use Illuminate\Support\Facades\Route;
 
-Route::withoutMiddleware(['auth:web', 'auth:admin',  'admin.validateReferer'])->group(function () {
+Route::withoutMiddleware(['auth:web', 'auth:admin', 'admin.validateReferer'])->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
     Route::middleware(['throttle:10,1'])->post('/', [AuthController::class, 'login']);
 });
@@ -58,5 +59,14 @@ Route::get('/packages/{package}/permissions', [PackagePermissionController::clas
 Route::post('/packages/{package}/permissions/{permission}', [PackagePermissionController::class, 'togglePermission'])->name('packages.permissions.toggle');
 
 Route::resource('applications', ApplicationController::class);
+
+// 应用管理路由
+Route::get('/push_apps', [PushAppController::class, 'index'])->name('push_apps.index');
+Route::get('/push_apps/create', [PushAppController::class, 'create'])->name('push_apps.create');
+Route::post('/push_apps', [PushAppController::class, 'store'])->name('push_apps.store');
+Route::get('/push_apps/{app}', [PushAppController::class, 'show'])->name('push_apps.show');
+Route::get('/push_apps/{app}/edit', [PushAppController::class, 'edit'])->name('push_apps.edit');
+Route::put('/push_apps/{app}', [PushAppController::class, 'update'])->name('push_apps.update');
+Route::delete('/push_apps/{app}', [PushAppController::class, 'destroy'])->name('push_apps.destroy');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
