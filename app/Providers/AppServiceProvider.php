@@ -4,12 +4,12 @@ namespace App\Providers;
 
 use App\Contracts\SMS;
 use App\Contracts\YubicoOTP;
-use App\Models\Admin;
 use App\Models\Balance;
 use App\Models\Client;
 use App\Models\User;
 use App\Observers\BalanceObserver;
 use App\Observers\UserObserver;
+use App\Policies\ClientPolicy;
 use App\Support\Auth\YubicoOTPSupport;
 use App\Support\OAuth\AccessTokenResponse;
 use App\Support\Route\RemovableRoutesMixin;
@@ -50,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local')) {
             $this->useStoragePassportKeys();
         }
+
+        Gate::policy(Client::class, ClientPolicy::class);
 
         Route::mixin(new RemovableRoutesMixin);
         Route::removeGet('/oauth/authorize');
@@ -93,7 +95,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function setupPulse(): void
     {
-        Pulse::user(fn (User $user) => [
+        Pulse::user(fn(User $user) => [
             'name' => $user->name,
             'extra' => $user->email,
             'avatar' => $user->avatar(),

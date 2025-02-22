@@ -15,6 +15,7 @@
                 <th>Key</th>
                 <th>状态</th>
                 <th>最大连接数</th>
+                <th>客户端</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -31,6 +32,13 @@
                         @endif
                     </td>
                     <td>{{ $app->max_connections }}</td>
+                    <td>
+                        @if ($app->client)
+                            <a href="{{ route('admin.clients.show', $app->client) }}">{{ $app->client->name }}</a>
+                        @else
+                            <span class="badge bg-danger">未关联</span>
+                        @endif
+                    </td>
                     <td>
                         <div class="btn-group">
                             {{-- <a href="{{ route('admin.push_apps.show', $app) }}" class="btn btn-sm btn-info">

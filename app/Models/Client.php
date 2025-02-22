@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Passport\Client as PassportClient;
 
 class Client extends PassportClient
@@ -29,6 +30,11 @@ class Client extends PassportClient
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function pushApps(): HasMany
+    {
+        return $this->hasMany(PushApp::class);
     }
 
     //    /**

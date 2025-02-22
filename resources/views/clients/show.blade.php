@@ -8,6 +8,10 @@
         返回
     </a>
 
+    <a href="{{ route('clients.push-apps.index', $client->id) }}" class="mb-3">
+        推送应用
+    </a>
+
 
     <h2>{{ $client->name }}</h2>
 

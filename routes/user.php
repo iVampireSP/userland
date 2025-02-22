@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PackageController;
 use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PhoneController;
+use App\Http\Controllers\Web\PushAppController;
 use App\Http\Controllers\Web\RealNameController;
 use App\Http\Controllers\Web\TokenController;
 use App\Http\Controllers\Web\WeChatController;
@@ -48,6 +49,9 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
 
         /* Start 客户端 */
         Route::resource('clients', ClientController::class);
+        Route::get('clients/{client}/push-apps', [PushAppController::class, 'index'])->name('clients.push-apps.index');
+        Route::patch('clients/{client}/push-apps', [PushAppController::class, 'update'])->name('clients.push-apps.update');
+        Route::delete('clients/{client}/push-apps', [PushAppController::class, 'delete'])->name('clients.push-apps.delete');
         Route::resource('tokens', TokenController::class)->except(['update', 'edit']);
         Route::delete('tokens', [TokenController::class, 'destroy_all'])->name('tokens.destroy_all');
         /* End 客户端 */

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,8 +17,10 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Factory|\Illuminate\Foundation\Application|View|Application
+    public function index(): View
     {
+        $this->authorize('viewAny', Client::class);
+
         // 获取此用户的所有客户端
         $clients = auth('web')->user()->clients()->latest()->paginate(20);
 
@@ -29,6 +32,7 @@ class ClientController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $this->authorize('create', Client::class);
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
@@ -56,17 +60,20 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Factory|\Illuminate\Foundation\Application|View|Application
+    public function create(): View
     {
+        $this->authorize('create', Client::class);
         return view('clients.create');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Factory|\Illuminate\Foundation\Application|View|Application
+    public function show(string $id): View
     {
         $client = auth('web')->user()->clients()->findOrFail($id);
+
+        $this->authorize('view', $client);
 
         return view('clients.show', compact('client'));
     }
@@ -74,9 +81,9 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): Factory|\Illuminate\Foundation\Application|View|Application
+    public function edit(Client $client): View
     {
-        $client = auth('web')->user()->clients()->findOrFail($id);
+        $this->authorize('update', $client);
 
         return view('clients.show', compact('client'));
     }
@@ -84,8 +91,10 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, Client $client): RedirectResponse
     {
+        $this->authorize('update', Client::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
@@ -115,6 +124,8 @@ class ClientController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
+        $this->authorize('delete', Client::class);
+
         $client = auth('web')->user()->clients()->findOrFail($id);
 
         $client->delete();

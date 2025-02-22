@@ -14,7 +14,8 @@ class PushAppController extends Controller
      */
     public function index()
     {
-        $apps = PushApp::paginate(10);
+        $apps = PushApp::with('client')->paginate(10);
+
         return view('admin.push_apps.index', compact('apps'));
     }
 
@@ -71,6 +72,8 @@ class PushAppController extends Controller
      */
     public function show(PushApp $app)
     {
+        $app->load('client');
+
         return view('admin.push_apps.show', compact('app'));
     }
 
