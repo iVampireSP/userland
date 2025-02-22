@@ -17,5 +17,11 @@
     "dependencies": {
         "bootstrap-icons": "^1.10.2",
         "face-api.js": "^0.22.2"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "esbuild"
+        ]
     }
 }
