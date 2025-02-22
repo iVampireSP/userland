@@ -24,7 +24,7 @@ spec:
             secretName: oauth-secret
       containers:
         - name: web
-          image: leafdev.top/ecosystem/oauth:v0.2.7-fix-2
+          image: leafdev.top/ecosystem/oauth:v0.2.8
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
@@ -130,7 +130,7 @@ spec:
             secretName: oauth-secret
       containers:
         - name: schedule
-          image: leafdev.top/ecosystem/oauth:v0.2.7-fix-2
+          image: leafdev.top/ecosystem/oauth:v0.2.8
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
@@ -212,7 +212,7 @@ spec:
         - name: leafdev-registry
       containers:
         - name: worker
-          image: leafdev.top/ecosystem/oauth:v0.2.7-fix-2
+          image: leafdev.top/ecosystem/oauth:v0.2.8
           imagePullPolicy: Always
           command:
             - /usr/bin/start.sh
