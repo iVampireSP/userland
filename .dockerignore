@@ -6,3 +6,4 @@
 /tests
 .env
 /manifest.yaml
+/public/hot

@@ -29,3 +29,4 @@ rr.exe
 /storage/init.lock
 rr
 .rr.yaml
+/public/hot

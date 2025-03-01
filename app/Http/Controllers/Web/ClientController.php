@@ -19,8 +19,6 @@ class ClientController extends Controller
      */
     public function index(): View
     {
-        $this->authorize('viewAny', Client::class);
-
         // 获取此用户的所有客户端
         $clients = auth('web')->user()->clients()->latest()->paginate(20);
 
@@ -32,7 +30,6 @@ class ClientController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $this->authorize('create', Client::class);
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect' => ['required', 'regex:/^[^:]+:\/\//'],
@@ -62,7 +59,6 @@ class ClientController extends Controller
      */
     public function create(): View
     {
-        $this->authorize('create', Client::class);
         return view('clients.create');
     }
 
@@ -93,7 +89,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client): RedirectResponse
     {
-        $this->authorize('update', Client::class);
+        $this->authorize('update', $client);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -101,8 +97,6 @@ class ClientController extends Controller
             'description' => 'nullable|string',
             'reset_client_secret' => 'boolean',
         ]);
-
-        $client = auth('web')->user()->clients()->findOrFail($id);
 
         $client->update([
             'name' => $request->input('name'),
@@ -122,11 +116,9 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Client $client): RedirectResponse
     {
-        $this->authorize('delete', Client::class);
-
-        $client = auth('web')->user()->clients()->findOrFail($id);
+        $this->authorize('delete', $client);
 
         $client->delete();
 
