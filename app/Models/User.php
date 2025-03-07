@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
@@ -27,7 +28,8 @@ class User extends Authenticatable
         HasRoles,
         Notifiable,
         SoftDeletes,
-        UserClaimsTrait;
+        UserClaimsTrait,
+        HasPushSubscriptions;
 
     public array $publics = [
         'id',
