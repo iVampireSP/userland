@@ -60,6 +60,13 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::post('status', [AccountController::class, 'status'])->name('status.update');
         /* End 状态 */
 
+        /* Start 推送通知订阅 */
+        Route::get('push-subscription', [AccountController::class, 'showPushSubscription'])->name('push-subscription.show');
+        Route::post('push-subscription', [AccountController::class, 'storePushSubscription'])->name('push-subscription.store');
+        Route::delete('push-subscription', [AccountController::class, 'deletePushSubscription'])->name('push-subscription.delete');
+        Route::post('push-subscription/test', [AccountController::class, 'sendTestPushNotification'])->name('push-subscription.test');
+        /* End 推送通知订阅 */
+
         /* Start 手机号 */
         Route::get('phone', [PhoneController::class, 'create'])->name('phone.create');
         Route::post('phone', [PhoneController::class, 'store'])->name('phone.store');

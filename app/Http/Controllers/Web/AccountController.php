@@ -271,4 +271,94 @@ class AccountController extends Controller
 
         return redirect()->to(RouteServiceProvider::HOME)->with('success', '邮箱更改成功。');
     }
+
+    /**
+     * 显示推送通知订阅页面
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showPushSubscription()
+    {
+        return view('web.account.push-subscription');
+    }
+
+    /**
+     * 保存用户的推送通知订阅
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storePushSubscription(Request $request)
+    {
+        $this->validate($request, [
+            'endpoint' => 'required|string',
+            'keys.auth' => 'required|string',
+            'keys.p256dh' => 'required|string',
+        ]);
+
+        $endpoint = $request->endpoint;
+        $token = $request->keys['auth'];
+        $key = $request->keys['p256dh'];
+        $contentEncoding = $request->contentEncoding ?? '';
+
+        // 保存订阅信息
+        $request->user()->updatePushSubscription(
+            $endpoint,
+            $key,
+            $token,
+            $contentEncoding
+        );
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * 删除用户的推送通知订阅
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deletePushSubscription(Request $request)
+    {
+        $this->validate($request, [
+            'endpoint' => 'required|string',
+        ]);
+
+        // 删除订阅信息
+        $request->user()->deletePushSubscription($request->endpoint);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * 发送测试推送通知
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendTestPushNotification(Request $request)
+    {
+        $user = $request->user();
+
+        // 检查用户是否有推送订阅
+        if (!$user->pushSubscriptions()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => '您尚未订阅推送通知'
+            ], 400);
+        }
+
+        // 发送测试通知
+        $user->notify(new \App\Notifications\GeneralNotification(
+            '测试通知',
+            '这是一条测试推送通知，如果您看到这条通知，说明推送功能正常工作！',
+            route('push-subscription.show'),
+            '/favicon.ico'
+        ));
+
+        return response()->json([
+            'success' => true,
+            'message' => '测试通知已发送'
+        ]);
+    }
 }
