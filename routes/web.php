@@ -4,6 +4,7 @@ use App\Http\Controllers\Public\DiscoveryController;
 use App\Http\Controllers\Public\JwksController;
 use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\FaceVerificationController;
+use App\Http\Controllers\Web\ManifestController;
 use App\Http\Controllers\Web\TokenController;
 use App\Http\Controllers\Web\UnitPriceController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,8 @@ Route::get('/.well-known/openid-configuration', DiscoveryController::class)
 
 Route::get('/.well-known/jwks', JwksController::class)
     ->name('openid.jwks');
+
+Route::get('/manifest.webmanifest', ManifestController::class)->name('manifest');
 
 Route::get('/', [AccountController::class, 'index'])->middleware(['auth:web', 'banned'])->name('index');
 

@@ -8,6 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Web App 清单 -->
+    <link rel="manifest" href="/manifest.webmanifest">
+
     <title>@yield('title', config('app.display_name'))</title>
 
     <link rel="icon" href="{{ asset('/images/fav-1.ico') }}"/>
