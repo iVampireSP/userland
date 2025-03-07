@@ -89,8 +89,17 @@ class AppServiceProvider extends ServiceProvider
 
     private function useStoragePassportKeys(): void
     {
-        config(['passport.private_key' => file_get_contents(storage_path('oauth-private.key'))]);
-        config(['passport.public_key' => file_get_contents(storage_path('oauth-public.key'))]);
+        // 如果文件不存在，则使用默认的
+        if (!file_exists(storage_path('oauth-private.key'))) {
+            config(['passport.private_key' => env('PASSPORT_PRIVATE_KEY')]);
+        } else {
+            config(['passport.private_key' => file_get_contents(storage_path('oauth-private.key'))]);
+        }
+        if (!file_exists(storage_path('oauth-public.key'))) {
+            config(['passport.public_key' => env('PASSPORT_PUBLIC_KEY')]);
+        } else {
+            config(['passport.public_key' => file_get_contents(storage_path('oauth-public.key'))]);
+        }
     }
 
     private function setupPulse(): void
