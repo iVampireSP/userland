@@ -84,13 +84,13 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         /* End 封禁 */
 
         /* Start 人脸 */
-        Route::get('faces', [FaceController::class, 'index'])->name('faces.index');
-        Route::get('faces/capture', [FaceController::class, 'capture'])->name('faces.capture');
-        Route::post('faces/capture', [FaceController::class, 'capture']);
-        Route::delete('faces', [FaceController::class, 'destroy'])->name('faces.destroy');
+        // Route::get('faces', [FaceController::class, 'index'])->name('faces.index');
+        // Route::get('faces/capture', [FaceController::class, 'capture'])->name('faces.capture');
+        // Route::post('faces/capture', [FaceController::class, 'capture']);
+        // Route::delete('faces', [FaceController::class, 'destroy'])->name('faces.destroy');
 
-        Route::get('faces/test', [FaceController::class, 'test'])->name('faces.test');
-        Route::post('faces/test', [FaceController::class, 'test']);
+        // Route::get('faces/test', [FaceController::class, 'test'])->name('faces.test');
+        // Route::post('faces/test', [FaceController::class, 'test']);
         /* End 人脸 */
 
         /* Start 微信绑定 */

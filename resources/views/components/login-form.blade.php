@@ -5,11 +5,11 @@
                 role="tab">账户密码
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        {{-- <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-face" type="button" role="tab">
                 面部扫描
             </button>
-        </li>
+        </li> --}}
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-sms" type="button" role="tab">
                 短信验证码
@@ -42,7 +42,7 @@
 
             </form>
         </div>
-        <div class="tab-pane fade" id="login-method-face" role="tabpanel" tabindex="1">
+        {{-- <div class="tab-pane fade" id="login-method-face" role="tabpanel" tabindex="1">
             <div class="row flex align-content-center w-100 align-items-center justify-content-center">
                 <video id="face-capture" playsinline muted autoplay class="w-75 d-none"></video>
                 <div class="text-center">
@@ -61,7 +61,7 @@
                 <input type="hidden" name="image_b64" id="image-value">
                 <input type="submit" class="d-none" id="face-login-submit-btn" />
             </form>
-        </div>
+        </div> --}}
         <div class="tab-pane fade" id="login-method-sms" role="tabpanel" aria-labelledby="pills-contact-tab"
             tabindex="0">
             <form action="{{ route('login.sms.validate') }}" class="recaptcha-form" method="post">
@@ -146,13 +146,13 @@
 </script>
 
 <script>
-    let start = null
-    let stopVideo = null
-    // on ready
-    window.onload = function () {
-        start = window.face_capture.start
-        stopVideo = window.face_capture.stopVideo
-    }
+    // let start = null
+    // let stopVideo = null
+    // // on ready
+    // window.onload = function () {
+    //     start = window.face_capture.start
+    //     stopVideo = window.face_capture.stopVideo
+    // }
 
 
     const video = document.querySelector('#face-capture');
@@ -163,66 +163,66 @@
     const validateForm = document.querySelector('#validate-form');
     const imageValue = document.querySelector('#image-value');
 
-    let started = false
+    // let started = false
 
-    const textCapture = "采集"
-    const textStop = "停止"
-
-
-    function restoreBtn() {
-        started = false
-        stopVideo(video)
-        video.classList.add('d-none')
-        startBtn.innerText = textCapture
-        startBtn.classList.remove('btn-danger')
-        startBtn.classList.add('btn-primary')
-    }
+    // const textCapture = "采集"
+    // const textStop = "停止"
 
 
-    startBtn.addEventListener('click', async () => {
-        if (started) {
-            restoreBtn()
-            return;
-        }
-
-        started = true
-
-        alertSuccess.classList.add('d-none')
-        alertFailed.classList.add('d-none')
-        alertCaptureFailed.classList.add('d-none')
-        startBtn.innerText = textStop
-        startBtn.classList.add('btn-danger')
-        startBtn.classList.remove('btn-primary')
+    // function restoreBtn() {
+    //     started = false
+    //     stopVideo(video)
+    //     video.classList.add('d-none')
+    //     startBtn.innerText = textCapture
+    //     startBtn.classList.remove('btn-danger')
+    //     startBtn.classList.add('btn-primary')
+    // }
 
 
-        video.classList.remove('d-none')
-        start(video, (b64) => {
-            video.classList.add('d-none')
+    // startBtn.addEventListener('click', async () => {
+    //     if (started) {
+    //         restoreBtn()
+    //         return;
+    //     }
 
-            restoreBtn()
+    //     started = true
 
-            alertSuccess.classList.remove('d-none')
+    //     alertSuccess.classList.add('d-none')
+    //     alertFailed.classList.add('d-none')
+    //     alertCaptureFailed.classList.add('d-none')
+    //     startBtn.innerText = textStop
+    //     startBtn.classList.add('btn-danger')
+    //     startBtn.classList.remove('btn-primary')
 
-            imageValue.value = b64
-            // console.log(b64)
-            // validateForm.submit()
-            document.querySelector('#face-login-submit-btn').click()
-        }, false)
 
-    });
+    //     video.classList.remove('d-none')
+    //     start(video, (b64) => {
+    //         video.classList.add('d-none')
+
+    //         restoreBtn()
+
+    //         alertSuccess.classList.remove('d-none')
+
+    //         imageValue.value = b64
+    //         // console.log(b64)
+    //         // validateForm.submit()
+    //         document.querySelector('#face-login-submit-btn').click()
+    //     }, false)
+
+    // });
 
     const tabEl = document.querySelector('#login-method-tab')
     tabEl.addEventListener('shown.bs.tab', event => {
-        if (event.relatedTarget.getAttribute('data-bs-target') === '#login-method-face') {
-            if (started) {
-                setTimeout(restoreBtn, 1000)
-            }
-        }
-        if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
-            setTimeout(() => {
-                startBtn.click()
-            })
-        }
+        // if (event.relatedTarget.getAttribute('data-bs-target') === '#login-method-face') {
+        //     if (started) {
+        //         setTimeout(restoreBtn, 1000)
+        //     }
+        // }
+        // if (event.target.getAttribute('data-bs-target') === '#login-method-face') {
+        //     setTimeout(() => {
+        //         startBtn.click()
+        //     })
+        // }
         if (event.target.getAttribute('data-bs-target') === '#login-method-wechat-msg') {
             setTimeout(() => {
                 const img = document.getElementById('wechat-msg-login-qrcode');

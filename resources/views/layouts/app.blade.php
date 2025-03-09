@@ -66,7 +66,7 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownAuth">
-                                    <a class="dropdown-item" href="{{ route('faces.index') }}">人脸识别</a>
+                                    {{-- <a class="dropdown-item" href="{{ route('faces.index') }}">人脸识别</a> --}}
                                     <a class="dropdown-item" href="{{ route('tokens.index') }}">访问密钥</a>
                                 </div>
                             </li>
