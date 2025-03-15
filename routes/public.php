@@ -4,6 +4,7 @@
  * 公共路由，不需要登录。这里存放 异步回调 请求路由。
  */
 
+use App\Http\Controllers\Public\RealNameCaptureController;
 use App\Http\Controllers\Public\RealNameController;
 use App\Http\Controllers\Public\StatusController;
 use App\Http\Controllers\Public\WeChatController;
@@ -15,6 +16,9 @@ Route::match(['post', 'get'], 'real_name/pay_process', [RealNameController::clas
 Route::get('status/{user}', StatusController::class)->name('status.show');
 
 Route::withoutMiddleware(JsonRequest::class)->any('/wechat/callback', [WeChatController::class, 'serve'])->name('wechat.callback');
+
+Route::match(['get', 'post'], 'real_name/capture/{verification_id}', [RealNameCaptureController::class, 'capture'])->name('applications.real_name.capture');
+
 
 // /* Start Auth Request */
 // Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request.store');

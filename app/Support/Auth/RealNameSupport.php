@@ -52,7 +52,7 @@ class RealNameSupport
      *
      * @throws CommonException|ConnectionException
      */
-    private function submit(string $name, string $id_card, string $image_b64): bool
+    public function submit(string $name, string $id_card, string $image_b64): bool
     {
         $data = [
             'idcard' => $id_card,
