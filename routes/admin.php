@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\PushAppController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\AuthController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PackagePermissionController;
 use App\Http\Controllers\Admin\PackageUpgradeController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PushAppController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UnitPriceController;
 use App\Http\Controllers\Admin\UserController;

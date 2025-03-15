@@ -36,7 +36,7 @@ class PushAppController extends Controller
         // 获取客户端的 push app
         $pushApp = $client->pushApps()->first();
 
-        if (!$pushApp) {
+        if (! $pushApp) {
             // 如果不存在，则创建一个新的 push app
             $pushApp = $client->pushApps()->create(array_merge($validated, [
                 'enabled' => false,

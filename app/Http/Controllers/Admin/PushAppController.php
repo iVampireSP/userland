@@ -57,13 +57,14 @@ class PushAppController extends Controller
         $validated['secret'] = Str::random(64);
 
         // 转换布尔值为整数
-        $validated['enable_client_messages'] = (int)$validated['enable_client_messages'];
-        $validated['enabled'] = (int)$validated['enabled'];
+        $validated['enable_client_messages'] = (int) $validated['enable_client_messages'];
+        $validated['enabled'] = (int) $validated['enabled'];
 
         // 处理 enable_user_authentication，如果未提交则默认为 false
-        $validated['enable_user_authentication'] = (int)($request->has('enable_user_authentication') ? $request->input('enable_user_authentication') : false);
+        $validated['enable_user_authentication'] = (int) ($request->has('enable_user_authentication') ? $request->input('enable_user_authentication') : false);
 
         PushApp::create($validated);
+
         return redirect()->route('admin.push_apps.index')->with('success', '应用创建成功！');
     }
 
@@ -110,16 +111,17 @@ class PushAppController extends Controller
 
         // 转换布尔值为整数
         if (isset($validated['enable_client_messages'])) {
-            $validated['enable_client_messages'] = (int)$validated['enable_client_messages'];
+            $validated['enable_client_messages'] = (int) $validated['enable_client_messages'];
         }
         if (isset($validated['enabled'])) {
-            $validated['enabled'] = (int)$validated['enabled'];
+            $validated['enabled'] = (int) $validated['enabled'];
         }
 
         // 处理 enable_user_authentication，如果未提交则设置为 false
-        $validated['enable_user_authentication'] = (int)($request->has('enable_user_authentication') ? $request->input('enable_user_authentication') : false);
+        $validated['enable_user_authentication'] = (int) ($request->has('enable_user_authentication') ? $request->input('enable_user_authentication') : false);
 
         $app->update($validated);
+
         return redirect()->route('admin.push_apps.index')->with('success', '应用更新成功！');
     }
 
@@ -129,6 +131,7 @@ class PushAppController extends Controller
     public function destroy(PushApp $app)
     {
         $app->delete();
+
         return redirect()->route('admin.push_apps.index')->with('success', '应用删除成功！');
     }
 }

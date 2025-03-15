@@ -19,7 +19,6 @@ Route::withoutMiddleware(JsonRequest::class)->any('/wechat/callback', [WeChatCon
 
 Route::match(['get', 'post'], 'real_name/capture/{verification_id}', [RealNameCaptureController::class, 'capture'])->name('applications.real_name.capture');
 
-
 // /* Start Auth Request */
 // Route::post('auth_request', [JWTController::class, 'store'])->name('auth_request.store');
 // Route::get('auth_request/{token}', [JWTController::class, 'show'])->name('auth_request.show');

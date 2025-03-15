@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Support\Auth\IDCardSupport;
 use App\Support\Auth\RealNameSupport;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Str;
@@ -32,7 +31,7 @@ class RealNameController extends Controller
 
         $validate = $this->idCardSupport->isValid($id_card);
 
-        if (!$validate) {
+        if (! $validate) {
             return response()->json([
                 'error' => '身份证校验失败。',
             ], 422);
@@ -42,7 +41,7 @@ class RealNameController extends Controller
 
         // 检查年龄是否在区间内 settings.supports.real_name.min_age ~ settings.supports.real_name.max_age
         if ($age < config('settings.supports.real_name.min_age') || $age > config('settings.supports.real_name.max_age')) {
-            $message = '至少需要 ' . config('settings.supports.real_name.min_age') . ' 岁，最大 ' . config('settings.supports.real_name.max_age') . ' 岁。';
+            $message = '至少需要 '.config('settings.supports.real_name.min_age').' 岁，最大 '.config('settings.supports.real_name.max_age').' 岁。';
 
             return response()->json([
                 'error' => $message,
@@ -52,7 +51,7 @@ class RealNameController extends Controller
         $randomId = Str::random(32);
         $expiresAt = now()->addMinutes(10);
 
-        Cache::put('application:real_name_verification:' . $randomId, [
+        Cache::put('application:real_name_verification:'.$randomId, [
             'real_name' => $request->input('real_name'),
             'id_card' => $request->input('id_card'),
             'status' => 'pending',
@@ -69,7 +68,7 @@ class RealNameController extends Controller
 
     public function show(Request $request, string $verification_id): JsonResponse
     {
-        $verification = Cache::get('application:real_name_verification:' . $verification_id);
+        $verification = Cache::get('application:real_name_verification:'.$verification_id);
 
         // 获取状态
         $status = $verification['status'];

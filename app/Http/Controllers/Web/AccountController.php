@@ -285,7 +285,6 @@ class AccountController extends Controller
     /**
      * 保存用户的推送通知订阅
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function storePushSubscription(Request $request)
@@ -315,7 +314,6 @@ class AccountController extends Controller
     /**
      * 删除用户的推送通知订阅
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePushSubscription(Request $request)
@@ -333,7 +331,6 @@ class AccountController extends Controller
     /**
      * 发送测试推送通知
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function sendTestPushNotification(Request $request)
@@ -341,10 +338,10 @@ class AccountController extends Controller
         $user = $request->user();
 
         // 检查用户是否有推送订阅
-        if (!$user->pushSubscriptions()->exists()) {
+        if (! $user->pushSubscriptions()->exists()) {
             return response()->json([
                 'success' => false,
-                'message' => '您尚未订阅推送通知'
+                'message' => '您尚未订阅推送通知',
             ], 400);
         }
 
@@ -358,7 +355,7 @@ class AccountController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => '测试通知已发送'
+            'message' => '测试通知已发送',
         ]);
     }
 }

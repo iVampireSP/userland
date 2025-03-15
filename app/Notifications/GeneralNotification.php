@@ -43,10 +43,10 @@ class GeneralNotification extends Notification implements ShouldQueue
     /**
      * 创建一个新的通知实例
      *
-     * @param string $title 通知标题
-     * @param string $body 通知内容
-     * @param string|null $url 点击通知后跳转的URL
-     * @param string|null $icon 通知图标
+     * @param  string  $title  通知标题
+     * @param  string  $body  通知内容
+     * @param  string|null  $url  点击通知后跳转的URL
+     * @param  string|null  $icon  通知图标
      * @return void
      */
     public function __construct(string $title, string $body, ?string $url = null, ?string $icon = null)
@@ -60,7 +60,7 @@ class GeneralNotification extends Notification implements ShouldQueue
     /**
      * 获取通知发送的通道
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -71,7 +71,7 @@ class GeneralNotification extends Notification implements ShouldQueue
     /**
      * 获取 WebPush 表示形式的通知
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \NotificationChannels\WebPush\WebPushMessage
      */
     public function toWebPush($notifiable)

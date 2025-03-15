@@ -90,12 +90,12 @@ class AppServiceProvider extends ServiceProvider
     private function useStoragePassportKeys(): void
     {
         // 如果文件不存在，则使用默认的
-        if (!file_exists(storage_path('oauth-private.key'))) {
+        if (! file_exists(storage_path('oauth-private.key'))) {
             config(['passport.private_key' => env('PASSPORT_PRIVATE_KEY')]);
         } else {
             config(['passport.private_key' => file_get_contents(storage_path('oauth-private.key'))]);
         }
-        if (!file_exists(storage_path('oauth-public.key'))) {
+        if (! file_exists(storage_path('oauth-public.key'))) {
             config(['passport.public_key' => env('PASSPORT_PUBLIC_KEY')]);
         } else {
             config(['passport.public_key' => file_get_contents(storage_path('oauth-public.key'))]);
@@ -104,7 +104,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function setupPulse(): void
     {
-        Pulse::user(fn(User $user) => [
+        Pulse::user(fn (User $user) => [
             'name' => $user->name,
             'extra' => $user->email,
             'avatar' => $user->avatar(),

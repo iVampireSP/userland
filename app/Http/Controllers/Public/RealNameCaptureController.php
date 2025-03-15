@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Public;
 
 use App\Exceptions\CommonException;
 use App\Http\Controllers\Controller;
-use App\Support\Auth\RealNameSupport;
 use App\Support\Auth\IDCardSupport;
+use App\Support\Auth\RealNameSupport;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -15,12 +15,11 @@ class RealNameCaptureController extends Controller
     public function __construct(
         protected RealNameSupport $realNameSupport,
         protected IDCardSupport $idCardSupport,
-    ) {
-    }
+    ) {}
 
     public function capture(Request $request, string $verification_id)
     {
-        $cacheKey = 'application:real_name_verification:' . $verification_id;
+        $cacheKey = 'application:real_name_verification:'.$verification_id;
         $verification = Cache::get($cacheKey);
 
         if (empty($verification)) {
@@ -31,7 +30,7 @@ class RealNameCaptureController extends Controller
             'verification_id' => $verification_id,
         ]);
 
-        $redirectUrl = $verification['redirect_url'] . '?' . $q;
+        $redirectUrl = $verification['redirect_url'].'?'.$q;
 
         // 检测是否已经认证成功
         if ($verification['status'] == 'success') {
@@ -40,7 +39,6 @@ class RealNameCaptureController extends Controller
 
         // 续期 5 分钟
         Cache::put($cacheKey, $verification, now()->addMinutes(5));
-
 
         if ($request->post()) {
             $request->validate([
@@ -55,7 +53,7 @@ class RealNameCaptureController extends Controller
             }
 
             // 检测是不是 data:image/jpeg;base64
-            if (!preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
+            if (! preg_match('/^data:image\/jpeg;base64,/', $image_b64)) {
                 return back()->with('error', '图片格式错误，请重新尝试。');
             }
 

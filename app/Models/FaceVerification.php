@@ -14,7 +14,7 @@ class FaceVerification extends Model
         'flash_sequence',
         'verification_data',
         'status',
-        'expires_at'
+        'expires_at',
     ];
 
     protected $casts = [
@@ -22,7 +22,7 @@ class FaceVerification extends Model
         'action_sequence' => 'array',
         'flash_sequence' => 'array',
         'verification_data' => 'array',
-        'expires_at' => 'datetime'
+        'expires_at' => 'datetime',
     ];
 
     public function user()

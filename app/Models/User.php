@@ -18,18 +18,18 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens,
         HasFactory,
+        HasPushSubscriptions,
         HasRoles,
         Notifiable,
         SoftDeletes,
-        UserClaimsTrait,
-        HasPushSubscriptions;
+        UserClaimsTrait;
 
     public array $publics = [
         'id',
