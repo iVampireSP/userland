@@ -27,12 +27,15 @@ class RealNameCaptureController extends Controller
             abort(404, '验证码不存在。');
         }
 
+        $q = http_build_query([
+            'verification_id' => $verification_id,
+        ]);
+
+        $redirectUrl = $verification['redirect_url'] . '?' . $q;
+
         // 检测是否已经认证成功
         if ($verification['status'] == 'success') {
-            $q = http_build_query([
-                'verification_id' => $verification_id,
-            ]);
-            return redirect($verification['redirect_url'] . '?' . $q);
+            return redirect($redirectUrl);
         }
 
         // 续期 5 分钟
@@ -70,11 +73,7 @@ class RealNameCaptureController extends Controller
                 $verification['status'] = 'success';
                 Cache::put($cacheKey, $verification, now()->addMinutes(30));
 
-                $q = http_build_query([
-                    'verification_id' => $verification_id,
-                ]);
-
-                return redirect($verification['redirect_url'] . '?' . $q);
+                return redirect($redirectUrl);
             } else {
                 return back()->with('error', '实名认证失败。');
             }
