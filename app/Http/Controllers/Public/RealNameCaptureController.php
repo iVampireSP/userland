@@ -62,7 +62,11 @@ class RealNameCaptureController extends Controller
                 $verification['status'] = 'success';
                 Cache::put($cacheKey, $verification, now()->addMinutes(30));
 
-                return redirect($verification['redirect_url']);
+                $q = http_build_query([
+                    'verification_id' => $verification_id,
+                ]);
+
+                return redirect($verification['redirect_url'] . '?' . $q);
             } else {
                 return back()->with('error', '实名认证失败。');
             }
