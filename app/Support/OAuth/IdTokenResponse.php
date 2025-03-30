@@ -63,6 +63,7 @@ class IdTokenResponse extends BearerTokenResponse
             ->expiresAt($dateTimeImmutable->add(new DateInterval('PT1H')))
             ->relatedTo($user->id)
             ->withClaim('scopes', $scopes)
+            ->withClaim('user_id', $user->id)
             ->withHeader('kid', config('openid.kid'))
             ->withHeader('typ', 'id_token');
 
