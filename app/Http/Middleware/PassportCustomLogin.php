@@ -26,7 +26,7 @@ class PassportCustomLogin
                 // 删除
                 Cache::forget($key);
 
-                Cache::set($key, $request->input('nonce'), now()->addMinutes(10));
+                Cache::set($key, $request->input('nonce'), 300);
             }
         }
 
