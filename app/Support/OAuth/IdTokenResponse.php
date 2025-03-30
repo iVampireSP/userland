@@ -41,14 +41,16 @@ class IdTokenResponse extends BearerTokenResponse
 
         $client_id = $accessToken->getClient()->getIdentifier();
 
-        return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes);
+        $nonce = request()->input('nonce');
+
+        return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes, $nonce);
     }
 
-    public function issueForUser(string $oauth_client_id, DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
+    public function issueForUser(string $oauth_client_id, DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes, ?string $nonce): Builder
     {
         $r = $this->config
             ->builder()
-//            ->permittedFor($user->id)
+            //            ->permittedFor($user->id)
             ->permittedFor($oauth_client_id)
 
             // id token 里面不应该有 jti, 否则他可以访问账户系统
@@ -60,6 +62,10 @@ class IdTokenResponse extends BearerTokenResponse
             ->withClaim('scopes', $scopes)
             ->withHeader('kid', config('openid.kid'))
             ->withHeader('typ', 'id_token');
+
+        if ($nonce) {
+            $r = $r->withClaim('nonce', $nonce);
+        }
 
         $claims = $user->getClaims($scopes);
         foreach ($claims as $key => $value) {
@@ -77,7 +83,7 @@ class IdTokenResponse extends BearerTokenResponse
     public function getExtraParams(AccessTokenEntityInterface $accessToken): array
     {
         // 如果有 openid scope
-        if (! in_array('openid', $this->getScopes($accessToken))) {
+        if (!in_array('openid', $this->getScopes($accessToken))) {
             return [];
         }
 
