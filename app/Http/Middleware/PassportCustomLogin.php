@@ -18,7 +18,7 @@ class PassportCustomLogin
     {
         $response = $next($request);
 
-        if ($response->getStatusCode() == 200 && auth('web')->check()) {
+        if (auth('web')->check()) {
             if ($request->input('client_id') && $request->input('nonce')) {
                 // set client id with user_id nonce
                 $user_id = auth('web')->user()->id;
