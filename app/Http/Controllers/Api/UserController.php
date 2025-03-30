@@ -30,6 +30,8 @@ class UserController extends Controller
         $scopes = $this->getScopes($user);
         $claims = $this->getScopeClaims($user, $scopes);
 
+        $claims['sub'] = $user->id;
+
         return $this->success($claims);
     }
 
