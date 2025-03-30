@@ -74,8 +74,6 @@ class IdTokenResponse extends BearerTokenResponse
             Log::info('IdTokenResponse issueForUser', ['nonce' => $nonce]);
             $r = $r->withClaim('nonce', $nonce);
         }
-        // 删除 nonce
-        Cache::forget('passport:client_id:'.$oauth_client_id.':nonce:'.$user->id);
 
         $claims = $user->getClaims($scopes);
         foreach ($claims as $key => $value) {
