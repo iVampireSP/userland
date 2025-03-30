@@ -6,6 +6,7 @@ use App\Models\User;
 use DateInterval;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -70,8 +71,11 @@ class IdTokenResponse extends BearerTokenResponse
         // get nonce from cache
         $nonce = Cache::get('passport:client_id:'.$oauth_client_id.':nonce:'.$user->id);
         if ($nonce) {
+            Log::info('IdTokenResponse issueForUser', ['nonce' => $nonce]);
             $r = $r->withClaim('nonce', $nonce);
         }
+        // 删除 nonce
+        Cache::forget('passport:client_id:'.$oauth_client_id.':nonce:'.$user->id);
 
         $claims = $user->getClaims($scopes);
         foreach ($claims as $key => $value) {
