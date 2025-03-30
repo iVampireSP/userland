@@ -13,7 +13,7 @@ use Laravel\Passport\Http\Controllers\TransientTokenController;
 
 Route::post('/token', [AccessTokenController::class, 'issueToken'])->middleware('throttle')->name('token');
 
-Route::get('/authorize', [AuthorizationController::class, 'authorize'])->middleware('web', 'passport.custom_login')->name('passport.authorizations.authorize');
+Route::get('/authorize', [AuthorizationController::class, 'authorize'])->middleware('web', 'passport.custom_login')->name('authorizations.authorize');
 
 $guard = config('passport.guard', null);
 
