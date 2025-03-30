@@ -5,7 +5,7 @@ namespace App\Support\OAuth;
 use App\Models\User;
 use DateInterval;
 use DateTimeImmutable;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -66,18 +66,10 @@ class IdTokenResponse extends BearerTokenResponse
             ->withHeader('kid', config('openid.kid'))
             ->withHeader('typ', 'id_token');
 
-
-        // Thanks https://github.com/ronvanderheijden/openid-connect/blob/8a0ecd9b43c1e8e21dadb9634aeed25055c9bed0/src/IdTokenResponse.php#L91
-        // If the request contains a code, we look into the code to find the nonce.
-        if ($this->currentRequestService) {
-            $body = $this->currentRequestService->getRequest()->getParsedBody();
-            Log::info('IdTokenResponse issueForUser', ['body' => $body]);
-            if (isset($body['code'])) {
-                $authCodePayload = json_decode($this->decrypt($body['code']), true, 512, JSON_THROW_ON_ERROR);
-                if (isset($authCodePayload['nonce'])) {
-                    $r = $r->withClaim('nonce', $authCodePayload['nonce']);
-                }
-            }
+        // get nonce from cache
+        $nonce = Cache::get('passport:client_id:'.$oauth_client_id.':nonce:'.$user->id);
+        if ($nonce) {
+            $r = $r->withClaim('nonce', $nonce);
         }
 
         $claims = $user->getClaims($scopes);
@@ -96,7 +88,7 @@ class IdTokenResponse extends BearerTokenResponse
     public function getExtraParams(AccessTokenEntityInterface $accessToken): array
     {
         // 如果有 openid scope
-        if (!in_array('openid', $this->getScopes($accessToken))) {
+        if (! in_array('openid', $this->getScopes($accessToken))) {
             return [];
         }
 

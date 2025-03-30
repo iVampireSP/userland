@@ -12,11 +12,9 @@ use App\Observers\UserObserver;
 use App\Policies\ClientPolicy;
 use App\Support\Auth\YubicoOTPSupport;
 use App\Support\OAuth\AccessTokenResponse;
-use App\Support\Route\RemovableRoutesMixin;
 use App\Support\SMS\SMSSupport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
@@ -52,9 +50,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::policy(Client::class, ClientPolicy::class);
-
-        Route::mixin(new RemovableRoutesMixin);
-        Route::removeGet('/oauth/authorize');
 
         Paginator::useBootstrapFive();
 

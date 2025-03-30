@@ -53,6 +53,3 @@ Route::prefix('auth')->group(function () {
     Route::get('quick-login/{token}', [QuickController::class, 'quickLogin'])->name('quick.login');
     /* End 快速操作 */
 });
-
-/* Passport Route override */
-Route::get('/oauth/authorize', [AuthorizationController::class, 'authorize'])->middleware('web', 'passport.custom_login')->name('passport.authorizations.authorize');
