@@ -5,6 +5,7 @@ namespace App\Support\OAuth;
 use App\Models\User;
 use DateInterval;
 use DateTimeImmutable;
+use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -15,12 +16,16 @@ class IdTokenResponse extends BearerTokenResponse
 {
     protected Configuration $config;
 
-    public function __construct()
+    protected ?LaravelCurrentRequestService $currentRequestService;
+
+    public function __construct(?LaravelCurrentRequestService $currentRequestService = null)
     {
         $this->config = Configuration::forSymmetricSigner(
             app(config('openid.signer')),
             InMemory::plainText(config('passport.private_key'))
         );
+
+        $this->currentRequestService = $currentRequestService;
     }
 
     // Id Token 仅适用于认证场景。例如，有一个应用使用了谷歌登录，然后同步用户的日历信息，谷歌会返回 Id Token 给这个应用，Id Token 中包含用户的基本信息（用户名、头像等）。应用可以解析 Id Token 然后利用其中的信息，展示用户名和头像。
@@ -41,12 +46,10 @@ class IdTokenResponse extends BearerTokenResponse
 
         $client_id = $accessToken->getClient()->getIdentifier();
 
-        $nonce = request()->input('nonce');
-
-        return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes, $nonce);
+        return $this->issueForUser($client_id, $dateTimeImmutableObject, $user, $scopes);
     }
 
-    public function issueForUser(string $oauth_client_id, DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes, ?string $nonce): Builder
+    public function issueForUser(string $oauth_client_id, DateTimeImmutable $dateTimeImmutable, User $user, ?array $scopes): Builder
     {
         $r = $this->config
             ->builder()
@@ -63,9 +66,18 @@ class IdTokenResponse extends BearerTokenResponse
             ->withHeader('kid', config('openid.kid'))
             ->withHeader('typ', 'id_token');
 
-        if ($nonce) {
-            $r = $r->withClaim('nonce', $nonce);
-            $r = $r->withHeader('nonce', $nonce);
+
+        // Thanks https://github.com/ronvanderheijden/openid-connect/blob/8a0ecd9b43c1e8e21dadb9634aeed25055c9bed0/src/IdTokenResponse.php#L91
+        // If the request contains a code, we look into the code to find the nonce.
+        if ($this->currentRequestService) {
+            $body = $this->currentRequestService->getRequest()->getParsedBody();
+            Log::info('IdTokenResponse issueForUser', ['body' => $body]);
+            if (isset($body['code'])) {
+                $authCodePayload = json_decode($this->decrypt($body['code']), true, 512, JSON_THROW_ON_ERROR);
+                if (isset($authCodePayload['nonce'])) {
+                    $r = $r->withClaim('nonce', $authCodePayload['nonce']);
+                }
+            }
         }
 
         $claims = $user->getClaims($scopes);

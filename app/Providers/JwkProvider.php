@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Support\OAuth\IdTokenResponse;
+use App\Support\OAuth\LaravelCurrentRequestService;
 use Illuminate\Encryption\Encrypter;
 use Laravel\Passport\Bridge\AccessTokenRepository;
 use Laravel\Passport\Bridge\ClientRepository;
@@ -33,13 +34,15 @@ class JwkProvider extends PassportServiceProvider
         $cryptKey = $this->makeCryptKey('private');
         $encryptionKey = app(Encrypter::class)->getKey();
 
+        $responseType = new IdTokenResponse(app(LaravelCurrentRequestService::class));
+
         return new AuthorizationServer(
             clientRepository: app(ClientRepository::class),
             accessTokenRepository: app(AccessTokenRepository::class),
             scopeRepository: app(ScopeRepository::class),
             privateKey: $cryptKey,
             encryptionKey: $encryptionKey,
-            responseType: new IdTokenResponse
+            responseType: $responseType,
         );
     }
 }
