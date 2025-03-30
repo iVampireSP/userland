@@ -22,7 +22,11 @@ class PassportCustomLogin
             if ($request->input('client_id') && $request->input('nonce')) {
                 // set client id with user_id nonce
                 $user_id = auth('web')->user()->id;
-                Cache::set('passport:client_id:'.$request->input('client_id').':nonce:'.$user_id, $request->input('nonce'), now()->addMinutes(10));
+                $key = 'passport:client_id:'.$request->input('client_id').':nonce:'.$user_id;
+                // 删除
+                Cache::forget($key);
+
+                Cache::set($key, $request->input('nonce'), now()->addMinutes(10));
             }
         }
 
