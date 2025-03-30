@@ -36,6 +36,7 @@ class AccessTokenResponse extends AccessToken
 
         if ($nonce) {
             $r = $r->withClaim('nonce', $nonce);
+            $r = $r->withHeader('nonce', $nonce);
         }
 
         // 绝对不要使用 Access Token 做认证。Access Token 本身不能标识用户是否已经认证。

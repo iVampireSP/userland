@@ -65,6 +65,7 @@ class IdTokenResponse extends BearerTokenResponse
 
         if ($nonce) {
             $r = $r->withClaim('nonce', $nonce);
+            $r = $r->withHeader('nonce', $nonce);
         }
 
         $claims = $user->getClaims($scopes);
