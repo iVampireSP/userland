@@ -30,7 +30,7 @@ class UserController extends Controller
         $scopes = $this->getScopes($user);
         $claims = $this->getScopeClaims($user, $scopes);
 
-        $claims['sub'] = $user->id;
+        $claims['sub'] = (string) $user->id;
 
         return $this->success($claims);
     }
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $user = $request->user('api');
 
-        if (! $user->tokenCan('token')) {
+        if (!$user->tokenCan('token')) {
             return $this->forbidden('No permission for token scope.');
         }
 
