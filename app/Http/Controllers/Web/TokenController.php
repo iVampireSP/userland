@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,14 +11,14 @@ use RuntimeException;
 
 class TokenController extends Controller
 {
-    public function index(): Factory|\Illuminate\Foundation\Application|View|Application
+    public function index(): View
     {
         $tokens = auth('web')->user()->tokens()->with('client')->paginate(100);
 
         return view('tokens.index', compact('tokens'));
     }
 
-    public function create(): Factory|\Illuminate\Foundation\Application|View|Application
+    public function create(): View
     {
         $scopes = Passport::scopes();
 
@@ -31,11 +29,13 @@ class TokenController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'scopes' => 'required|array',
+            'scopes' => 'nullable|array',
         ]);
 
+        $scopes = $request->input('scopes', []);
+
         try {
-            $token = $request->user('web')->createToken($request->input('name'), $request->input('scopes'))->accessToken;
+            $token = $request->user('web')->createToken($request->input('name'), $scopes)->accessToken;
         } catch (RuntimeException $e) {
             return redirect()->route('tokens.create')->with('error', '无法创建令牌。可能是您没有预先创建个人访问令牌客户端。');
         }
