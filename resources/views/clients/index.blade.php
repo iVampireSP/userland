@@ -46,6 +46,8 @@
 
     </div>
 
-    {{ $clients->links() }}
+    <div class="mt-3">
+        {{ $clients->links() }}
+    </div>
 
 @endsection
