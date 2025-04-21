@@ -23,8 +23,8 @@
             <th>名称</th>
             <th>作用域</th>
             <th>客户端</th>
-            <th>到期时间</th>
             <th>创建时间</th>
+            <th>到期时间</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -44,8 +44,8 @@
                         <span class="text-danger">未知</span>
                     @endif
                 </td>
-                <td>{{ $token->expires_at }}</td>
                 <td>{{ $token->created_at }}</td>
+                <td>{{ $token->expires_at }}</td>
                 <td>
                     <form method="post" action="{{ route('tokens.destroy', $token->id) }}">
                         @csrf
