@@ -32,21 +32,9 @@
 
     <h3 class="mt-3">Access Token 返回示例</h3>
     <p>如有需要，你可以参考 <a href="https://docs.authing.cn/v2/concepts/access-token-vs-id-token.html" class="link-primary" target="_blank">Access Token 和 Id Token</a>。</p>
-    <p>绝对不要使用 Access Token 做认证。Access Token 本身不能标识用户是否已经认证。Access Token 中只包含了用户 id，在 sub 字段。在你开发的应用中，应该将 Access Token 视为一个随机字符串，不要试图从中解析信息。</p>
-    <pre>{
-  "aud": "4", // 你的应用 ID
-  "jti": "13c65d8ab8efcbde7e91ceec1501efaa574de25f4e9c6da98ed3b2d03d90f8b33acf2ba1db2c6e48",
-  "iat": 1720703114.050113,
-  "nbf": 1720703114.050114,
-  "exp": 1720704914.025737,
-  "sub": "1",
-  "scopes": [
-    "profile",
-    "email",
-    "phone"
-  ]
-}
-    </pre>
+    <p>绝对不要使用 Access Token 做认证。Access Token 本身不能标识用户是否已经认证。在你开发的应用中，应该将 Access Token 视为一个随机字符串，不要试图从中解析信息。</p>
+    <p>Access Token 仅用于访问 {{ config('app.display_name') }} 的 API，而 ID Token 无法访问 {{ config('app.display_name') }} 的 API。</p>
+
 
     <h3 class="mt-3">ID Token 返回示例</h3>
     <p>Id Token 的格式为 JWT。ID Token 仅适用于认证场景。例如，有一个应用使用了谷歌登录，然后同步用户的日历信息，谷歌会返回 ID Token 给这个应用，ID Token 中包含用户的基本信息（用户名、头像等）。应用可以解析 ID Token 然后利用其中的信息，展示用户名和头像。</p>
