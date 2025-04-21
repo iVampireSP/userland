@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $user = $request->user('api');
 
-        if (!$user->tokenCan('token')) {
+        if (! $user->tokenCan('token')) {
             return $this->forbidden('No permission for token scope.');
         }
 
