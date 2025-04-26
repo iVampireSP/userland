@@ -58,6 +58,24 @@
                                 <a class="nav-link" href="{{ route('push-subscription.show') }}">通知</a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('teams.index') }}">团队</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('teams.invitations') }}">
+                                    团队邀请
+                                    @php
+                                        $pendingInvitations = Auth::user()->notifications()
+                                            ->whereType('App\\Notifications\\TeamInvitation')
+                                            ->whereNull('read_at')
+                                            ->count();
+                                    @endphp
+                                    @if($pendingInvitations > 0)
+                                        <span class="badge bg-danger">{{ $pendingInvitations }}</span>
+                                    @endif
+                                </a>
+                            </li>
+
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdownAuth" class="nav-link dropdown-toggle" href="#" role="button"

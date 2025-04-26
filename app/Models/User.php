@@ -49,6 +49,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'current_team_id',
         'uuid',
         'name',
         'email',
@@ -314,6 +315,47 @@ class User extends Authenticatable
 
         // 默认 ID
         return $this->where('id', $username)->first();
+    }
+
+    public function currentTeam()
+    {
+        return $this->belongsTo(Team::class, 'current_team_id');
+    }
+
+    public function ownedTeams()
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_users')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function getCurrentTeam(): array
+    {
+        $this->load('currentTeam');
+
+        if ($this->currentTeam) {
+            $teamUser = \DB::table('team_users')
+                ->where('team_id', $this->currentTeam->id)
+                ->where('user_id', $this->id)
+                ->first();
+
+            $role = $teamUser ? $teamUser->role : null;
+            $isTeamOwner = ($this->currentTeam->owner_id === $this->id);
+        } else {
+            $role = null;
+            $isTeamOwner = false;
+        }
+
+        return [
+            'current_team' => $this->currentTeam,
+            'current_team_role' => $role,
+            'is_current_team_owner' => $isTeamOwner,
+        ];
     }
 
     public function hasBalance(string $amount = '0.01'): bool

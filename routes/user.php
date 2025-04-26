@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PhoneController;
 use App\Http\Controllers\Web\PushAppController;
 use App\Http\Controllers\Web\RealNameController;
+use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TokenController;
 use App\Http\Controllers\Web\WeChatController;
 use Illuminate\Support\Facades\Route;
@@ -97,6 +98,18 @@ Route::middleware(['auth:web', 'banned', 'verified'])->group(
         Route::get('wechat', [WeChatController::class, 'index'])->name('wechat.bind');
         Route::delete('wechat', [WeChatController::class, 'unbind'])->name('wechat.unbind');
         /* End 微信绑定 */
+
+        /* Start 团队管理 */
+        Route::resource('teams', TeamController::class);
+        Route::post('teams/{team}/invite', [TeamController::class, 'invite'])->name('teams.invite');
+        Route::post('teams/{team}/switch', [TeamController::class, 'switchTeam'])->name('teams.switch');
+        Route::post('teams/{team}/leave', [TeamController::class, 'leaveTeam'])->name('teams.leave'); // 新增离开团队路由
+        Route::patch('teams/{team}/members/{user}/role', [TeamController::class, 'updateMemberRole'])->name('teams.members.role');
+        Route::delete('teams/{team}/members/{user}', [TeamController::class, 'removeMember'])->name('teams.members.remove');
+        Route::get('team-invitations', [TeamController::class, 'invitations'])->name('teams.invitations');
+        Route::post('team-invitations/{invitation}/accept', [TeamController::class, 'acceptInvitation'])->name('teams.invitations.accept');
+        Route::delete('team-invitations/{invitation}/reject', [TeamController::class, 'rejectInvitation'])->name('teams.invitations.reject');
+        /* End 团队管理 */
 
         /* Start 权限 */
         Route::get('permissions', [PermissionController::class, 'permissions'])->name('permissions.index');

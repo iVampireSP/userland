@@ -32,12 +32,17 @@ trait UserClaimsTrait
             $data['phone'] = $this->phone;
         }
 
+        // 固定信息
         // roles
         $roles = $this->roles()->get()->pluck('name')->toArray();
         $permissions = $this->getAllPermissions()->pluck('name')->toArray();
 
         $data['roles'] = $roles;
         $data['permissions'] = $permissions;
+
+        // 团队
+        $currentTeam = $this->getCurrentTeam();
+        $data = array_merge($data, $currentTeam);
 
         $data['created_at'] = $this->created_at;
 
