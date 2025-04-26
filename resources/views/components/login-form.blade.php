@@ -5,11 +5,11 @@
                 role="tab">账户密码
             </button>
         </li>
-        {{-- <li class="nav-item" role="presentation">
+        <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-face" type="button" role="tab">
                 面部扫描
             </button>
-        </li> --}}
+        </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#login-method-sms" type="button" role="tab">
                 短信验证码
@@ -42,8 +42,11 @@
 
             </form>
         </div>
-        {{-- <div class="tab-pane fade" id="login-method-face" role="tabpanel" tabindex="1">
-            <div class="row flex align-content-center w-100 align-items-center justify-content-center">
+        <div class="tab-pane fade" id="login-method-face" role="tabpanel" tabindex="1">
+            <div class="text-center">
+                <p>感谢体验面部识别登录，目前面部识别登录功能已下线，敬请谅解。</p>
+            </div>
+            {{-- <div class="row flex align-content-center w-100 align-items-center justify-content-center">
                 <video id="face-capture" playsinline muted autoplay class="w-75 d-none"></video>
                 <div class="text-center">
                     <p id="alert-success" class="text-success d-none">图像已采集，正在校验中，请勿离开。</p>
@@ -60,8 +63,8 @@
                 @csrf
                 <input type="hidden" name="image_b64" id="image-value">
                 <input type="submit" class="d-none" id="face-login-submit-btn" />
-            </form>
-        </div> --}}
+            </form> --}}
+        </div>
         <div class="tab-pane fade" id="login-method-sms" role="tabpanel" aria-labelledby="pills-contact-tab"
             tabindex="0">
             <form action="{{ route('login.sms.validate') }}" class="recaptcha-form" method="post">
